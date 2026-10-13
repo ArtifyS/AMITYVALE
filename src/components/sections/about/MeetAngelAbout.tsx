@@ -4,97 +4,111 @@ import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { DecorativeAccent } from "@/components/ui/DecorativeAccent";
 
 export function MeetAngelAbout() {
   return (
-    <section id="meet-angel" className="py-[100px] md:py-[160px] bg-[#F8F5F1] relative overflow-hidden">
-      {/* Decorative Dots */}
-      <div className="absolute top-[10%] left-[5%] w-[300px] h-[300px] opacity-[0.15] pointer-events-none">
-        <div 
-          className="w-full h-full"
-          style={{
-            backgroundImage: "radial-gradient(#161514 1.5px, transparent 1.5px)",
-            backgroundSize: "24px 24px"
-          }}
-        />
-      </div>
-
-      <div className="max-w-[1320px] mx-auto px-6 md:px-12 flex flex-col-reverse lg:flex-row items-center gap-16 lg:gap-24 relative z-10">
-        
-        {/* Left Side - Image Composition */}
-        <div className="w-full lg:w-[45%] relative">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="relative mx-auto max-w-[440px] lg:max-w-none"
-          >
-            {/* Background Muted Clay Card */}
-            <motion.div 
-              animate={{ rotate: [3, 4, 3] }}
-              transition={{ repeat: Infinity, duration: 10, ease: "easeInOut" }}
-              className="absolute inset-0 bg-[#E8E1D9] rounded-[24px] transform translate-x-4 translate-y-4 md:translate-x-6 md:translate-y-6" 
-            />
-            
-            {/* Portrait Image */}
-            <div className="relative aspect-[4/5] rounded-[24px] overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.08)] transform -rotate-2">
-              <Image
-                src="/angel_image.png"
-                alt="Angel, Relationship & Intimacy Coach"
-                fill
-                className="object-cover object-top"
-                sizes="(max-width: 768px) 100vw, 45vw"
-              />
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Right Side - Copy */}
-        <div className="w-full lg:w-[55%] flex flex-col justify-center">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
+    <section id="meet-angel" className="py-20 md:py-28 bg-white relative overflow-hidden">
+      <div className="container mx-auto px-6 max-w-[1100px] relative z-10">
+        <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+          
+          {/* LEFT: Portrait */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="w-full lg:w-[45%] relative flex justify-center"
           >
-            <span className="inline-block font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#E98267] mb-6">
-              Meet Angel
+            <div className="relative w-full max-w-[420px]">
+              
+              {/* Decorative Accent behind portrait */}
+              <DecorativeAccent
+                src="/2.png"
+                opacity={0.15}
+                animateVariant="none"
+                className="w-[180px] md:w-[250px] right-[-30px] bottom-[-20px] md:right-[-50px] md:bottom-[-40px] z-0"
+                style={{ filter: "hue-rotate(320deg) saturate(200%)" }}
+              />
+
+              <div className="relative aspect-[4/5] rounded-[24px] md:rounded-[32px] overflow-hidden shadow-[0_24px_50px_rgba(11,42,74,0.08)] border-[1.5px] border-[#FF5A4F]/20 bg-[#F7F2EE] z-10">
+                <Image
+                  src="/angel_image.png"
+                  alt="Angel, Lead Coach"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 45vw"
+                />
+              </div>
+
+              {/* Small floating label */}
+              <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:-right-6 md:top-1/2 md:-translate-y-1/2 bg-white px-5 py-3 rounded-full border border-[#FF5A4F]/30 shadow-[0_8px_20px_rgba(11,42,74,0.06)] z-20 whitespace-nowrap">
+                <span className="font-serif text-[16px] text-[#0B2A4A] italic font-medium mr-2">Angel</span>
+                <span className="font-sans uppercase tracking-[0.16em] text-[#6E747A] text-[9px] font-bold border-l border-[#0B2A4A]/10 pl-2">
+                  Lead Coach
+                </span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* RIGHT: Copy */}
+          <motion.div 
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="w-full lg:w-[55%] flex flex-col text-center lg:text-left"
+          >
+            <span className="font-sans uppercase tracking-[0.16em] text-[#6E747A] text-[11px] md:text-[12px] font-bold mb-4 block">
+              MEET ANGEL
             </span>
-            <h2 className="font-serif text-[38px] md:text-[52px] leading-[1.1] text-[#161514] mb-8">
-              A Conversation Can Feel Different When You Finally Feel Heard.
+            
+            <h2 className="font-serif text-[34px] md:text-[42px] lg:text-[48px] leading-[1.1] text-[#0B2A4A] mb-6">
+              A Calm Perspective <br className="hidden lg:block" />
+              <span className="italic text-[#FF5A4F]">When Things Feel Complicated.</span>
             </h2>
             
-            <div className="space-y-6 text-[16px] md:text-[17px] leading-[1.7] text-[#161514]/80 max-w-[540px] mb-10">
+            <div className="space-y-5 text-[#5C5550] text-[16px] md:text-[17px] leading-[1.65] mb-10 max-w-[500px] mx-auto lg:mx-0">
               <p>
-                Angel&apos;s work is centered on creating a private, thoughtful space where difficult relationship and intimacy conversations can be approached without shame, pressure, or unnecessary judgment.
+                Angel&apos;s work is centered on helping people slow down the patterns that create distance, confusion, or conflict in the relationships that matter most.
               </p>
               <p>
-                The goal is not to provide rehearsed answers. It is to help people slow down, understand what is happening between them, communicate more clearly, and find practical ways to move forward.
-              </p>
-              <p>
-                Whether someone arrives feeling disconnected, stuck in recurring conflict, uncertain about intimacy, or simply unable to say what needs to be said, the work begins with understanding the situation as it actually is.
+                His role is not to tell you what your life should look like, but to help you understand what is happening more clearly so you can make decisions with greater honesty and intention.
               </p>
             </div>
+            
+            <div className="flex flex-col gap-3 mb-10 mx-auto lg:mx-0 text-left">
+              <div className="flex items-center">
+                <div className="w-[4px] h-[4px] rounded-full bg-[#FF5A4F] mr-3" />
+                <span className="text-[#0B2A4A] font-sans text-[14px] font-medium tracking-wide">Private one-to-one guidance</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-[4px] h-[4px] rounded-full bg-[#FF5A4F] mr-3" />
+                <span className="text-[#0B2A4A] font-sans text-[14px] font-medium tracking-wide">Online sessions</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-[4px] h-[4px] rounded-full bg-[#FF5A4F] mr-3" />
+                <span className="text-[#0B2A4A] font-sans text-[14px] font-medium tracking-wide">Support across relationships, faith, and personal growth</span>
+              </div>
+            </div>
 
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-5">
               <Link
                 href="/book"
-                className="inline-flex items-center justify-center h-[50px] px-8 bg-[#E98267] text-white text-[13px] font-medium tracking-wide uppercase rounded-[3px] hover:bg-[#D77156] transition-colors"
+                className="flex items-center justify-center h-[52px] px-8 rounded-full bg-[#FF5A4F] text-white font-sans font-bold text-[14px] tracking-wide shadow-[0_6px_20px_rgba(255,90,79,0.25)] hover:bg-[#E84E44] transition-colors w-full sm:w-auto"
               >
                 Book a Private Session
               </Link>
               <Link
-                href="#"
-                className="group inline-flex items-center text-[14px] font-medium text-[#161514] hover:text-[#E98267] transition-colors"
+                href="/coaching"
+                className="flex items-center justify-center h-[52px] px-8 rounded-full bg-transparent text-[#0B2A4A] font-sans font-bold text-[14px] tracking-wide hover:bg-[#0B2A4A]/5 transition-colors w-full sm:w-auto"
               >
-                Explore Coaching <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                Explore Coaching &rarr;
               </Link>
             </div>
+
           </motion.div>
         </div>
-
       </div>
     </section>
   );

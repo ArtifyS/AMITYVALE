@@ -26,7 +26,7 @@ const processSteps = [
 
 export function CoachingProcess() {
   return (
-    <section className="py-[120px] md:py-[180px] bg-[#F8F5F1] relative">
+    <section className="py-[120px] md:py-[180px] bg-white relative">
       <div className="max-w-[1320px] mx-auto px-6 md:px-12">
         
         {/* Header */}
@@ -36,7 +36,7 @@ export function CoachingProcess() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="inline-block font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#E98267] mb-6"
+            className="inline-block font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#FF5A4F] mb-6"
           >
             How Coaching Works
           </motion.span>
@@ -77,7 +77,7 @@ export function CoachingProcess() {
                 <div className="hidden md:block absolute top-[28px] left-[50px] w-full h-[1px] bg-[#161514]/10 pointer-events-none" />
               )}
               
-              <div className="font-serif text-[48px] md:text-[56px] text-[#E98267]/40 leading-none mb-8 relative z-10 bg-[#F8F5F1] inline-block pr-6">
+              <div className="font-serif text-[48px] md:text-[56px] text-[#FF5A4F]/40 leading-none mb-8 relative z-10 bg-white inline-block pr-6">
                 {step.num}
               </div>
               
@@ -106,7 +106,7 @@ export function CoachingProcess() {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="flex-1 p-8 md:p-10 bg-[#F3EFEA] rounded-[12px]"
             >
-              <h4 className="font-sans text-[12px] font-medium tracking-[0.16em] uppercase text-[#E98267] mb-4">
+              <h4 className="font-sans text-[12px] font-medium tracking-[0.16em] uppercase text-[#FF5A4F] mb-4">
                 Individual Coaching
               </h4>
               <p className="text-[15px] leading-[1.7] text-[#161514]/70">
@@ -121,7 +121,7 @@ export function CoachingProcess() {
               transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
               className="flex-1 p-8 md:p-10 bg-[#F3EFEA] rounded-[12px]"
             >
-              <h4 className="font-sans text-[12px] font-medium tracking-[0.16em] uppercase text-[#E98267] mb-4">
+              <h4 className="font-sans text-[12px] font-medium tracking-[0.16em] uppercase text-[#FF5A4F] mb-4">
                 Couples Coaching
               </h4>
               <p className="text-[15px] leading-[1.7] text-[#161514]/70">

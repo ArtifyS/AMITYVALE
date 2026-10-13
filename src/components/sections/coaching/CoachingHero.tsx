@@ -1,98 +1,130 @@
 "use client";
 
 import React from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import Link from "next/link";
+import { ArrowDown, ArrowRight } from "lucide-react";
+
 
 export function CoachingHero() {
+  const prefersReducedMotion = useReducedMotion();
+
+  const handleScrollToNav = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const target = document.getElementById("area-navigator");
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
-    <section className="relative w-full pt-[45px] pb-[80px] md:pt-[clamp(60px,6vw,80px)] md:pb-[120px] bg-[#F8F5F1] overflow-hidden min-h-[650px] md:min-h-[760px] flex items-center">
-      {/* Decorative dots in the background */}
-      <div className="absolute top-[10%] left-[-5%] w-[300px] h-[300px] opacity-10 pointer-events-none">
-        <div 
-          className="w-full h-full"
-          style={{
-            backgroundImage: "radial-gradient(#161514 1.5px, transparent 1.5px)",
-            backgroundSize: "24px 24px"
-          }}
-        />
-      </div>
-
-      <div className="max-w-[1320px] mx-auto px-6 md:px-12 w-full flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-16 relative z-10">
-        
-        {/* Left Side - Content (Approx 50%) */}
-        <div className="w-full md:w-[48%] lg:w-[50%] flex flex-col pt-8 md:pt-0">
-          <motion.span
-            initial={{ opacity: 0, y: 10 }}
+    <section 
+      className="relative w-full bg-white pt-[32px] md:pt-[40px] lg:pt-[56px] pb-12 md:pb-16 overflow-hidden"
+      style={{ minHeight: "calc(100svh - 76px)" }}
+    >
+      <div className="container mx-auto px-6 max-w-[1240px] relative z-10 w-full h-full flex flex-col justify-center">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-0 w-full">
+          
+          {/* LEFT: Copy */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="inline-block font-sans text-[11px] md:text-[12px] font-medium tracking-[0.16em] uppercase text-[#161514]/70 mb-6"
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="w-full lg:w-[48%] flex flex-col text-center lg:text-left z-10 lg:-mt-8"
           >
-            Relationship & Intimacy Coaching
-          </motion.span>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-            className="font-serif text-[clamp(42px,5vw,64px)] leading-[1.05] text-[#161514] mb-6"
-          >
-            When the Same Patterns Keep Returning, <br className="hidden lg:block" />
-            <span className="italic font-light text-[#E98267]">Something Has to Change.</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="text-[16px] md:text-[18px] leading-[1.6] text-[#161514]/80 max-w-[480px] mb-10"
-          >
-            Coaching gives you space to understand what is happening beneath the conflict, communicate more clearly, and build a different way of relating to each other.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row items-start sm:items-center gap-6"
-          >
-            <Link
-              href="/book"
-              className="inline-flex items-center justify-center h-[50px] px-8 bg-[#161514] text-white text-[13px] font-medium tracking-wide uppercase rounded-[3px] hover:bg-[#161514]/90 transition-colors"
-            >
-              Book a Private Session
-            </Link>
-            <Link
-              href="#coaching-areas"
-              className="group inline-flex items-center text-[14px] font-medium text-[#161514] hover:text-[#E98267] transition-colors"
-            >
-              Explore Coaching <span className="ml-2 group-hover:translate-y-1 transition-transform">↓</span>
-            </Link>
+            <span className="font-sans uppercase tracking-[0.16em] text-[#6E747A] text-[11px] md:text-[12px] font-bold mb-3 block">
+              PRIVATE COACHING
+            </span>
+            
+            <h1 className="font-serif text-[clamp(36px,5vw,56px)] leading-[1.05] tracking-tight mb-4 text-[#0B2A4A]">
+              Every Relationship in Your Life <br className="hidden md:block" />
+              <span className="font-serif text-[#FF5A4F] italic">Shapes Something in You.</span>
+            </h1>
+            
+            <p className="text-[#5C5550] text-[16px] md:text-[17px] leading-[1.6] max-w-[540px] mx-auto lg:mx-0 mb-6">
+              Romantic relationships, family, friendships, faith, and the relationship you have with yourself can all become places of connection, conflict, growth, and change.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-6">
+              <a 
+                href="#area-navigator"
+                onClick={handleScrollToNav}
+                className="flex items-center justify-center h-[50px] px-7 rounded-full bg-[#FF5A4F] text-white font-sans font-bold text-[13.5px] tracking-wide shadow-[0_6px_20px_rgba(255,90,79,0.25)] hover:bg-[#E84E44] hover:-translate-y-[1px] transition-all duration-300 w-full sm:w-auto"
+              >
+                Explore Coaching Areas
+                <ArrowDown className="ml-2 w-[16px] h-[16px]" />
+              </a>
+              
+              <Link
+                href="/book"
+                className="flex items-center justify-center h-[50px] px-7 rounded-full bg-transparent border-[1.5px] border-[#0B2A4A]/10 text-[#0B2A4A] font-sans font-bold text-[13.5px] tracking-wide hover:bg-[#0B2A4A]/5 transition-all duration-300 w-full sm:w-auto group"
+              >
+                Book a Private Session
+                <ArrowRight className="ml-2 w-[15px] h-[15px] transition-transform group-hover:translate-x-[2px]" />
+              </Link>
+            </div>
           </motion.div>
-        </div>
 
-        {/* Right Side - Image (Approx 50%) */}
-        <div className="w-full md:w-[50%] lg:w-[48%] relative">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-            className="relative w-full aspect-[4/5] md:aspect-[3.5/4] lg:aspect-[4/4.5] rounded-[24px] overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.06)] group"
-          >
-            <Image
-              src="/hero_image.jpg"
-              alt="A quiet moment of reflection between two people"
-              fill
-              priority
-              className="object-cover object-[center_30%] group-hover:scale-[1.025] transition-transform duration-[1.5s] ease-out"
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
-            {/* Subtle mask to integrate the image better with the background */}
-            <div className="absolute inset-0 border-[1px] border-black/5 rounded-[24px] pointer-events-none" />
-          </motion.div>
+          {/* RIGHT: Layered Collage */}
+          <div className="w-full lg:w-[46%] relative flex justify-center lg:justify-end mt-12 lg:mt-0">
+            <motion.div 
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="relative w-full max-w-[490px] aspect-[1/1.05]"
+            >
+              
+              {/* Decorative Accent */}
+              <motion.div
+                animate={prefersReducedMotion ? false : { y: [0, -6, 0], rotate: [-10, -7, -10] }}
+                transition={{ duration: 16, ease: "easeInOut", repeat: Infinity }}
+                className="absolute -right-8 -bottom-12 w-[180px] md:w-[250px] z-0 opacity-[0.75] hidden sm:block"
+                style={{ transformOrigin: "center" }}
+              >
+                <img src="/3.png" alt="" className="w-full h-auto object-contain" aria-hidden="true" />
+              </motion.div>
+
+              {/* IMAGE A - Largest (Right) */}
+              <div className="absolute top-[12%] right-[4%] w-[65%] aspect-[3/4] rounded-[30px] overflow-hidden shadow-[0_20px_40px_rgba(11,42,74,0.12)] border-[2px] border-white z-20">
+                <Image
+                  src="/coaching_hero_friends.jpg"
+                  alt="Two mature friends having a conversation"
+                  fill
+                  className="object-cover"
+                  priority
+                  sizes="(max-width: 768px) 65vw, 350px"
+                />
+              </div>
+
+              {/* IMAGE B - Smaller (Top Left) */}
+              <div className="absolute top-[2%] left-[2%] w-[45%] aspect-square rounded-[24px] overflow-hidden shadow-[0_15px_30px_rgba(11,42,74,0.1)] border-[2px] border-white z-30">
+                <Image
+                  src="/coaching_hero_individual.jpg"
+                  alt="Thoughtful mature adult"
+                  fill
+                  className="object-cover object-center"
+                  priority
+                  sizes="(max-width: 768px) 45vw, 250px"
+                />
+              </div>
+
+              {/* IMAGE C - Smaller (Bottom Left) */}
+              <div className="absolute bottom-[2%] left-[12%] w-[42%] aspect-[4/5] rounded-[24px] overflow-hidden shadow-[0_15px_30px_rgba(11,42,74,0.1)] border-[2px] border-white z-30">
+                <Image
+                  src="/coaching_hero_family.jpg"
+                  alt="Mature mother and daughter"
+                  fill
+                  className="object-cover object-center"
+                  priority
+                  sizes="(max-width: 768px) 42vw, 220px"
+                />
+              </div>
+
+            </motion.div>
+          </div>
+          
         </div>
-        
       </div>
     </section>
   );

@@ -22,7 +22,7 @@ const areasData = [
     ],
     image: "/hero_image3.png", // Temporarily using existing images
     layout: "imageLeft",
-    bgColor: "bg-[#F8F5F1]" // Brighter cream
+    bgColor: "bg-white" // Brighter cream
   },
   {
     number: "02",
@@ -37,7 +37,7 @@ const areasData = [
       "Trust",
       "Feeling understood",
       "Intentional connection",
-      "Moving beyond “roommate mode”"
+      "Moving beyond â€œroommate modeâ€"
     ],
     image: "/hero_image2.png", // Temporarily using existing images
     layout: "imageRight",
@@ -69,13 +69,13 @@ export function CoachingAreas() {
   return (
     <section id="coaching-areas" className="flex flex-col">
       {/* Intro Header */}
-      <div className="w-full bg-[#F8F5F1] py-[100px] md:py-[140px] text-center px-6">
+      <div className="w-full bg-white py-[100px] md:py-[140px] text-center px-6">
         <motion.span
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="inline-block font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#E98267] mb-6"
+          className="inline-block font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#FF5A4F] mb-6"
         >
           Coaching Areas
         </motion.span>
@@ -139,8 +139,8 @@ export function CoachingAreas() {
                 </div>
 
                 <div className="flex items-center gap-4 mb-6 relative z-10">
-                  <span className="font-serif text-[18px] text-[#E98267] italic">{area.number}</span>
-                  <div className="h-[1px] w-[30px] bg-[#E98267]/40" />
+                  <span className="font-serif text-[18px] text-[#FF5A4F] italic">{area.number}</span>
+                  <div className="h-[1px] w-[30px] bg-[#FF5A4F]/40" />
                   <span className="font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#161514]/70">
                     {area.category}
                   </span>
@@ -167,7 +167,7 @@ export function CoachingAreas() {
                         transition={{ duration: 0.5, delay: ptIdx * 0.1, ease: "easeOut" }}
                         className="flex items-start text-[14px] text-[#161514]/80"
                       >
-                        <span className="text-[#E98267] mr-3 mt-1 text-[10px]">✦</span>
+                        <span className="text-[#FF5A4F] mr-3 mt-1 text-[10px]">âœ¦</span>
                         {point}
                       </motion.li>
                     ))}

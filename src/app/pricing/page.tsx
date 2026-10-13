@@ -1,6 +1,5 @@
 import { Metadata } from "next";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
+
 import { PricingHero } from "@/components/sections/pricing/PricingHero";
 import { SessionPricingGrid } from "@/components/sections/pricing/SessionPricingGrid";
 import { BookingSteps } from "@/components/sections/pricing/BookingSteps";
@@ -14,8 +13,7 @@ export const metadata: Metadata = {
 
 export default function PricingPage() {
   return (
-    <div className="flex min-h-[100dvh] flex-col overflow-x-hidden selection:bg-[#E98267]/20 selection:text-[#161514]">
-      <Header />
+    <div className="flex min-h-[100dvh] flex-col overflow-x-hidden selection:bg-[#FF5A4F]/20 selection:text-[#161514]">
       
       <main className="flex-1 w-full flex flex-col">
         <PricingHero />
@@ -24,8 +22,6 @@ export default function PricingPage() {
         <PricingFAQ />
         <PricingFinalCTA />
       </main>
-
-      <Footer />
     </div>
   );
 }

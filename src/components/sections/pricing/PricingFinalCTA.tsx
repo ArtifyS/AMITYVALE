@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import { motion } from "framer-motion";
@@ -26,7 +26,7 @@ export function PricingFinalCTA() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="inline-block font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#E98267] mb-6"
+          className="inline-block font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#FF5A4F] mb-6"
         >
           Ready When You Are
         </motion.span>
@@ -60,15 +60,9 @@ export function PricingFinalCTA() {
         >
           <Link
             href="/book"
-            className="flex items-center justify-center h-[54px] px-10 bg-[#E98267] text-white text-[14px] font-medium tracking-wide uppercase rounded-[3px] hover:bg-[#D77156] transition-colors w-full sm:w-auto"
+            className="flex items-center justify-center h-[54px] px-10 bg-[#FF5A4F] text-white text-[14px] font-medium tracking-wide uppercase rounded-[3px] hover:bg-[#F0443A] transition-colors w-full sm:w-auto"
           >
             Book a Private Session
-          </Link>
-          <Link
-            href="/coaching"
-            className="group flex items-center justify-center text-[14px] font-medium text-white hover:text-[#E98267] transition-colors h-[54px]"
-          >
-            Explore Coaching <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </motion.div>
 
@@ -79,7 +73,7 @@ export function PricingFinalCTA() {
           transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
           className="font-sans text-[11px] font-medium tracking-[0.2em] uppercase text-white/30"
         >
-          15 &nbsp;•&nbsp; 30 &nbsp;•&nbsp; 45 &nbsp;•&nbsp; 60 MINUTE SESSIONS
+          15 &nbsp;â€¢&nbsp; 30 &nbsp;â€¢&nbsp; 45 &nbsp;â€¢&nbsp; 60 MINUTE SESSIONS
         </motion.div>
 
       </div>

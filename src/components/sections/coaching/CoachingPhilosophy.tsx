@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import { motion } from "framer-motion";
@@ -42,7 +42,7 @@ export function CoachingPhilosophy() {
           <span className="text-white/90">You Do Not Change a Relationship<br className="hidden md:block" /> by Winning the Argument.</span>
           <br /><br />
           <span className="text-white/90">You Change</span><br />
-          <span className="italic text-[#E98267]">What Happens Next.</span>
+          <span className="italic text-[#FF5A4F]">What Happens Next.</span>
         </motion.h2>
 
         <motion.div
@@ -53,9 +53,9 @@ export function CoachingPhilosophy() {
           className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 font-sans text-[11px] md:text-[12px] tracking-[0.25em] uppercase text-white/40"
         >
           <span>Communicate</span>
-          <span className="hidden md:block w-[4px] h-[4px] rounded-full bg-[#E98267]/50" />
+          <span className="hidden md:block w-[4px] h-[4px] rounded-full bg-[#FF5A4F]/50" />
           <span>Understand</span>
-          <span className="hidden md:block w-[4px] h-[4px] rounded-full bg-[#E98267]/50" />
+          <span className="hidden md:block w-[4px] h-[4px] rounded-full bg-[#FF5A4F]/50" />
           <span>Reconnect</span>
         </motion.div>
       </div>

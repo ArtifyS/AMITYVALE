@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { BookingState } from "./BookPage";
 import { getSessionOption } from "@/lib/pricingConfig";
 import { useRouter } from "next/navigation";
@@ -24,14 +24,14 @@ export function StepReview({ state, gotoStep, back }: { state: BookingState, got
         {/* Session Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-8 border-b-[1px] border-[#161514]/10">
           <div className="flex flex-col">
-            <span className="font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#E98267] mb-1">
+            <span className="font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#FF5A4F] mb-1">
               {session?.label}
             </span>
             <h3 className="font-serif text-[24px] text-[#161514]">
               {session?.duration} Minutes
             </h3>
           </div>
-          <button onClick={() => gotoStep(1)} className="text-[12px] font-medium tracking-wide uppercase text-[#161514]/50 hover:text-[#E98267] text-left md:text-right">
+          <button onClick={() => gotoStep(1)} className="text-[12px] font-medium tracking-wide uppercase text-[#161514]/50 hover:text-[#FF5A4F] text-left md:text-right">
             Change Session
           </button>
         </div>
@@ -46,7 +46,7 @@ export function StepReview({ state, gotoStep, back }: { state: BookingState, got
             <span className="text-[#161514]/50 text-[13px] mt-1">{state.timezone.replace("_", " ")}</span>
             <span className="text-[#161514]/50 text-[13px] mt-2 italic">Online</span>
           </div>
-          <button onClick={() => gotoStep(2)} className="text-[12px] font-medium tracking-wide uppercase text-[#161514]/50 hover:text-[#E98267] text-left md:text-right mt-1">
+          <button onClick={() => gotoStep(2)} className="text-[12px] font-medium tracking-wide uppercase text-[#161514]/50 hover:text-[#FF5A4F] text-left md:text-right mt-1">
             Change Time
           </button>
         </div>
@@ -59,7 +59,7 @@ export function StepReview({ state, gotoStep, back }: { state: BookingState, got
             <span>{state.email}</span>
             {state.phone && <span>{state.phone}</span>}
           </div>
-          <button onClick={() => gotoStep(3)} className="text-[12px] font-medium tracking-wide uppercase text-[#161514]/50 hover:text-[#E98267] text-left md:text-right mt-1">
+          <button onClick={() => gotoStep(3)} className="text-[12px] font-medium tracking-wide uppercase text-[#161514]/50 hover:text-[#FF5A4F] text-left md:text-right mt-1">
             Edit Details
           </button>
         </div>
@@ -79,7 +79,7 @@ export function StepReview({ state, gotoStep, back }: { state: BookingState, got
       <div className="flex flex-col gap-4 items-center max-w-[400px] mx-auto w-full">
         <button
           onClick={handleCheckout}
-          className="flex items-center justify-center w-full h-[54px] rounded-[3px] text-[14px] font-medium tracking-wide uppercase transition-colors bg-[#E98267] text-white hover:bg-[#D77156] shadow-[0_8px_20px_rgba(233,130,103,0.2)]"
+          className="flex items-center justify-center w-full h-[54px] rounded-[3px] text-[14px] font-medium tracking-wide uppercase transition-colors bg-[#FF5A4F] text-white hover:bg-[#F0443A] shadow-[0_8px_20px_rgba(233,130,103,0.2)]"
         >
           Continue to Secure Payment
         </button>

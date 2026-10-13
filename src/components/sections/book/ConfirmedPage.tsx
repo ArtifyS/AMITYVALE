@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 
 export function ConfirmedPageContent() {
   return (
-    <section className="py-20 md:py-32 bg-[#F8F5F1] min-h-[100dvh] flex items-center justify-center">
+    <section className="py-20 md:py-32 bg-white min-h-[100dvh] flex items-center justify-center">
       <div className="max-w-[600px] w-full px-6 mx-auto">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -15,7 +15,7 @@ export function ConfirmedPageContent() {
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="bg-white p-10 md:p-14 rounded-[20px] border-[1px] border-[#161514]/10 shadow-[0_20px_60px_rgba(0,0,0,0.03)] flex flex-col items-center text-center"
         >
-          <div className="w-16 h-16 rounded-full bg-[#E98267]/10 flex items-center justify-center text-[#E98267] mb-8">
+          <div className="w-16 h-16 rounded-full bg-[#FF5A4F]/10 flex items-center justify-center text-[#FF5A4F] mb-8">
             <Check size={32} strokeWidth={2} />
           </div>
 
@@ -49,7 +49,7 @@ export function ConfirmedPageContent() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 w-full">
-            <button className="flex-1 h-[48px] rounded-[3px] border-[1px] border-[#161514]/10 bg-white text-[13px] font-medium uppercase tracking-wide text-[#161514] hover:bg-[#F8F5F1] transition-colors">
+            <button className="flex-1 h-[48px] rounded-[3px] border-[1px] border-[#161514]/10 bg-white text-[13px] font-medium uppercase tracking-wide text-[#161514] hover:bg-white transition-colors">
               Add to Calendar
             </button>
             <Link href="/" className="flex-1 h-[48px] flex items-center justify-center rounded-[3px] bg-[#161514] text-[13px] font-medium uppercase tracking-wide text-white hover:bg-[#161514]/90 transition-colors">

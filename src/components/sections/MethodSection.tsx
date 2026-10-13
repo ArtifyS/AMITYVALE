@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import Image from "next/image";
@@ -85,9 +85,6 @@ export function MethodSection() {
                 ))}
               </div>
               
-              <Button variant="outline" className="w-full sm:w-auto">
-                See How Coaching Works
-              </Button>
             </div>
           </motion.div>
           

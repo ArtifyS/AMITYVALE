@@ -3,129 +3,114 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/Button";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { DecorativeAccent } from "@/components/ui/DecorativeAccent";
 
 const shifts = [
-  { num: "01", from: "React", to: "Respond" },
-  { num: "02", from: "Defend", to: "Understand" },
-  { num: "03", from: "Win", to: "Connect" },
+  { from: "REACT", to: "PAUSE" },
+  { from: "ASSUME", to: "UNDERSTAND" },
+  { from: "REPEAT", to: "CHOOSE" },
 ];
 
 export function TransformationSection() {
   return (
-    <section className="py-12 md:py-24 bg-background px-4 sm:px-6">
-      <div className="mx-auto max-w-[1260px] rounded-[24px] md:rounded-[30px] overflow-hidden bg-[#151312] flex flex-col lg:flex-row relative lg:h-[580px] shadow-2xl">
-        
-        {/* LEFT PANEL */}
-        <div className="w-full lg:w-[45%] p-10 md:p-14 lg:p-[64px] flex flex-col justify-center relative z-20 order-1">
+    <section className="py-24 md:py-32 bg-[#151312] relative overflow-hidden">
+      <div className="container mx-auto px-6 max-w-[1180px] relative">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-20 relative">
           
-          <motion.div
+          {/* ART DIRECTION GRAPHIC */}
+          <DecorativeAccent
+            src="/12.png"
+            opacity={0.82}
+            animateVariant="none"
+            className="w-[100px] right-[-10px] bottom-[-20px] md:w-[150px] md:right-[-35px] md:bottom-[-45px] z-0 md:opacity-[0.82] opacity-[0.65]"
+            style={{ transform: "rotate(-5deg)" }}
+          />
+          
+          {/* Mobile Image (shown first on mobile) */}
+          <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="font-sans uppercase tracking-[0.16em] text-[#E98267] text-[11px] md:text-[12px] font-semibold mb-5 block">
-              The Shift
-            </span>
-            <h2 className="font-serif text-[38px] md:text-[46px] lg:text-[52px] leading-[1.05] text-[#FDFBF7] mb-6">
-              Hear Each Other.<br />
-              Not Just React.
-            </h2>
-            <p className="text-[#FDFBF7]/80 text-[16px] md:text-[17px] leading-[1.6] mb-10 max-w-sm">
-              Real intimacy grows when both people feel understood. Coaching helps turn defensiveness into curiosity and conflict into connection.
-            </p>
-          </motion.div>
-          
-          {/* Shift Rail (Mobile / Tablet) */}
-          <div className="block lg:hidden mb-10 relative">
-            <div className="absolute top-2 bottom-2 left-[7px] w-[1px] bg-[#E98267]/20 z-0" />
-            <div className="flex flex-col gap-5">
-              {shifts.map((shift, i) => (
-                <motion.div 
-                  key={i}
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: i * 0.15 }}
-                  className="relative z-10 flex items-center group"
-                >
-                  <div className="w-[15px] h-[15px] rounded-full bg-[#151312] border-[3px] border-[#E98267] mr-4 shrink-0 transition-colors" />
-                  <div className="flex items-center text-[13px] sm:text-[14px] font-sans font-medium">
-                    <span className="text-[#FDFBF7]/40 w-[24px] tracking-wider">{shift.num}</span>
-                    <span className="text-[#FDFBF7]/80 w-[55px] text-left">{shift.from}</span>
-                    <span className="text-[#E98267]/50 mx-3 text-[10px]">→</span>
-                    <span className="text-[#FDFBF7]">{shift.to}</span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <Button size="lg" className="w-full sm:w-auto bg-[#E98267] hover:bg-[#d67258] text-white rounded-full px-8 h-[50px] shadow-none">
-              Explore Private Coaching
-            </Button>
-          </motion.div>
-        </div>
-
-        {/* RIGHT PANEL (Image) */}
-        <div className="w-full lg:w-[55%] relative h-[360px] md:h-[440px] lg:h-full order-2">
           <motion.div 
-            initial={{ scale: 1.02 }}
-            whileInView={{ scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: "easeOut" }}
-            className="absolute inset-0"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="w-full lg:hidden relative aspect-[4/3] rounded-[24px] overflow-hidden shadow-2xl z-10"
           >
             <Image
-              src="/shift2_image.png"
-              alt="Mature couple in genuine conversation"
+              src="/transformation_shift_1791382015308.jpg"
+              alt="Reflective individual in a peaceful setting"
               fill
-              className="object-cover object-[center_20%] md:object-[center_25%]"
-              sizes="(max-width: 1024px) 100vw, 55vw"
+              className="object-cover object-center"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+            />
+          </motion.div>
+
+          {/* Left Panel: Text Content */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+            className="w-full lg:w-[45%] flex flex-col z-20"
+          >
+            <span className="font-sans uppercase tracking-[0.16em] text-[#FF5A4F] text-[11px] md:text-[12px] font-semibold mb-6 block">
+              HOW CHANGE BEGINS
+            </span>
+            <h2 className="font-serif text-[38px] md:text-[48px] lg:text-[52px] leading-[1.08] text-[#FDFBF7] mb-6">
+              Pause the Pattern.<br />
+              See What Matters.<br />
+              <span className="italic text-[#FF5A4F]">Choose What Happens Next.</span>
+            </h2>
+            <p className="text-[#FDFBF7]/70 text-[16px] md:text-[17px] leading-[1.65] mb-12 max-w-[460px]">
+              Coaching creates space to slow things down, understand what is underneath the reaction, and respond with more clarity.
+            </p>
+
+            {/* Transformation Lines */}
+            <div className="flex flex-col sm:flex-row lg:flex-row gap-5 sm:gap-8 lg:gap-8 mb-14 flex-wrap">
+              {shifts.map((shift, i) => (
+                <div key={i} className="flex items-center text-[12px] md:text-[13px] font-sans font-bold tracking-[0.12em]">
+                  <span className="text-[#FDFBF7]/50">{shift.from}</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-[#FF5A4F] mx-2.5 md:mx-3" />
+                  <span className="text-[#FDFBF7]">{shift.to}</span>
+                </div>
+              ))}
+            </div>
+
+            <Link
+              href="/coaching"
+              className="inline-flex items-center justify-center h-[52px] px-8 bg-[#FF5A4F] text-[#FDFBF7] text-[13px] md:text-[14px] font-medium tracking-wide rounded-[26px] shadow-[0_8px_20px_rgba(233,130,103,0.18)] hover:bg-[#D57158] hover:shadow-[0_12px_25px_rgba(233,130,103,0.3)] transition-all duration-[450ms] ease-out hover:-translate-y-[1.5px] group w-full sm:w-max"
+            >
+              Explore Coaching Areas
+              <ArrowRight className="ml-2.5 w-4 h-4 transition-transform duration-[450ms] ease-out group-hover:translate-x-[3px]" />
+            </Link>
+          </motion.div>
+
+          {/* Right Panel: Desktop Image */}
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.9, delay: 0.2, ease: "easeOut" }}
+            className="hidden lg:block w-[52%] relative h-[600px] rounded-[32px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.4)] z-10"
+          >
+            <Image
+              src="/transformation_shift_1791382015308.jpg"
+              alt="Reflective individual in a peaceful setting"
+              fill
+              className="object-cover object-center"
+              sizes="55vw"
             />
           </motion.div>
           
-          {/* Desktop Gradient Seam to blend into left panel */}
-          <div className="hidden lg:block absolute top-0 left-0 bottom-0 w-[140px] bg-gradient-to-r from-[#151312] to-transparent z-10" />
-
-          {/* Mobile Top Gradient Seam */}
-          <div className="block lg:hidden absolute top-0 left-0 right-0 h-[80px] bg-gradient-to-b from-[#151312] to-transparent z-10" />
         </div>
-
-        {/* Shift Rail (Desktop) */}
-        <div className="hidden lg:flex absolute top-1/2 -translate-y-1/2 left-[45%] -translate-x-[30px] z-30 flex-col gap-8">
-          <div className="absolute top-2 bottom-2 left-[7px] w-[1px] bg-[#E98267]/20 z-0" />
-          
-          {shifts.map((shift, i) => (
-            <motion.div 
-              key={i}
-              initial={{ opacity: 0, x: -10 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.15 }}
-              className="relative z-10 flex items-center group cursor-default"
-            >
-              <div className="w-[15px] h-[15px] rounded-full bg-[#151312] border-[3px] border-[#E98267] mr-5 shrink-0 transition-colors duration-300 group-hover:bg-[#E98267]" />
-              
-              <div className="flex items-center text-[14px] font-sans font-medium">
-                <span className="text-[#FDFBF7]/40 w-[24px] tracking-wider">{shift.num}</span>
-                <span className="text-[#FDFBF7]/80 w-[65px] text-left">{shift.from}</span>
-                <span className="text-[#E98267]/50 mx-4 text-[10px]">→</span>
-                <span className="text-[#FDFBF7] transition-all duration-300 group-hover:text-[#FDFBF7] group-hover:translate-x-1.5 border-b border-transparent group-hover:border-[#E98267]/60 pb-[2px]">
-                  {shift.to}
-                </span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
       </div>
     </section>
   );

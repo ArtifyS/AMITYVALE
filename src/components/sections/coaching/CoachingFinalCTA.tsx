@@ -2,100 +2,79 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export function CoachingFinalCTA() {
-  const durations = ["15 MIN", "30 MIN", "45 MIN", "60 MIN"];
-
   return (
-    <section className="py-[120px] md:py-[180px] bg-[#E8E1D9] relative overflow-hidden">
-      {/* Soft gradient transition from dark section above */}
-      <div className="absolute top-0 left-0 w-full h-[120px] bg-gradient-to-b from-[#161514] to-transparent opacity-30 pointer-events-none" />
-
-      {/* Edge Dots */}
-      <div className="absolute bottom-[5%] right-[5%] w-[200px] h-[200px] opacity-[0.1] pointer-events-none hidden md:block">
-        <div 
-          className="w-full h-full"
-          style={{
-            backgroundImage: "radial-gradient(#161514 1.5px, transparent 1.5px)",
-            backgroundSize: "24px 24px"
-          }}
-        />
-      </div>
-
-      <div className="max-w-[900px] mx-auto px-6 md:px-12 flex flex-col items-center text-center relative z-10">
-        
-        <motion.span
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="inline-block font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#E98267] mb-6"
-        >
-          Begin When You Are Ready
-        </motion.span>
-
-        <motion.h2
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-          className="font-serif text-[36px] md:text-[52px] leading-[1.1] text-[#161514] mb-8"
-        >
-          You Do Not Have to Wait<br className="hidden md:block" />
-          Until Things Feel Worse<br className="md:hidden" /> to Start Talking.
-        </motion.h2>
-
-        <motion.p
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          className="text-[17px] md:text-[18px] leading-[1.6] text-[#161514]/70 mb-12 max-w-[540px]"
-        >
-          Choose the amount of time that feels right and begin with one private conversation.
-        </motion.p>
-
-        {/* Session Durations Preview */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          className="flex flex-wrap justify-center gap-4 mb-16 w-full max-w-[400px] md:max-w-none"
-        >
-          {durations.map((d, idx) => (
-            <div 
-              key={idx}
-              className="w-[calc(50%-8px)] md:w-auto px-6 py-4 bg-white/40 border-[1px] border-[#161514]/5 rounded-[6px] text-[#161514]/80 font-sans text-[13px] tracking-widest font-medium flex items-center justify-center"
+    <section className="py-20 md:py-32 bg-white relative">
+      <div className="container mx-auto px-6 max-w-[1100px]">
+        <div className="rounded-[32px] md:rounded-[40px] bg-[#0B2A4A] overflow-hidden flex flex-col lg:flex-row relative shadow-[0_24px_50px_rgba(11,42,74,0.15)]">
+          
+          {/* Text Content */}
+          <div className="w-full lg:w-[55%] p-10 md:p-16 lg:p-20 flex flex-col justify-center z-10">
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="font-serif text-[34px] md:text-[42px] lg:text-[48px] leading-[1.05] tracking-tight text-white mb-6"
             >
-              {d}
+              Start With the Relationship <br />
+              <span className="text-[#FF5A4F] italic">That Matters Most Right Now.</span>
+            </motion.h2>
+            
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="text-white/80 text-[16px] md:text-[18px] leading-[1.6] mb-10 max-w-[400px]"
+            >
+              Choose the conversation you are ready to have.
+            </motion.p>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5"
+            >
+              <Link 
+                href="/book"
+                className="flex items-center justify-center h-[52px] px-8 rounded-full bg-[#FF5A4F] text-white font-sans font-bold text-[13.5px] tracking-wide shadow-[0_6px_20px_rgba(255,90,79,0.3)] hover:bg-[#E84E44] hover:-translate-y-[1.5px] hover:shadow-[0_8px_24px_rgba(255,90,79,0.4)] transition-all duration-300 w-full sm:w-auto group"
+              >
+                Book a Private Session
+                <ArrowRight className="ml-2 w-[16px] h-[16px] transition-transform group-hover:translate-x-1" />
+              </Link>
+              
+              <Link
+                href="/pricing"
+                className="flex items-center justify-center h-[52px] px-8 rounded-full bg-transparent border border-white/20 text-white font-sans font-bold text-[13.5px] tracking-wide hover:bg-white/10 transition-colors w-full sm:w-auto"
+              >
+                View Pricing
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* Image Content */}
+          <div className="w-full lg:w-[45%] h-[350px] lg:h-auto relative">
+            <div className="absolute inset-0 lg:left-[-10%]">
+              <Image
+                src="/coaching_final_cta.jpg"
+                alt="Hopeful human connection"
+                fill
+                className="object-cover object-center"
+                sizes="(max-width: 1024px) 100vw, 45vw"
+              />
+              {/* Gradient Overlay for seamless blend on desktop */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0B2A4A] via-transparent to-transparent lg:bg-gradient-to-r lg:from-[#0B2A4A] lg:via-[#0B2A4A]/60 lg:to-transparent" />
             </div>
-          ))}
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-          className="flex flex-col sm:flex-row items-center gap-6"
-        >
-          <Link
-            href="/book"
-            className="inline-flex items-center justify-center h-[54px] px-10 bg-[#E98267] text-white text-[14px] font-medium tracking-wide uppercase rounded-[3px] hover:bg-[#D77156] transition-colors"
-          >
-            Book a Private Session
-          </Link>
-          <Link
-            href="#"
-            className="group inline-flex items-center text-[14px] font-medium text-[#161514] hover:text-[#E98267] transition-colors"
-          >
-            View Pricing <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </motion.div>
-
+          </div>
+          
+        </div>
       </div>
     </section>
   );

@@ -2,79 +2,95 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import { DecorativeAccent } from "@/components/ui/DecorativeAccent";
 
 export function WhyWeExist() {
   return (
-    <section className="py-[100px] md:py-[160px] bg-[#F8F5F1] relative">
-      <div className="max-w-[1320px] mx-auto px-6 md:px-12 flex flex-col lg:flex-row gap-16 lg:gap-24">
-        
-        {/* Left Side - Large Statement */}
-        <div className="w-full lg:w-[45%]">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
+    <section className="py-20 md:py-28 bg-[#FDFCF9] relative overflow-hidden">
+      
+      {/* Subtle Arc Decoration */}
+      <DecorativeAccent
+        src="/11.png"
+        opacity={0.3}
+        animateVariant="none"
+        className="w-[300px] md:w-[450px] left-0 top-[10%] z-0"
+        style={{ transform: "scaleX(-1)", transformOrigin: "left center" }}
+      />
+
+      <div className="container mx-auto px-6 max-w-[1100px] relative z-10">
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-20">
+          
+          {/* LEFT: Statement */}
+          <motion.div 
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="w-full lg:w-[45%] flex flex-col"
           >
-            <span className="inline-block font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#E98267] mb-8">
-              Why We Exist
+            <span className="font-sans uppercase tracking-[0.16em] text-[#6E747A] text-[11px] md:text-[12px] font-bold mb-4 block">
+              WHY AMITY VALE EXISTS
             </span>
-            <h2 className="font-serif text-[38px] md:text-[52px] leading-[1.1] text-[#161514]">
-              Distance Does Not Always Mean <br className="hidden md:block" />
-              Love Is Gone.
+            <h2 className="font-serif text-[38px] md:text-[46px] lg:text-[52px] leading-[1.1] text-[#0B2A4A] tracking-tight">
+              The People We Care About Can Be the <br className="hidden lg:block" />
+              <span className="italic text-[#FF5A4F]">Hardest to Understand.</span>
             </h2>
           </motion.div>
 
-          {/* Micro-statements */}
-          <div className="hidden lg:flex flex-col gap-6 mt-16 pl-6 border-l-[1px] border-[#161514]/10">
-            {["Understanding before judgment.", "Connection before winning.", "Progress over perfection."].map((statement, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1, ease: "easeOut" }}
-                className="font-sans text-[12px] uppercase tracking-wider text-[#161514]/60"
-              >
-                {statement}
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Right Side - Brand Story */}
-        <div className="w-full lg:w-[55%] flex flex-col justify-center">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
+          {/* RIGHT: Story & Principles */}
+          <motion.div 
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="space-y-6 text-[16px] md:text-[18px] leading-[1.7] text-[#161514]/80 max-w-[540px]"
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="w-full lg:w-[55%] flex flex-col"
           >
-            <p>
-              Sometimes two people still care deeply for one another but have lost the way back to feeling understood.
-            </p>
-            <p className="italic">
-              Conversations repeat.<br />
-              Defensiveness replaces curiosity.<br />
-              Connection becomes harder.<br />
-              Intimacy begins to feel complicated.
-            </p>
-            <p>
-              Amity Vale was created around a simple belief: patterns can change when people have the space to slow down, understand what is happening beneath the surface, and practice a different way of meeting each other.
-            </p>
+            <div className="text-[#5C5550] text-[16px] md:text-[17px] leading-[1.65] space-y-5 mb-12">
+              <p>
+                Relationships rarely become difficult because people stop caring. More often, they become caught in patterns, assumptions, and conversations that no longer move them forward.
+              </p>
+              <p>
+                Amity Vale creates space to slow those patterns down, understand what is really happening, and choose a more intentional way to relate.
+              </p>
+            </div>
+
+            <div className="flex flex-col space-y-8 md:space-y-10">
+              
+              <div className="flex flex-col">
+                <h3 className="font-sans font-bold text-[#0B2A4A] text-[13px] md:text-[14px] tracking-wide mb-1">
+                  <span className="text-[#FF5A4F] mr-3">01</span>
+                  Understanding Before Reaction
+                </h3>
+                <p className="text-[#6E747A] text-[14.5px] md:text-[15.5px] leading-[1.5] pl-[34px]">
+                  See the pattern clearly before trying to change it.
+                </p>
+              </div>
+
+              <div className="flex flex-col">
+                <h3 className="font-sans font-bold text-[#0B2A4A] text-[13px] md:text-[14px] tracking-wide mb-1">
+                  <span className="text-[#FF5A4F] mr-3">02</span>
+                  Honesty Without Judgment
+                </h3>
+                <p className="text-[#6E747A] text-[14.5px] md:text-[15.5px] leading-[1.5] pl-[34px]">
+                  Make room for difficult conversations without turning them into blame.
+                </p>
+              </div>
+
+              <div className="flex flex-col">
+                <h3 className="font-sans font-bold text-[#0B2A4A] text-[13px] md:text-[14px] tracking-wide mb-1">
+                  <span className="text-[#FF5A4F] mr-3">03</span>
+                  Growth With Intention
+                </h3>
+                <p className="text-[#6E747A] text-[14.5px] md:text-[15.5px] leading-[1.5] pl-[34px]">
+                  Move forward with choices that feel more conscious and aligned.
+                </p>
+              </div>
+
+            </div>
+
           </motion.div>
 
-          {/* Micro-statements Mobile */}
-          <div className="flex lg:hidden flex-col gap-4 mt-12 pl-4 border-l-[1px] border-[#E98267]/30">
-            {["Understanding before judgment.", "Connection before winning.", "Progress over perfection."].map((statement, idx) => (
-              <div key={idx} className="font-sans text-[11px] uppercase tracking-wider text-[#161514]/60">
-                {statement}
-              </div>
-            ))}
-          </div>
         </div>
-
       </div>
     </section>
   );

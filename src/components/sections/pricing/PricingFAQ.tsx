@@ -27,7 +27,7 @@ export function PricingFAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="py-[100px] md:py-[140px] bg-[#F8F5F1] relative border-t-[1px] border-[#161514]/5">
+    <section className="py-[100px] md:py-[140px] bg-white relative border-t-[1px] border-[#161514]/5">
       <div className="max-w-[800px] mx-auto px-6 md:px-12 flex flex-col">
         
         <div className="text-center mb-12">
@@ -36,7 +36,7 @@ export function PricingFAQ() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="inline-block font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#E98267] mb-4"
+            className="inline-block font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#FF5A4F] mb-4"
           >
             Before You Book
           </motion.span>

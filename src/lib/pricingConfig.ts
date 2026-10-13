@@ -1,11 +1,11 @@
-export const sessionOptions = {
+﻿export const sessionOptions = {
   15: {
     id: "session_15",
     duration: 15,
     label: "Quick Check-In",
     price: 100,
     description: "For one focused question, situation, or conversation that needs clarity.",
-    fit: "Focused • Brief • Direct",
+    fit: "Focused â€¢ Brief â€¢ Direct",
     emphasize: false
   },
   30: {
@@ -14,7 +14,7 @@ export const sessionOptions = {
     label: "Focused Session",
     price: 190,
     description: "More room to explore one specific concern, pattern, or difficult conversation.",
-    fit: "Focused • Exploratory • Practical",
+    fit: "Focused â€¢ Exploratory â€¢ Practical",
     emphasize: false
   },
   45: {
@@ -23,7 +23,7 @@ export const sessionOptions = {
     label: "Extended Session",
     price: 270,
     description: "For conversations that need more time to understand the pattern and what may need to change.",
-    fit: "Deeper • Reflective • Unhurried",
+    fit: "Deeper â€¢ Reflective â€¢ Unhurried",
     emphasize: false
   },
   60: {
@@ -32,7 +32,7 @@ export const sessionOptions = {
     label: "Full Session",
     price: 300,
     description: "The most spacious option for exploring communication, connection, intimacy, or a more complex situation.",
-    fit: "Full • Spacious • In-Depth",
+    fit: "Full â€¢ Spacious â€¢ In-Depth",
     emphasize: true
   }
 } as const;

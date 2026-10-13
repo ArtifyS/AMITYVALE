@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import Image from "next/image";
@@ -28,7 +28,7 @@ export function EmotionalTriggersSection() {
                 Emotional Triggers Can Change The Way We Respond to Each Other.
               </h2>
               <p className="text-text-secondary text-base md:text-lg mb-8 leading-relaxed">
-                When we feel misunderstood or disconnected, our emotional reflexes take over. Defensiveness, shutting down, or escalation are rarely about the topic at hand—they are attempts to feel safe or heard. Coaching helps you identify these underlying triggers.
+                When we feel misunderstood or disconnected, our emotional reflexes take over. Defensiveness, shutting down, or escalation are rarely about the topic at handâ€”they are attempts to feel safe or heard. Coaching helps you identify these underlying triggers.
               </p>
               
               <Link 

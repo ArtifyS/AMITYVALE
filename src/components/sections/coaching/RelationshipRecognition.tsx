@@ -1,15 +1,15 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import { motion } from "framer-motion";
 
 const statements = [
-  "“We keep having the same argument.”",
-  "“I do not feel heard anymore.”",
-  "“We still care about each other, but something feels distant.”",
-  "“Intimacy has become difficult to talk about.”",
-  "“Small conversations turn into bigger conflicts.”",
-  "“We avoid certain topics because we already know where they will lead.”"
+  "â€œWe keep having the same argument.â€",
+  "â€œI do not feel heard anymore.â€",
+  "â€œWe still care about each other, but something feels distant.â€",
+  "â€œIntimacy has become difficult to talk about.â€",
+  "â€œSmall conversations turn into bigger conflicts.â€",
+  "â€œWe avoid certain topics because we already know where they will lead.â€"
 ];
 
 export function RelationshipRecognition() {
@@ -37,7 +37,7 @@ export function RelationshipRecognition() {
           >
             Sometimes the Problem Is Not<br className="hidden md:block" />
             That You Do Not Care.<br />
-            <span className="italic text-[#E98267]">It Is That the Same Pattern Keeps Taking Over.</span>
+            <span className="italic text-[#FF5A4F]">It Is That the Same Pattern Keeps Taking Over.</span>
           </motion.h2>
         </div>
 

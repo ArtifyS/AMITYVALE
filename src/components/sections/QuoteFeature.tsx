@@ -16,7 +16,7 @@ export function QuoteFeature() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
-            className="w-full md:w-[70%] lg:w-[75%] h-[60vh] md:h-[70vh] relative rounded-2xl md:rounded-3xl overflow-hidden shadow-xl"
+            className="w-full md:w-[70%] lg:w-[75%] h-[60vh] md:h-[520px] lg:h-[540px] relative rounded-2xl md:rounded-3xl overflow-hidden shadow-xl"
           >
             {/* The gradient seam on desktop for blending */}
             <div className="absolute inset-y-0 left-0 w-40 md:w-56 bg-gradient-to-r from-dark via-dark/60 to-transparent z-10 hidden md:block opacity-90" />
@@ -51,11 +51,13 @@ export function QuoteFeature() {
                 The Shift
               </span>
               <blockquote className="font-serif text-[28px] md:text-[36px] lg:text-[42px] leading-[1.15] text-[#FDFBF7] mb-8 font-medium">
-                &ldquo;The same argument does not need to have the same ending.&rdquo;
+                &ldquo;What Keeps Repeating<br />
+                Can Be Understood &mdash;<br />
+                <span className="italic text-[#FF5A4F]">And Changed.</span>&rdquo;
               </blockquote>
               <div className="flex items-center">
-                <div className="h-[1px] w-8 bg-[#FDFBF7]/30 mr-4" />
-                <span className="text-[#FDFBF7]/70 text-sm tracking-wide">Angel Coaching Philosophy</span>
+                <div className="h-[1px] w-8 bg-white/30 mr-4" />
+                <span className="text-[#FDFBF7]/70 text-sm tracking-wide">Amity Vale Coaching Philosophy</span>
               </div>
             </div>
           </motion.div>

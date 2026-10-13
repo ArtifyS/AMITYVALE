@@ -1,115 +1,97 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 
 export function AboutHero() {
+  const prefersReducedMotion = useReducedMotion();
+
+  const handleScrollToMeet = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const target = document.getElementById("meet-angel");
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
-    <section className="relative w-full pt-[45px] pb-[80px] md:pt-[clamp(60px,6vw,80px)] md:pb-[120px] bg-[#F8F5F1] overflow-hidden">
-      {/* Decorative Dot Pattern & Visual Motifs */}
-      <div className="absolute top-0 right-0 w-[400px] h-[400px] md:w-[600px] md:h-[600px] opacity-20 pointer-events-none">
-        <div 
-          className="w-full h-full"
-          style={{
-            backgroundImage: "radial-gradient(#161514 1px, transparent 1px)",
-            backgroundSize: "24px 24px"
-          }}
-        />
-      </div>
-      
-      {/* Soft Coral Arc Motif */}
-      <div className="absolute top-[-20%] right-[-10%] w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full border-[1px] border-[#E98267]/30 pointer-events-none" />
-      
-      {/* Oversized Subtle Serif Monogram */}
-      <div className="absolute top-[20%] right-[-5%] md:right-[5%] text-[300px] md:text-[500px] font-serif leading-none text-[#161514]/[0.02] pointer-events-none select-none">
-        A V
-      </div>
-
-      <div className="max-w-[1320px] mx-auto px-6 md:px-12 relative z-10 flex flex-col md:flex-row items-center justify-between">
-        <div className="w-full md:w-[60%] lg:w-[55%]">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
+    <section className="relative w-full bg-white pt-[40px] pb-[60px] md:pt-[60px] md:pb-[80px] lg:pt-[80px] lg:pb-[100px] overflow-hidden">
+      <div className="container mx-auto px-6 max-w-[1240px] relative z-10 w-full">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8 w-full">
+          
+          {/* LEFT: Copy */}
+          <motion.div 
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="w-full lg:w-[48%] flex flex-col text-center lg:text-left z-10"
           >
-            <span className="inline-block font-sans text-[11px] md:text-[12px] font-medium tracking-[0.16em] uppercase text-[#161514]/70 mb-6">
-              About Amity Vale
+            <span className="font-sans uppercase tracking-[0.16em] text-[#0B2A4A] text-[11px] md:text-[12px] font-bold mb-4 block">
+              ABOUT AMITY VALE
             </span>
+            
+            <h1 className="font-serif text-[clamp(42px,5vw,64px)] leading-[1.05] tracking-tight mb-5 text-[#0B2A4A]">
+              Better Relationships Begin <br className="hidden lg:block" />
+              <span className="font-serif text-[#FF5A4F] italic">With Better Understanding.</span>
+            </h1>
+            
+            <p className="text-[#5C5550] text-[16px] md:text-[18px] leading-[1.6] max-w-[540px] mx-auto lg:mx-0 mb-8">
+              Amity Vale was created around a simple belief: the relationships that shape our lives deserve more understanding, honesty, and intention.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+              <a 
+                href="#meet-angel"
+                onClick={handleScrollToMeet}
+                className="flex items-center justify-center h-[52px] px-8 rounded-full bg-[#FF5A4F] text-white font-sans font-bold text-[14px] tracking-wide shadow-[0_6px_20px_rgba(255,90,79,0.25)] hover:bg-[#E84E44] hover:-translate-y-[1px] transition-all duration-300 w-full sm:w-auto"
+              >
+                Meet Angel
+              </a>
+              
+              <Link
+                href="/coaching"
+                className="flex items-center justify-center h-[52px] px-8 rounded-full bg-transparent border-[1.5px] border-[#0B2A4A]/10 text-[#0B2A4A] font-sans font-bold text-[14px] tracking-wide hover:bg-[#0B2A4A]/5 transition-all duration-300 w-full sm:w-auto"
+              >
+                Explore Coaching
+              </Link>
+            </div>
           </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-            className="font-serif text-[clamp(42px,5vw,76px)] leading-[1.05] text-[#161514] mb-8"
-          >
-            Where Understanding <br className="hidden md:block" />
-            <span className="italic font-light text-[#E98267]">Becomes Connection.</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="text-[16px] md:text-[18px] leading-[1.6] text-[#161514]/80 max-w-[480px] mb-10"
-          >
-            Relationships rarely become difficult because people stop caring. More often, they become caught in conversations, reactions, and patterns they no longer know how to change.
-            <br /><br />
-            Amity Vale exists to create space for those conversations to move somewhere different.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row items-start sm:items-center gap-6"
-          >
-            <Link
-              href="#philosophy"
-              className="inline-flex items-center justify-center h-[50px] px-8 bg-[#161514] text-white text-[13px] font-medium tracking-wide uppercase rounded-[3px] hover:bg-[#161514]/90 transition-colors"
+          {/* RIGHT: Visual Composition */}
+          <div className="w-full lg:w-[46%] relative flex justify-center lg:justify-end mt-4 lg:mt-0">
+            <motion.div 
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.85, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="relative w-full max-w-[500px]"
             >
-              Explore Our Approach
-            </Link>
-            <Link
-              href="#meet-angel"
-              className="group inline-flex items-center text-[14px] font-medium text-[#161514] hover:text-[#E98267] transition-colors"
-            >
-              Meet Angel <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </motion.div>
-        </div>
-        
-        {/* Abstract Composition / Text Fragments for Desktop */}
-        <div className="hidden md:flex flex-col items-end justify-center w-[40%] space-y-12 pr-8">
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
-            className="text-right"
-          >
-            <span className="block font-sans text-[10px] tracking-[0.2em] uppercase text-[#161514]/40 mb-2">01</span>
-            <span className="font-serif text-[24px] text-[#161514]/80">Communication</span>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-            className="text-right border-r-[2px] border-[#E98267] pr-4"
-          >
-            <span className="block font-sans text-[10px] tracking-[0.2em] uppercase text-[#161514]/40 mb-2">02</span>
-            <span className="font-serif text-[24px] text-[#161514]/80">Connection</span>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
-            className="text-right"
-          >
-            <span className="block font-sans text-[10px] tracking-[0.2em] uppercase text-[#161514]/40 mb-2">03</span>
-            <span className="font-serif text-[24px] text-[#161514]/80">Intimacy</span>
-          </motion.div>
+              {/* Decorative Ribbon */}
+              <motion.div
+                animate={prefersReducedMotion ? false : { y: [0, -6, 0], rotate: [-10, -7, -10] }}
+                transition={{ duration: 16, ease: "easeInOut", repeat: Infinity }}
+                className="absolute -right-6 -bottom-10 md:-right-10 md:-bottom-12 w-[180px] md:w-[220px] z-0 opacity-[0.78]"
+                style={{ transformOrigin: "center" }}
+              >
+                <img src="/3.png" alt="" className="w-full h-auto object-contain" aria-hidden="true" />
+              </motion.div>
+
+              {/* Main Editorial Image */}
+              <div className="relative aspect-[4/5] rounded-[24px] md:rounded-[32px] overflow-hidden shadow-[0_24px_50px_rgba(11,42,74,0.1)] border-[2px] border-[#FF5A4F]/10 z-10 bg-[#F7F2EE]">
+                <Image
+                  src="/about_hero.jpg"
+                  alt="Three mature adults having a warm conversation"
+                  fill
+                  className="object-cover"
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+              </div>
+
+            </motion.div>
+          </div>
+          
         </div>
       </div>
     </section>

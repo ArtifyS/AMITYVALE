@@ -50,13 +50,13 @@ export function StepTime({ state, setState, next, back }: { state: BookingState,
             <div className="flex gap-2">
               <button 
                 onClick={() => setCurrentDate(new Date(year, month - 1, 1))}
-                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[#F8F5F1] text-[#161514]/60"
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white text-[#161514]/60"
               >
                 &larr;
               </button>
               <button 
                 onClick={() => setCurrentDate(new Date(year, month + 1, 1))}
-                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[#F8F5F1] text-[#161514]/60"
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white text-[#161514]/60"
               >
                 &rarr;
               </button>
@@ -91,7 +91,7 @@ export function StepTime({ state, setState, next, back }: { state: BookingState,
                       ? "bg-[#161514] text-white" 
                       : isPast 
                         ? "text-[#161514]/20 cursor-not-allowed" 
-                        : "text-[#161514] hover:bg-[#F8F5F1]"
+                        : "text-[#161514] hover:bg-white"
                   }`}
                 >
                   {day}
@@ -136,7 +136,7 @@ export function StepTime({ state, setState, next, back }: { state: BookingState,
                     onClick={() => setState({ timeSlot: slot })}
                     className={`h-[42px] flex items-center justify-center rounded-[6px] border-[1px] text-[13px] transition-colors ${
                       state.timeSlot === slot 
-                        ? "border-[#E98267] bg-[#E98267]/10 text-[#E98267] font-medium" 
+                        ? "border-[#FF5A4F] bg-[#FF5A4F]/10 text-[#FF5A4F] font-medium" 
                         : "border-[#161514]/10 text-[#161514] hover:border-[#161514]/30"
                     }`}
                   >

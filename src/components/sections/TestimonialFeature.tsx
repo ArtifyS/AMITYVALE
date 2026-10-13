@@ -3,24 +3,25 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { DecorativeAccent } from "@/components/ui/DecorativeAccent";
 
 const testimonials = [
   {
     id: 1,
-    quote: "Angel completely changed how we handle conflict. We went from constantly defending ourselves to actually listening and understanding each other. It feels like we are partners again.",
-    name: "Private Client",
+    quote: <>“Angel completely <span className="text-[#FF5A4F]">changed</span> how we handle conflict. We went from constantly defending ourselves to actually <span className="text-[#FF5A4F]">listening</span> and <span className="text-[#FF5A4F]">understanding</span> each other. It feels like we are <span className="text-[#FF5A4F] italic">partners again.</span>”</>,
+    name: "PRIVATE CLIENT",
     context: "Couples Coaching"
   },
   {
     id: 2,
-    quote: "I thought we had lost our connection permanently. Coaching gave us the tools to communicate safely without judgment. We’ve rebuilt our intimacy on a much stronger foundation.",
-    name: "Private Client",
+    quote: <>“I thought we had lost our connection permanently. Coaching gave us the tools to communicate safely without judgment. We’ve rebuilt our intimacy on a much <span className="text-[#FF5A4F] italic">stronger foundation.</span>”</>,
+    name: "PRIVATE CLIENT",
     context: "Intimacy & Connection"
   },
   {
     id: 3,
-    quote: "Working with Angel helped us see the patterns we were stuck in. It wasn't just about fixing arguments—it was about learning how to be present for each other again.",
-    name: "Private Client",
+    quote: <>“Working with Angel helped us see the patterns we were stuck in. It wasn't just about fixing arguments—it was about learning how to be <span className="text-[#FF5A4F] italic">present for each other</span> again.”</>,
+    name: "PRIVATE CLIENT",
     context: "Communication Coaching"
   }
 ];
@@ -37,83 +38,76 @@ export function TestimonialFeature() {
   };
 
   return (
-    <section className="py-20 md:py-32 px-4 sm:px-6 bg-background">
-      <div className="mx-auto max-w-[1080px] relative">
+    <section className="py-[70px] md:py-[100px] px-4 sm:px-6 bg-background relative overflow-hidden">
+      
+      {/* ART DIRECTION GRAPHIC */}
+      <DecorativeAccent
+        src="/8.png"
+        opacity={0.74}
+        animateVariant="none"
+        className="hidden md:block w-[155px] right-[2%] bottom-[8%] z-0"
+      />
+
+      <div className="mx-auto max-w-[1000px] bg-white/[0.35] border border-[#151312]/[0.03] shadow-[0_20px_60px_rgba(0,0,0,0.015)] rounded-[32px] md:rounded-[40px] px-6 py-12 md:py-20 flex flex-col items-center text-center relative z-10">
         
         {/* Large Decorative Quote */}
-        <div className="absolute -top-12 md:-top-20 -left-4 md:-left-12 text-[#F4EAE4] z-0 pointer-events-none select-none">
-          <span className="font-serif text-[160px] md:text-[240px] leading-none">“</span>
-        </div>
-
-        {/* Content Container */}
-        <div className="relative z-10 px-2 md:px-0">
-          <span className="font-sans uppercase tracking-[0.16em] text-[#E98267] text-[11px] md:text-[12px] font-bold mb-8 md:mb-12 block">
-            Client Experience
+        <div className="text-[#FF5A4F]/20 select-none mb-6 flex justify-center w-full">
+          <span className="font-serif text-[70px] md:text-[90px] leading-[0.7] block h-[35px] md:h-[45px] overflow-hidden">
+            “
           </span>
-
-          <div className="flex flex-col">
-            
-            {/* The Quote Slider */}
-            <div className="relative min-h-[220px] md:min-h-[200px] lg:min-h-[220px]">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentIndex}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
-                >
-                  <blockquote className="font-serif text-[26px] md:text-[36px] lg:text-[42px] leading-[1.35] text-[#151312] max-w-[900px]">
-                    {testimonials[currentIndex].quote}
-                  </blockquote>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* The Bottom Bar: Client Info & Controls */}
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-8 mt-12 md:mt-16 border-t border-[#151312]/[0.06] pt-8 md:pt-10">
-              
-              <div className="relative min-h-[48px]">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={currentIndex}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 10 }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
-                  >
-                    <p className="font-sans text-[12px] md:text-[13px] font-bold text-[#151312] uppercase tracking-[0.1em] mb-1.5">
-                      {testimonials[currentIndex].name}
-                    </p>
-                    <p className="font-sans text-[14.5px] text-[#5C5550]">
-                      {testimonials[currentIndex].context}
-                    </p>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-
-              {/* Arrow Controls */}
-              <div className="flex items-center gap-3 shrink-0">
-                <button
-                  onClick={handlePrev}
-                  aria-label="Previous testimonial"
-                  className="w-[48px] h-[48px] rounded-full border border-[#151312]/10 flex items-center justify-center text-[#151312] hover:bg-[#F4EAE4] hover:border-[#E98267]/30 transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-[#E98267]/50"
-                >
-                  <ArrowLeft className="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1" strokeWidth={1.5} />
-                </button>
-                <button
-                  onClick={handleNext}
-                  aria-label="Next testimonial"
-                  className="w-[48px] h-[48px] rounded-full border border-[#151312]/10 flex items-center justify-center text-[#151312] hover:bg-[#F4EAE4] hover:border-[#E98267]/30 transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-[#E98267]/50"
-                >
-                  <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.5} />
-                </button>
-              </div>
-
-            </div>
-
-          </div>
         </div>
+
+        {/* Eyebrow */}
+        <span className="font-sans uppercase tracking-[0.16em] text-[#FF5A4F] text-[11px] md:text-[12px] font-bold mb-6 md:mb-8 block">
+          Client Experience
+        </span>
+
+        {/* The Quote Slider */}
+        <div className="w-full min-h-[320px] sm:min-h-[280px] md:min-h-[280px] lg:min-h-[280px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentIndex}
+              initial={{ opacity: 0, x: 16 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -16 }}
+              transition={{ duration: 0.55, ease: "easeInOut" }}
+              className="flex flex-col items-center w-full"
+            >
+              <blockquote className="font-serif text-[22px] sm:text-[28px] md:text-[32px] lg:text-[36px] xl:text-[38px] leading-[1.3] md:leading-[1.4] text-[#151312] w-full max-w-[95%] md:max-w-[85%] mx-auto">
+                {testimonials[currentIndex].quote}
+              </blockquote>
+              
+              <div className="mt-8 md:mt-10 flex flex-col items-center w-full">
+                <div className="w-[30px] h-[1px] bg-[#FF5A4F]/30 mb-5 md:mb-6" />
+                <p className="font-sans text-[11px] md:text-[12px] font-bold text-[#151312] uppercase tracking-[0.15em] mb-1.5 md:mb-2">
+                  {testimonials[currentIndex].name}
+                </p>
+                <p className="font-sans text-[14px] md:text-[15px] text-[#5C5550]/80 font-medium">
+                  {testimonials[currentIndex].context}
+                </p>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Arrow Controls */}
+        <div className="flex items-center justify-center gap-5 mt-8 md:mt-12">
+          <button
+            onClick={handlePrev}
+            aria-label="Previous testimonial"
+            className="w-[48px] h-[48px] rounded-full bg-white border border-[#FF5A4F]/20 flex items-center justify-center text-[#151312] shadow-sm hover:bg-[#FF5A4F] hover:text-white hover:border-[#FF5A4F] hover:-translate-y-[2px] hover:shadow-[0_8px_20px_rgba(255,90,79,0.25)] transition-all duration-[250ms] ease-out group focus:outline-none active:scale-[0.98] active:translate-y-0"
+          >
+            <ArrowLeft className="w-5 h-5 transition-transform duration-[250ms] group-hover:-translate-x-[2px]" strokeWidth={1.5} />
+          </button>
+          <button
+            onClick={handleNext}
+            aria-label="Next testimonial"
+            className="w-[48px] h-[48px] rounded-full bg-white border border-[#FF5A4F]/20 flex items-center justify-center text-[#151312] shadow-sm hover:bg-[#FF5A4F] hover:text-white hover:border-[#FF5A4F] hover:-translate-y-[2px] hover:shadow-[0_8px_20px_rgba(255,90,79,0.25)] transition-all duration-[250ms] ease-out group focus:outline-none active:scale-[0.98] active:translate-y-0"
+          >
+            <ArrowRight className="w-5 h-5 transition-transform duration-[250ms] group-hover:translate-x-[2px]" strokeWidth={1.5} />
+          </button>
+        </div>
+
       </div>
     </section>
   );

@@ -23,7 +23,7 @@ const steps = [
 
 export function BookingSteps() {
   return (
-    <section className="py-[100px] md:py-[140px] bg-[#F8F5F1] relative">
+    <section className="py-[100px] md:py-[140px] bg-white relative">
       <div className="max-w-[1320px] mx-auto px-6 md:px-12">
         
         {/* Intro */}
@@ -33,7 +33,7 @@ export function BookingSteps() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="inline-block font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#E98267] mb-4"
+            className="inline-block font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#FF5A4F] mb-4"
           >
             Simple From Here
           </motion.span>
@@ -68,7 +68,7 @@ export function BookingSteps() {
                 <div className="md:hidden absolute top-[60px] left-[24px] bottom-[-40px] w-[1px] bg-[#161514]/10 pointer-events-none" />
               )}
               
-              <div className="font-serif text-[48px] md:text-[56px] text-[#E98267]/40 leading-none mb-6 md:mb-8 relative z-10 bg-[#F8F5F1] inline-block w-fit pr-6">
+              <div className="font-serif text-[48px] md:text-[56px] text-[#FF5A4F]/40 leading-none mb-6 md:mb-8 relative z-10 bg-white inline-block w-fit pr-6">
                 {step.num}
               </div>
               

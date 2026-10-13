@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { BookingState } from "./BookPage";
 import { sessionOptions, SessionDuration } from "@/lib/pricingConfig";
 
@@ -22,7 +22,7 @@ export function StepSession({ state, setState, next }: { state: BookingState, se
               key={opt.duration}
               className={`relative flex flex-col p-6 rounded-[12px] border-[1px] cursor-pointer transition-all duration-200 ${
                 isSelected 
-                  ? "border-[#E98267] bg-[#E98267]/[0.03] shadow-[0_4px_12px_rgba(233,130,103,0.08)]" 
+                  ? "border-[#FF5A4F] bg-[#FF5A4F]/[0.03] shadow-[0_4px_12px_rgba(233,130,103,0.08)]" 
                   : "border-[#161514]/10 bg-white hover:border-[#161514]/30"
               }`}
             >
@@ -39,7 +39,7 @@ export function StepSession({ state, setState, next }: { state: BookingState, se
                   {opt.label}
                 </span>
                 {isSelected && (
-                  <div className="w-4 h-4 rounded-full border-[4px] border-[#E98267] bg-white shadow-sm" />
+                  <div className="w-4 h-4 rounded-full border-[4px] border-[#FF5A4F] bg-white shadow-sm" />
                 )}
                 {!isSelected && (
                   <div className="w-4 h-4 rounded-full border-[1px] border-[#161514]/20" />

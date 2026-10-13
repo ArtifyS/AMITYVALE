@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { BookingState } from "./BookPage";
 import { getSessionOption } from "@/lib/pricingConfig";
 import { motion } from "framer-motion";
@@ -11,7 +11,7 @@ export function BookingSummary({ state }: { state: BookingState }) {
       
       {/* Mobile Header (can be made collapsible, keeping simple for now) */}
       <div className="p-6 md:p-8 flex flex-col">
-        <h3 className="font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#E98267] mb-6">
+        <h3 className="font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#FF5A4F] mb-6">
           Your Session
         </h3>
 
@@ -77,7 +77,7 @@ export function BookingSummary({ state }: { state: BookingState }) {
           Total
         </span>
         <span className="font-serif text-[28px] text-[#161514] leading-none">
-          {session ? `$${session.price}` : "—"}
+          {session ? `$${session.price}` : "â€”"}
         </span>
       </div>
 

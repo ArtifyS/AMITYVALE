@@ -32,7 +32,7 @@ export function Footer() {
           
           {/* LEFT COLUMN: Brand & CTA */}
           <div className="md:col-span-5 lg:col-span-4 flex flex-col items-start">
-            <Link href="/" className="flex flex-col mb-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E98267]/50 rounded-sm">
+            <Link href="/" className="flex flex-col mb-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5A4F]/50 rounded-sm">
               <span className="font-serif text-[28px] font-bold leading-none tracking-tight text-[#151312]">
                 ANGEL
               </span>
@@ -47,7 +47,7 @@ export function Footer() {
             
             <Link 
               href="/book"
-              className="h-[48px] px-8 rounded-full bg-[#E98267] text-white font-sans font-bold text-[13.5px] tracking-wide hover:bg-[#D9735A] hover:-translate-y-0.5 transition-all duration-300 shadow-sm flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E98267]/50 w-full sm:w-auto"
+              className="h-[48px] px-8 rounded-full bg-[#FF5A4F] text-white font-sans font-bold text-[13.5px] tracking-wide hover:bg-[#D9735A] hover:-translate-y-0.5 transition-all duration-300 shadow-sm flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5A4F]/50 w-full sm:w-auto"
             >
               Book a Private Session
             </Link>
@@ -62,13 +62,20 @@ export function Footer() {
               Explore
             </h4>
             <nav className="flex flex-col space-y-3.5">
-              {["About", "Coaching", "How It Works", "Pricing", "Articles", "Assessment", "Contact"].map((item) => (
+              {[
+                { name: "About", href: "/about" },
+                { name: "Coaching", href: "/coaching" },
+                { name: "Pricing", href: "/pricing" },
+                { name: "Articles", href: "#" },
+                { name: "Assessment", href: "#" },
+                { name: "Contact", href: "#" }
+              ].map((item) => (
                 <Link
-                  key={item}
-                  href="#"
-                  className="text-[#5C5550] text-[15px] font-medium hover:text-[#E98267] transition-colors w-fit focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E98267]/50 rounded-sm"
+                  key={item.name}
+                  href={item.href}
+                  className="text-[#5C5550] text-[15px] font-medium hover:text-[#FF5A4F] transition-colors w-fit focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5A4F]/50 rounded-sm"
                 >
-                  {item}
+                  {item.name}
                 </Link>
               ))}
             </nav>
@@ -83,7 +90,7 @@ export function Footer() {
             <div className="flex flex-col space-y-1.5 mb-8">
               <a
                 href="mailto:hello@angelcoaching.placeholder"
-                className="text-[#5C5550] text-[15px] font-medium hover:text-[#E98267] transition-colors w-fit focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E98267]/50 rounded-sm"
+                className="text-[#5C5550] text-[15px] font-medium hover:text-[#FF5A4F] transition-colors w-fit focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5A4F]/50 rounded-sm"
               >
                 hello@angelcoaching.placeholder
               </a>
@@ -103,7 +110,7 @@ export function Footer() {
                     aria-label={social.name}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group w-[44px] h-[44px] rounded-full bg-white border border-[#151312]/[0.06] flex items-center justify-center transition-all duration-300 hover:-translate-y-[3px] hover:shadow-[0_4px_12px_rgb(0,0,0,0.05)] hover:border-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E98267]/50"
+                    className="group w-[44px] h-[44px] rounded-full bg-white border border-[#151312]/[0.06] flex items-center justify-center transition-all duration-300 hover:-translate-y-[3px] hover:shadow-[0_4px_12px_rgb(0,0,0,0.05)] hover:border-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5A4F]/50"
                   >
                     <Icon className={`w-[18px] h-[18px] text-[#151312]/60 transition-colors duration-300 ${social.hoverColor}`} />
                   </a>
@@ -128,7 +135,7 @@ export function Footer() {
               <Link
                 key={item}
                 href="#"
-                className="text-[#5C5550] text-[13px] hover:text-[#151312] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E98267]/50 rounded-sm"
+                className="text-[#5C5550] text-[13px] hover:text-[#151312] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5A4F]/50 rounded-sm"
               >
                 {item}
               </Link>

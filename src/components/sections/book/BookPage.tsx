@@ -65,7 +65,7 @@ function BookPageContent() {
   const gotoStep = (step: number) => setState(prev => ({ ...prev, step }));
 
   return (
-    <section className="py-12 md:py-24 bg-[#F8F5F1] min-h-[100dvh]">
+    <section className="py-12 md:py-24 bg-white min-h-[100dvh]">
       <div className="max-w-[1240px] mx-auto px-6 lg:px-12 flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
         
         {/* Main Content Area */}
@@ -73,17 +73,17 @@ function BookPageContent() {
           
           {/* Header */}
           <div className="mb-10">
-            <span className="inline-block font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#E98267] mb-4">
+            <span className="inline-block font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#FF5A4F] mb-4">
               Private Booking
             </span>
             <h1 className="font-serif text-[32px] md:text-[42px] leading-[1.1] text-[#161514] mb-4">
-              Let’s Find the Right <br className="hidden md:block" /> Space for Your Conversation.
+              Letâ€™s Find the Right <br className="hidden md:block" /> Space for Your Conversation.
             </h1>
             <p className="text-[15px] leading-[1.6] text-[#161514]/70 mb-4 max-w-[500px]">
               Choose your session length, select a time that works for you, and confirm your private online session.
             </p>
             <div className="font-sans text-[10px] font-medium tracking-[0.2em] uppercase text-[#161514]/40">
-              PRIVATE &nbsp;•&nbsp; ONLINE &nbsp;•&nbsp; INDIVIDUAL OR COUPLE
+              PRIVATE &nbsp;â€¢&nbsp; ONLINE &nbsp;â€¢&nbsp; INDIVIDUAL OR COUPLE
             </div>
           </div>
 
@@ -92,7 +92,7 @@ function BookPageContent() {
             {[1, 2, 3, 4].map(num => (
               <React.Fragment key={num}>
                 <div className="flex items-center gap-2">
-                  <span className={`text-[12px] font-sans tracking-wide uppercase transition-colors ${state.step === num ? "text-[#E98267] font-medium" : state.step > num ? "text-[#161514]/60" : "text-[#161514]/20"}`}>
+                  <span className={`text-[12px] font-sans tracking-wide uppercase transition-colors ${state.step === num ? "text-[#FF5A4F] font-medium" : state.step > num ? "text-[#161514]/60" : "text-[#161514]/20"}`}>
                     0{num} {["Session", "Time", "Details", "Review"][num - 1]}
                   </span>
                 </div>
@@ -134,7 +134,7 @@ function BookPageContent() {
 
 export function BookPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#F8F5F1]" />}>
+    <Suspense fallback={<div className="min-h-screen bg-white" />}>
       <BookPageContent />
     </Suspense>
   );

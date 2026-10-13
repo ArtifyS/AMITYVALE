@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export function MembershipFeature() {
   return (
-    <section className="py-[60px] md:py-[80px] bg-[#F8F5F1] relative px-6 md:px-12">
+    <section className="py-[60px] md:py-[80px] bg-white relative px-6 md:px-12">
       <div className="max-w-[1100px] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -22,7 +22,7 @@ export function MembershipFeature() {
 
           {/* Left Side: Description */}
           <div className="w-full lg:w-[60%] p-10 md:p-16 flex flex-col justify-center relative z-10">
-            <span className="inline-block font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#E98267] mb-4">
+            <span className="inline-block font-sans text-[11px] font-medium tracking-[0.16em] uppercase text-[#FF5A4F] mb-4">
               Monthly Membership
             </span>
             <h2 className="font-serif text-[32px] md:text-[42px] leading-[1.1] text-white mb-6">
@@ -40,13 +40,13 @@ export function MembershipFeature() {
               <span className="font-sans text-[14px] tracking-wide text-white/50 mb-2">/ month</span>
             </div>
             
-            <div className="font-sans text-[11px] font-medium tracking-[0.12em] uppercase text-[#E98267] mb-8">
+            <div className="font-sans text-[11px] font-medium tracking-[0.12em] uppercase text-[#FF5A4F] mb-8">
               One 15-Minute Private Session Each Month
             </div>
 
             <Link
               href="#"
-              className="flex items-center justify-center w-full h-[50px] bg-[#E98267] text-white text-[13px] font-medium tracking-wide uppercase rounded-[3px] hover:bg-[#D77156] transition-colors mb-4"
+              className="flex items-center justify-center w-full h-[50px] bg-[#FF5A4F] text-white text-[13px] font-medium tracking-wide uppercase rounded-[3px] hover:bg-[#F0443A] transition-colors mb-4"
             >
               Choose Membership
             </Link>

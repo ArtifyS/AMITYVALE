@@ -4,190 +4,142 @@ import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Clock } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { DecorativeAccent } from "@/components/ui/DecorativeAccent";
 
 // Structured cleanly for future CMS integration
-const featuredArticle = {
-  id: 1,
-  category: "Communication",
-  title: "How to Have Difficult Conversations Without Escalating",
-  excerpt: "Learn practical techniques to keep emotionally charged conversations productive and respectful, even when you disagree.",
-  readTime: "5 min read",
-  image: "https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?q=80&w=2070&auto=format&fit=crop"
-};
-
-const secondaryArticles = [
+const articles = [
+  {
+    id: 1,
+    category: "RELATIONSHIPS",
+    title: "How to Communicate Better Without Turning It Into a Fight",
+    excerpt: "Practical ways to express what matters, listen differently, and keep difficult conversations from becoming another argument.",
+    readTime: "5–7 min read",
+    image: "/article_communication_1791392276197.jpg"
+  },
   {
     id: 2,
-    category: "Connection",
-    title: "Why Emotional Distance Develops in Relationships",
-    excerpt: "Understand the subtle shifts that cause partners to drift apart over time and how to gently close the gap.",
-    readTime: "7 min read",
-    image: "https://images.unsplash.com/photo-1498679469502-14eb0280eb4c?q=80&w=2070&auto=format&fit=crop"
+    category: "FAMILY",
+    title: "How to Set Boundaries With Family Without Feeling Guilty",
+    excerpt: "How to protect your needs while navigating love, history, expectations, and difficult family dynamics.",
+    readTime: "6–8 min read",
+    image: "/article_family_1791392286386.jpg"
   },
   {
     id: 3,
-    category: "Intimacy",
-    title: "Rebuilding Intimacy After Disconnection",
-    excerpt: "A thoughtful approach to exploring emotional and physical closeness after a period of distance.",
-    readTime: "6 min read",
-    image: "https://images.unsplash.com/photo-1516584284149-166258d4a9ec?q=80&w=2070&auto=format&fit=crop"
+    category: "FAITH & SPIRITUAL LIFE",
+    title: "When God Feels Distant: How to Reconnect With Your Faith",
+    excerpt: "An honest look at spiritual distance, doubt, meaning, and finding your way back to a relationship with faith.",
+    readTime: "5–7 min read",
+    image: "/article_faith_1791392297766.jpg"
   }
 ];
 
 export function ResourcesSection() {
   return (
-    <section className="py-16 md:py-24 bg-background relative overflow-hidden">
+    <section className="py-20 md:py-28 bg-background relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 max-w-[1260px] relative">
         
         {/* Subtle Editorial Dot Cluster */}
         <div 
           className="hidden md:block absolute top-0 right-0 w-[160px] h-[160px] opacity-[0.08] pointer-events-none translate-x-[20px] -translate-y-[20px]"
           style={{
-            backgroundImage: `radial-gradient(circle, #E98267 2px, transparent 2.5px)`,
+            backgroundImage: `radial-gradient(circle, #FF5A4F 2px, transparent 2.5px)`,
             backgroundSize: `16px 16px`,
             maskImage: `radial-gradient(ellipse at center, black 0%, black 50%, rgba(0,0,0,0.7) 70%, transparent 100%)`,
             WebkitMaskImage: `radial-gradient(ellipse at center, black 0%, black 50%, rgba(0,0,0,0.7) 70%, transparent 100%)`,
           }}
         />
 
+        {/* ART DIRECTION GRAPHIC */}
+        <DecorativeAccent
+          src="/12.png"
+          opacity={0.75}
+          animateVariant="none"
+          className="w-[90px] right-[-30px] top-[0] md:w-[170px] md:right-[-20px] md:top-[5%] z-0 md:opacity-[0.75] opacity-[0.48]"
+          style={{ transform: "rotate(-8deg)" }}
+        />
+
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-12 md:mb-16 gap-6 relative z-10">
+        <div className="flex flex-col items-center text-center mb-12 md:mb-20 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="max-w-xl"
+            className="max-w-3xl flex flex-col items-center"
           >
-            <h2 className="font-serif text-[34px] md:text-[46px] text-[#151312] mb-4 leading-[1.05]">
-              Relationship & Intimacy Resources
+            <h2 className="font-serif text-[34px] md:text-[44px] lg:text-[46px] text-[#151312] mb-5 leading-[1.1]">
+              Ideas for the Relationships <br className="block sm:hidden" /><span className="text-[#FF5A4F] italic">That Shape Your Life.</span>
             </h2>
-            <p className="text-[#5C5550] text-[16px] md:text-[17px] leading-[1.6]">
-              Explore our latest guides, insights, and practical advice to help you build a stronger foundation.
+            <p className="text-[#5C5550] text-[16px] md:text-[17px] leading-[1.6] mb-6 max-w-[620px] lg:max-w-[680px]">
+              Thoughtful guidance on relationships, family, friendship, faith, and personal growth.
             </p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
-          >
             <Link 
-              href="#" 
-              className="inline-flex items-center text-[13px] md:text-[14px] font-sans font-bold text-[#151312] hover:text-[#E98267] transition-colors group"
+              href="/articles" 
+              className="inline-flex items-center text-[13px] md:text-[14px] font-sans font-semibold text-[#151312] hover:text-[#FF5A4F] transition-colors duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] group relative pb-1"
             >
-              View all articles
-              <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
+              <span className="relative z-10">View All Articles</span>
+              <span className="absolute bottom-0 left-0 w-full h-[1px] bg-[#FF5A4F] scale-x-0 group-hover:scale-x-100 transition-transform duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] origin-left" />
+              <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-[3px] transition-transform duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)]" />
             </Link>
           </motion.div>
         </div>
 
-        {/* Magazine Editorial Layout */}
-        <div className="flex flex-col lg:flex-row gap-10 lg:gap-14 relative z-10">
-          
-          {/* LEFT: Featured Article (approx 58%) */}
-          <motion.article 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-            className="w-full lg:w-[57%] group cursor-pointer flex flex-col"
-          >
-            <div className="relative w-full aspect-[4/3] md:aspect-[16/10] rounded-[24px] overflow-hidden mb-6 md:mb-8 transition-transform duration-[600ms] ease-out group-hover:-translate-y-1.5 group-hover:shadow-[0_12px_40px_rgb(0,0,0,0.06)]">
-              <Image 
-                src={featuredArticle.image}
-                alt={featuredArticle.title}
-                fill 
-                className="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.03]"
-                sizes="(max-width: 1024px) 100vw, 60vw"
-              />
-              
-              <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 bg-[#FDFBF7]/95 backdrop-blur-md px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-[0_4px_12px_rgb(0,0,0,0.06)] z-10 transition-transform duration-[600ms] ease-out group-hover:-translate-y-1">
-                <span className="text-[#E98267] text-[9.5px] sm:text-[10.5px] font-sans font-bold uppercase tracking-widest">
-                  {featuredArticle.category}
-                </span>
-              </div>
-            </div>
-
-            <div className="flex flex-col flex-grow pr-2">
-              <div className="flex items-center text-[#5C5550] text-[12px] font-sans font-medium mb-4 pl-1">
-                <Clock className="w-3.5 h-3.5 mr-1.5" />
-                {featuredArticle.readTime}
-              </div>
-              
-              <h3 className="font-serif text-[28px] md:text-[36px] lg:text-[40px] leading-[1.1] text-[#151312] mb-4 group-hover:text-[#E98267] transition-colors duration-300">
-                {featuredArticle.title}
-              </h3>
-              
-              <p className="text-[#5C5550] text-[15.5px] md:text-[16.5px] leading-[1.65] mb-6 md:mb-8 max-w-lg">
-                {featuredArticle.excerpt}
-              </p>
-
-              <div className="mt-auto">
-                <span className="inline-flex items-center text-[13px] font-sans font-bold text-[#151312] group-hover:text-[#E98267] transition-colors">
-                  Read Article
-                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
-                </span>
-              </div>
-            </div>
-          </motion.article>
-
-          {/* RIGHT: Secondary Articles (approx 43%) */}
-          <div className="w-full lg:w-[43%] flex flex-col gap-10 md:gap-8 lg:gap-10 mt-2 lg:mt-0">
-            {secondaryArticles.map((article, idx) => (
-              <motion.article 
-                key={article.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.7, delay: 0.2 + (idx * 0.15), ease: "easeOut" }}
-                className="group cursor-pointer flex flex-col sm:flex-row lg:flex-row gap-5 md:gap-6 h-auto sm:h-[180px] md:h-[200px] lg:h-[220px]"
-              >
-                {/* Image Left (Top on small mobile) */}
-                <div className="w-full sm:w-[42%] h-[240px] sm:h-full rounded-[20px] overflow-hidden relative shrink-0 transition-transform duration-[600ms] ease-out group-hover:-translate-y-1 group-hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
+        {/* Article Rows */}
+        <div className="flex flex-col max-w-[920px] mx-auto relative z-10">
+          {articles.map((article, index) => (
+            <motion.article
+              key={article.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.7, delay: index * 0.1, ease: "easeOut" }}
+              className={`group cursor-pointer flex flex-col md:flex-row items-center md:items-stretch gap-6 md:gap-12 lg:gap-16 ${
+                index !== articles.length - 1 ? "border-b border-[#0B2A4A]/[0.08] pb-10 md:pb-12 mb-10 md:mb-12" : ""
+              }`}
+            >
+              {/* Image Side (Approx 42% Desktop) */}
+              <div className="w-full md:w-[42%] shrink-0">
+                <div className="relative w-full aspect-[16/10] md:aspect-[4/3] rounded-[18px] md:rounded-[22px] overflow-hidden bg-[#F7F2EE] border-[2px] border-[#FF5A4F]/70 shadow-[0_12px_28px_rgba(11,42,74,0.09),0_3px_10px_rgba(11,42,74,0.05)] md:shadow-[0_18px_42px_rgba(11,42,74,0.10),0_5px_14px_rgba(11,42,74,0.06)] transition-all duration-[500ms] ease-[cubic-bezier(0.22,1,0.36,1)] md:group-hover:scale-[1.015] md:group-hover:shadow-[0_22px_48px_rgba(11,42,74,0.13),0_6px_16px_rgba(11,42,74,0.07)] motion-reduce:transform-none motion-reduce:md:group-hover:scale-100">
                   <Image 
-                    src={article.image} 
+                    src={article.image}
                     alt={article.title}
-                    fill 
-                    className="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.035]"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 42vw, 20vw"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 42vw"
                   />
                 </div>
+              </div>
 
-                {/* Content Right (Bottom on small mobile) */}
-                <div className="w-full sm:w-[58%] flex flex-col justify-center py-1 sm:py-0 pr-2">
-                  <div className="flex items-center gap-3 mb-2.5 sm:mb-3">
-                    <span className="text-[#E98267] text-[10px] font-sans font-bold uppercase tracking-widest">
-                      {article.category}
-                    </span>
-                    <span className="w-[3px] h-[3px] rounded-full bg-[#151312]/10" />
-                    <div className="flex items-center text-[#5C5550] text-[11px] font-sans font-medium">
-                      <Clock className="w-3 h-3 mr-1" />
-                      {article.readTime}
-                    </div>
-                  </div>
-                  
-                  <h3 className="font-serif text-[22px] md:text-[24px] lg:text-[25px] leading-[1.15] text-[#151312] mb-3 group-hover:text-[#E98267] transition-colors duration-300">
-                    {article.title}
-                  </h3>
-                  
-                  <p className="text-[#5C5550] text-[14.5px] leading-[1.6] mb-5 line-clamp-3 md:line-clamp-2 lg:line-clamp-3">
-                    {article.excerpt}
-                  </p>
-
-                  <div className="mt-auto">
-                    <span className="inline-flex items-center text-[12px] font-sans font-bold text-[#151312] group-hover:text-[#E98267] transition-colors">
-                      Read Article
-                      <ArrowRight className="ml-2 w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform" />
-                    </span>
-                  </div>
+              {/* Content Side (Approx 58% Desktop) */}
+              <div className="w-full md:w-[58%] flex flex-col justify-center py-2 md:py-4">
+                <div className="flex items-center text-[10px] md:text-[11px] font-sans font-bold uppercase tracking-[0.12em] text-[#FF5A4F] mb-3 md:mb-4">
+                  {article.category}
+                  <span className="mx-2.5 text-[#151312]/15">•</span>
+                  <span className="text-[#5C5550] font-normal tracking-normal normal-case">{article.readTime}</span>
                 </div>
-              </motion.article>
-            ))}
-          </div>
+                
+                <h3 className="font-serif text-[26px] md:text-[30px] lg:text-[34px] leading-[1.15] text-[#0B2A4A] mb-3 md:mb-4 transition-colors duration-[400ms]">
+                  {article.title}
+                </h3>
+                
+                <p className="text-[#4D5358] text-[15px] md:text-[16px] leading-[1.6] mb-5 md:mb-6 line-clamp-3 md:line-clamp-2 max-w-[540px]">
+                  {article.excerpt}
+                </p>
 
+                <div className="mt-auto">
+                  <span className="inline-flex items-center text-[13px] font-sans font-semibold text-[#0B2A4A] group-hover:text-[#FF5A4F] transition-colors duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] relative pb-[2px]">
+                    <span className="relative z-10">Read Article</span>
+                    <span className="absolute bottom-0 left-0 w-full h-[1px] bg-[#FF5A4F] scale-x-0 group-hover:scale-x-100 transition-transform duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] origin-left" />
+                    <ArrowRight className="ml-2.5 w-3.5 h-3.5 transition-transform duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-[4px]" />
+                  </span>
+                </div>
+              </div>
+            </motion.article>
+          ))}
         </div>
+
       </div>
     </section>
   );

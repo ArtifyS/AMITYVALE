@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+﻿import React, { FormEvent, useState } from "react";
 import { BookingState } from "./BookPage";
 
 export function StepDetails({ state, setState, next, back }: { state: BookingState, setState: (updates: Partial<BookingState>) => void, next: () => void, back: () => void }) {
@@ -64,35 +64,35 @@ export function StepDetails({ state, setState, next, back }: { state: BookingSta
         {/* Contact Fields */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="flex flex-col gap-2">
-            <label className="text-[13px] text-[#161514]/70">First Name <span className="text-[#E98267]">*</span></label>
+            <label className="text-[13px] text-[#161514]/70">First Name <span className="text-[#FF5A4F]">*</span></label>
             <input
               type="text"
               autoComplete="given-name"
               value={state.firstName}
               onChange={e => { setState({ firstName: e.target.value }); if(errors.firstName) setErrors(prev => ({...prev, firstName: ""})); }}
-              className={`h-[48px] px-4 rounded-[6px] border-[1px] bg-white focus:outline-none focus:border-[#E98267] ${errors.firstName ? "border-red-500" : "border-[#161514]/10"}`}
+              className={`h-[48px] px-4 rounded-[6px] border-[1px] bg-white focus:outline-none focus:border-[#FF5A4F] ${errors.firstName ? "border-red-500" : "border-[#161514]/10"}`}
             />
             {errors.firstName && <span className="text-red-500 text-[11px]">{errors.firstName}</span>}
           </div>
           <div className="flex flex-col gap-2">
-            <label className="text-[13px] text-[#161514]/70">Last Name <span className="text-[#E98267]">*</span></label>
+            <label className="text-[13px] text-[#161514]/70">Last Name <span className="text-[#FF5A4F]">*</span></label>
             <input
               type="text"
               autoComplete="family-name"
               value={state.lastName}
               onChange={e => { setState({ lastName: e.target.value }); if(errors.lastName) setErrors(prev => ({...prev, lastName: ""})); }}
-              className={`h-[48px] px-4 rounded-[6px] border-[1px] bg-white focus:outline-none focus:border-[#E98267] ${errors.lastName ? "border-red-500" : "border-[#161514]/10"}`}
+              className={`h-[48px] px-4 rounded-[6px] border-[1px] bg-white focus:outline-none focus:border-[#FF5A4F] ${errors.lastName ? "border-red-500" : "border-[#161514]/10"}`}
             />
             {errors.lastName && <span className="text-red-500 text-[11px]">{errors.lastName}</span>}
           </div>
           <div className="flex flex-col gap-2 sm:col-span-2">
-            <label className="text-[13px] text-[#161514]/70">Email Address <span className="text-[#E98267]">*</span></label>
+            <label className="text-[13px] text-[#161514]/70">Email Address <span className="text-[#FF5A4F]">*</span></label>
             <input
               type="email"
               autoComplete="email"
               value={state.email}
               onChange={e => { setState({ email: e.target.value }); if(errors.email) setErrors(prev => ({...prev, email: ""})); }}
-              className={`h-[48px] px-4 rounded-[6px] border-[1px] bg-white focus:outline-none focus:border-[#E98267] ${errors.email ? "border-red-500" : "border-[#161514]/10"}`}
+              className={`h-[48px] px-4 rounded-[6px] border-[1px] bg-white focus:outline-none focus:border-[#FF5A4F] ${errors.email ? "border-red-500" : "border-[#161514]/10"}`}
             />
             {errors.email && <span className="text-red-500 text-[11px]">{errors.email}</span>}
           </div>
@@ -103,7 +103,7 @@ export function StepDetails({ state, setState, next, back }: { state: BookingSta
               autoComplete="tel"
               value={state.phone}
               onChange={e => setState({ phone: e.target.value })}
-              className="h-[48px] px-4 rounded-[6px] border-[1px] border-[#161514]/10 bg-white focus:outline-none focus:border-[#E98267]"
+              className="h-[48px] px-4 rounded-[6px] border-[1px] border-[#161514]/10 bg-white focus:outline-none focus:border-[#FF5A4F]"
             />
           </div>
           {state.sessionFor === "couple" && (
@@ -113,7 +113,7 @@ export function StepDetails({ state, setState, next, back }: { state: BookingSta
                 type="text"
                 value={state.partnerName}
                 onChange={e => setState({ partnerName: e.target.value })}
-                className="h-[48px] px-4 rounded-[6px] border-[1px] border-[#161514]/10 bg-white focus:outline-none focus:border-[#E98267]"
+                className="h-[48px] px-4 rounded-[6px] border-[1px] border-[#161514]/10 bg-white focus:outline-none focus:border-[#FF5A4F]"
               />
             </div>
           )}
@@ -123,13 +123,13 @@ export function StepDetails({ state, setState, next, back }: { state: BookingSta
         <div className="flex flex-col gap-2">
           <label className="text-[13px] text-[#161514]/70">
             Is there anything you would like Angel to know before the session?
-            <span className="block text-[#161514]/40 italic mt-1">Optional — a few sentences are enough.</span>
+            <span className="block text-[#161514]/40 italic mt-1">Optional â€” a few sentences are enough.</span>
           </label>
           <textarea
             rows={4}
             value={state.contextNote}
             onChange={e => setState({ contextNote: e.target.value })}
-            className="p-4 rounded-[6px] border-[1px] border-[#161514]/10 bg-white focus:outline-none focus:border-[#E98267] resize-y"
+            className="p-4 rounded-[6px] border-[1px] border-[#161514]/10 bg-white focus:outline-none focus:border-[#FF5A4F] resize-y"
           />
         </div>
 
