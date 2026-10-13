@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence, useScroll, useMotionValueEvent, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Menu, X, ArrowRight } from "lucide-react";
 
 const navLinks = [
@@ -13,22 +13,23 @@ const navLinks = [
   { name: "Pricing", href: "/pricing" },
 ];
 
+const emptySubscribe = () => () => {};
+
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
+  const isScrolled = useSyncExternalStore(
+    (callback) => {
+      window.addEventListener("scroll", callback, { passive: true });
+      return () => window.removeEventListener("scroll", callback);
+    },
+    () => window.scrollY > 60,
+    () => false
+  );
   const pathname = usePathname();
-  const { scrollY } = useScroll();
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
-    setMounted(true);
-    
-    // Check initial scroll position
-    if (window.scrollY > 60) {
-      setIsScrolled(true);
-    }
-    
     const handleToggleMenu = () => setIsMobileMenuOpen(true);
     window.addEventListener("toggleMobileMenu", handleToggleMenu);
     
@@ -36,14 +37,6 @@ export function Header() {
       window.removeEventListener("toggleMobileMenu", handleToggleMenu);
     };
   }, []);
-
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest > 60) {
-      setIsScrolled(true);
-    } else {
-      setIsScrolled(false);
-    }
-  });
 
   if (!mounted) return null;
 

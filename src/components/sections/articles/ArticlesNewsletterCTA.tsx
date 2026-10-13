@@ -51,7 +51,7 @@ export function ArticlesNewsletterCTA() {
           
           <div className="mt-8">
             <p className="text-white/60 text-[12px] font-medium">
-              Or if you're ready to start doing the work, <Link href="/book" className="text-white underline hover:text-[#0B2A4A] transition-colors">book a private session.</Link>
+              Or if you’re ready to start doing the work, <Link href="/book" className="text-white underline hover:text-[#0B2A4A] transition-colors">book a private session.</Link>
             </p>
           </div>
         </motion.div>

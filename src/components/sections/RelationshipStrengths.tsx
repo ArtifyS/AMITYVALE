@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import Image from "next/image";
@@ -30,7 +30,7 @@ export function RelationshipStrengths() {
                 People do not need to become identical to have a peaceful, connected relationship. In fact, attempting to change your partner often creates the very distance you are trying to close.
               </p>
               <p>
-                Coaching helps partners understand different needs, communication styles, and emotional patternsâ€”shifting the focus from "who is right" to "how do we work together."
+                Coaching helps partners understand different needs, communication styles, and emotional patterns—shifting the focus from &ldquo;who is right&rdquo; to &ldquo;how do we work together.&rdquo;
               </p>
             </div>
             

@@ -156,7 +156,7 @@ export function CoachIntroduction() {
             
             <div className="space-y-5 text-[#5C5550] text-[15px] md:text-[17px] leading-[1.7] mb-8 max-w-xl">
               <p>
-                Relationships are complex, and intimacy requires ongoing attention. Sometimes, what you need most is a <strong className="font-semibold text-[#FF5A4F]">neutral, experienced perspective</strong> to help you navigate the conversations you've been avoiding.
+                Relationships are complex, and intimacy requires ongoing attention. Sometimes, what you need most is a <strong className="font-semibold text-[#FF5A4F]">neutral, experienced perspective</strong> to help you navigate the conversations you’ve been avoiding.
               </p>
               <p>
                 I provide <strong className="font-semibold text-[#FF5A4F]">private, one-to-one support</strong> tailored to your unique dynamic. Through practical guidance and compassionate listening, we explore relationship and intimacy concerns in a completely <strong className="font-semibold text-[#FF5A4F]">safe, non-judgmental space</strong>.

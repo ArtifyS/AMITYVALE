@@ -20,7 +20,7 @@ const testimonials = [
   },
   {
     id: 3,
-    quote: <>“Working with Angel helped us see the patterns we were stuck in. It wasn't just about fixing arguments—it was about learning how to be <span className="text-[#FF5A4F] italic">present for each other</span> again.”</>,
+    quote: <>“Working with Angel helped us see the patterns we were stuck in. It wasn’t just about fixing arguments—it was about learning how to be <span className="text-[#FF5A4F] italic">present for each other</span> again.”</>,
     name: "PRIVATE CLIENT",
     context: "Communication Coaching"
   }

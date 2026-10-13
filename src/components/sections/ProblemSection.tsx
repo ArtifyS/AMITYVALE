@@ -2,7 +2,6 @@
 
 import React from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { DecorativeAccent } from "@/components/ui/DecorativeAccent";
 
 export function ProblemSection() {
   const prefersReducedMotion = useReducedMotion();

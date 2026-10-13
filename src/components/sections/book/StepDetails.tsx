@@ -1,4 +1,4 @@
-﻿import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { BookingState } from "./BookPage";
 
 export function StepDetails({ state, setState, next, back }: { state: BookingState, setState: (updates: Partial<BookingState>) => void, next: () => void, back: () => void }) {
@@ -108,7 +108,7 @@ export function StepDetails({ state, setState, next, back }: { state: BookingSta
           </div>
           {state.sessionFor === "couple" && (
             <div className="flex flex-col gap-2">
-              <label className="text-[13px] text-[#161514]/70">Partner's First Name <span className="text-[#161514]/40 italic">(Optional)</span></label>
+              <label className="text-[13px] text-[#161514]/70">Partner’s First Name <span className="text-[#161514]/40 italic">(Optional)</span></label>
               <input
                 type="text"
                 value={state.partnerName}

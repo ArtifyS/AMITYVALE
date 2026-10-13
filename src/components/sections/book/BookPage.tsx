@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useSearchParams, useRouter } from "next/navigation";
-import { sessionOptions, SessionDuration, getSessionOption } from "@/lib/pricingConfig";
+import { useSearchParams } from "next/navigation";
+import { SessionDuration, getSessionOption } from "@/lib/pricingConfig";
 
 // Components for steps
 import { StepSession } from "./StepSession";
@@ -29,11 +29,19 @@ export type BookingState = {
 
 function BookPageContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   
+  const initialDuration = (() => {
+    const durationParam = searchParams.get("duration");
+    if (durationParam) {
+      const dur = parseInt(durationParam, 10);
+      if (getSessionOption(dur)) return dur as SessionDuration;
+    }
+    return null;
+  })();
+
   const [state, setState] = useState<BookingState>({
     step: 1,
-    duration: null,
+    duration: initialDuration,
     date: null,
     timeSlot: null,
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "America/New_York",
@@ -45,16 +53,6 @@ function BookPageContent() {
     partnerName: "",
     contextNote: "",
   });
-
-  useEffect(() => {
-    const durationParam = searchParams.get("duration");
-    if (durationParam) {
-      const dur = parseInt(durationParam, 10);
-      if (getSessionOption(dur)) {
-        setState(prev => ({ ...prev, duration: dur as SessionDuration }));
-      }
-    }
-  }, [searchParams]);
 
   const setBookingState = (updates: Partial<BookingState>) => {
     setState(prev => ({ ...prev, ...updates }));
