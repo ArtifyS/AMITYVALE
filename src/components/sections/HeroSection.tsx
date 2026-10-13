@@ -22,7 +22,7 @@ export function HeroSection() {
   // Use simple values if reduced motion or server-side
   const isReady = hasMounted && !prefersReducedMotion;
 
-  const easePremium = [0.22, 1, 0.36, 1];
+  const easePremium = [0.22, 1, 0.36, 1] as const;
 
   const titleReveal = {
     hidden: { 
