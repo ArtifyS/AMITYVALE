@@ -67,7 +67,7 @@ export function Footer() {
                 { name: "Coaching", href: "/coaching" },
                 { name: "Pricing", href: "/pricing" },
                 { name: "Articles", href: "#" },
-                { name: "Assessment", href: "#" },
+                { name: "Assessment", href: "/assessment" },
                 { name: "Contact", href: "#" }
               ].map((item) => (
                 <Link

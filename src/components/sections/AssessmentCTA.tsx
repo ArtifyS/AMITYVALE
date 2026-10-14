@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { DecorativeAccent } from "@/components/ui/DecorativeAccent";
@@ -36,8 +37,8 @@ export function AssessmentCTA() {
               Answer a few thoughtful questions about communication, connection, conflict, and intimacy — then receive a <strong className="font-semibold text-[#FF5A4F]">private snapshot</strong> of the areas that may deserve more attention.
             </p>
 
-            <Button size="lg" className="w-full sm:w-auto bg-[#FF5A4F] hover:bg-[#d67258] text-white rounded-full px-8 h-[52px] mb-4 shadow-none">
-              Start the Free Check-In
+            <Button size="lg" className="w-full sm:w-auto bg-[#FF5A4F] hover:bg-[#d67258] text-white rounded-full px-8 h-[52px] mb-4 shadow-none" asChild>
+              <Link href="/assessment">Start the Free Check-In</Link>
             </Button>
             <p className="text-[11px] md:text-[12px] text-[#5C5550]/80 font-sans tracking-wide text-center sm:text-left mt-2 sm:mt-0 sm:pl-2">
               Takes only a few minutes &nbsp;•&nbsp; Private &nbsp;•&nbsp; No payment required
@@ -46,7 +47,7 @@ export function AssessmentCTA() {
         </div>
 
         {/* RIGHT PREVIEW AREA */}
-        <div className="w-full lg:w-[55%] relative min-h-[480px] md:min-h-[560px] lg:min-h-[640px] flex items-center justify-center overflow-hidden order-2 bg-gradient-to-br from-white/20 to-transparent group cursor-pointer p-6 pb-20 md:pb-6">
+        <Link href="/assessment" className="w-full lg:w-[55%] relative min-h-[480px] md:min-h-[560px] lg:min-h-[640px] flex items-center justify-center overflow-hidden order-2 bg-gradient-to-br from-white/20 to-transparent group cursor-pointer p-6 pb-20 md:pb-6">
           
           {/* Abstract background shape */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] md:w-[380px] h-[280px] md:h-[380px] rounded-full bg-[#FF5A4F] opacity-[0.06] blur-3xl pointer-events-none" />
@@ -143,7 +144,7 @@ export function AssessmentCTA() {
             </motion.div>
 
           </div>
-        </div>
+        </Link>
 
       </div>
     </section>
