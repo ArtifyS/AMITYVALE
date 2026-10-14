@@ -108,7 +108,7 @@ export function SessionPricingGrid() {
           transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
           className="text-center font-serif text-[15px] md:text-[17px] italic text-[#161514]/60 max-w-[600px] px-6"
         >
-          Not sure how much time you need? Start with the conversation you want to have â€” you can choose the session length that feels most comfortable.
+          Not sure how much time you need? Start with the conversation you want to have — you can choose the session length that feels most comfortable.
         </motion.div>
 
       </div>

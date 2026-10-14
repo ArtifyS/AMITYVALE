@@ -57,7 +57,7 @@ export function PricingHero() {
           transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
           className="font-sans text-[11px] font-medium tracking-[0.2em] uppercase text-[#161514]/40"
         >
-          PRIVATE &nbsp;â€¢&nbsp; ONLINE &nbsp;â€¢&nbsp; INDIVIDUAL OR COUPLE
+          PRIVATE &nbsp;•&nbsp; ONLINE &nbsp;•&nbsp; INDIVIDUAL OR COUPLE
         </motion.div>
       </div>
     </section>
