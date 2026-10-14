@@ -154,7 +154,7 @@ export function CoachIntroduction() {
               You Do Not Have to Figure This Out <span className="text-[#FF5A4F] italic">Alone.</span>
             </h2>
             
-            <div className="space-y-5 text-[#5C5550] text-[15px] md:text-[17px] leading-[1.7] mb-8 max-w-xl">
+            <div className="space-y-5 text-[#26313A] text-[15px] md:text-[17px] leading-[1.7] mb-8 max-w-xl font-normal">
               <p>
                 Relationships are complex, and intimacy requires ongoing attention. Sometimes, what you need most is a <strong className="font-semibold text-[#FF5A4F]">neutral, experienced perspective</strong> to help you navigate the conversations you’ve been avoiding.
               </p>
@@ -164,15 +164,15 @@ export function CoachIntroduction() {
             </div>
 
             <ul className="space-y-3 mb-10">
-              <li className="flex items-center text-[14px] md:text-[15px] text-[#5C5550]">
+              <li className="flex items-center text-[14px] md:text-[15px] text-[#26313A]">
                 <div className="w-[5px] h-[5px] rounded-full bg-[#FF5A4F] mr-4 opacity-80 shrink-0" />
                 <span><strong className="font-semibold text-[#FF5A4F]">Private one-to-one</strong> guidance</span>
               </li>
-              <li className="flex items-center text-[14px] md:text-[15px] text-[#5C5550]">
+              <li className="flex items-center text-[14px] md:text-[15px] text-[#26313A]">
                 <div className="w-[5px] h-[5px] rounded-full bg-[#FF5A4F] mr-4 opacity-80 shrink-0" />
                 <span><strong className="font-semibold text-[#FF5A4F]">Online support</strong> for individuals and couples</span>
               </li>
-              <li className="flex items-center text-[14px] md:text-[15px] text-[#5C5550]">
+              <li className="flex items-center text-[14px] md:text-[15px] text-[#26313A]">
                 <div className="w-[5px] h-[5px] rounded-full bg-[#FF5A4F] mr-4 opacity-80 shrink-0" />
                 <span><strong className="font-semibold text-[#FF5A4F]">Communication, connection, and intimacy</strong> coaching</span>
               </li>

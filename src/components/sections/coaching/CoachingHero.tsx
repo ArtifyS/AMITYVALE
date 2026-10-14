@@ -33,7 +33,7 @@ export function CoachingHero() {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="w-full lg:w-[48%] flex flex-col text-center lg:text-left z-10 lg:-mt-8"
           >
-            <span className="font-sans uppercase tracking-[0.16em] text-[#6E747A] text-[11px] md:text-[12px] font-bold mb-3 block">
+            <span className="font-sans uppercase tracking-[0.16em] text-[#5B6470] text-[11px] md:text-[12px] font-bold mb-3 block">
               PRIVATE COACHING
             </span>
             
@@ -42,7 +42,7 @@ export function CoachingHero() {
               <span className="font-serif text-[#FF5A4F] italic">Shapes Something in You.</span>
             </h1>
             
-            <p className="text-[#5C5550] text-[16px] md:text-[17px] leading-[1.6] max-w-[540px] mx-auto lg:mx-0 mb-6">
+            <p className="text-[#26313A] text-[16px] md:text-[17px] leading-[1.6] max-w-[540px] mx-auto lg:mx-0 mb-6 font-normal">
               Romantic relationships, family, friendships, faith, and the relationship you have with yourself can all become places of connection, conflict, growth, and change.
             </p>
             

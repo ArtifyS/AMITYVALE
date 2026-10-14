@@ -34,7 +34,7 @@ export function MidCTA() {
             <h3 className="font-serif text-[26px] md:text-[32px] text-[#0B2A4A] leading-[1.1] mb-3">
               Not Sure Which Area Fits?
             </h3>
-            <p className="text-[#5C5550] text-[15px] md:text-[16px] leading-[1.6]">
+            <p className="text-[#26313A] text-[15px] md:text-[16px] leading-[1.6]">
               Life does not separate neatly into categories. Start with what feels most important right now.
             </p>
           </div>

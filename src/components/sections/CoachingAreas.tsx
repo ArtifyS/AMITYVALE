@@ -119,7 +119,7 @@ export function CoachingAreas() {
             <h2 className="font-serif text-[36px] md:text-[46px] lg:text-[54px] leading-[1.1] text-foreground mb-6 max-w-[800px] mx-auto">
               Support for the Relationships <span className="text-[#FF5A4F] italic">That Shape Your Life.</span>
             </h2>
-            <p className="text-[#5C5550] text-[16px] md:text-[18px] leading-[1.6] max-w-[600px] mx-auto">
+            <p className="text-[#26313A] text-[16px] md:text-[18px] leading-[1.6] max-w-[600px] mx-auto">
               Private coaching for love, family, friendship, faith, and personal growth.
             </p>
           </motion.div>
@@ -179,7 +179,7 @@ export function CoachingAreas() {
                   <h3 className="font-serif text-[28px] md:text-[34px] lg:text-[40px] leading-[1.1] text-foreground mb-4 md:mb-5">
                     {area.headline}
                   </h3>
-                  <p className="text-[#5C5550] text-[15px] md:text-[16px] leading-[1.65] mb-5 md:mb-8 max-w-[420px] mx-auto md:mx-0">
+                  <p className="text-[#26313A] text-[15px] md:text-[16px] leading-[1.65] mb-5 md:mb-8 max-w-[420px] mx-auto md:mx-0">
                     <span className="md:hidden">{area.descriptionMobile}</span>
                     <span className="hidden md:inline">{area.description}</span>
                   </p>

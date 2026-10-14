@@ -37,7 +37,7 @@ export function AreaNavigator() {
           <h2 className="font-serif text-[32px] md:text-[38px] lg:text-[46px] leading-[1.1] text-[#0B2A4A] mb-5 tracking-tight">
             What Brings You <span className="text-[#FF5A4F] italic">Here?</span>
           </h2>
-          <p className="text-[#5C5550] text-[15px] md:text-[16px] max-w-[480px]">
+          <p className="text-[#26313A] text-[15px] md:text-[16px] max-w-[480px]">
             Start with the relationship or part of life that feels most important right now.
           </p>
         </div>

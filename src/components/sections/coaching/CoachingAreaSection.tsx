@@ -82,15 +82,15 @@ export function CoachingAreaSection({
             transition={{ duration: 0.8, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
             className={`w-full md:w-1/2 flex flex-col text-center md:text-left order-2 ${isEven ? 'md:order-1' : ''}`}
           >
-            <span className="font-sans uppercase tracking-[0.16em] text-[#6E747A] text-[11px] md:text-[12px] font-bold mb-4 block">
+            <span className="font-sans uppercase tracking-[0.16em] text-[#5B6470] text-[11px] md:text-[12px] font-bold mb-4 block">
               <span className="text-[#FF5A4F] mr-2">{number}</span> — {eyebrowText}
             </span>
             
-            <h2 className="font-serif text-[32px] md:text-[38px] lg:text-[44px] leading-[1.1] mb-5">
+            <h2 className="font-serif text-[32px] md:text-[38px] lg:text-[44px] leading-[1.1] mb-5 text-[#0B2A4A]">
               {title}
             </h2>
             
-            <p className="text-[#5C5550] text-[16px] md:text-[17px] leading-[1.65] mb-8 max-w-[480px] mx-auto md:mx-0">
+            <p className="text-[#26313A] text-[16px] md:text-[17px] leading-[1.65] mb-8 max-w-[480px] mx-auto md:mx-0 font-normal">
               {description}
             </p>
             
@@ -99,7 +99,7 @@ export function CoachingAreaSection({
               {chips.map((chip, i) => (
                 <span 
                   key={i} 
-                  className="inline-flex items-center px-3.5 py-1.5 rounded-full border border-[#E8E4DF] bg-white text-[#4D5358] text-[12.5px] font-medium tracking-wide shadow-sm"
+                  className="inline-flex items-center px-3.5 py-1.5 rounded-full border border-[#E8E4DF] bg-white text-[#26313A] text-[12.5px] font-medium tracking-wide shadow-sm"
                 >
                   {chip}
                 </span>

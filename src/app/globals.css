@@ -2,9 +2,11 @@
 
 :root {
   --background: #FFFFFF;
-  --foreground: #211C1A;
+  --foreground: #26313A;
+  --text-body: #26313A;
+  --text-secondary: #5B6470;
+  --text-primary: #0B2A4A;
   --surface: #FFFFFF;
-  --text-secondary: #655C57;
   --accent: #FF5A4F;
   --accent-soft: #FCE8E0;
   --beige: #E9DDD3;
@@ -14,8 +16,10 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-surface: var(--surface);
+  --color-text-body: var(--text-body);
   --color-text-secondary: var(--text-secondary);
+  --color-text-primary: var(--text-primary);
+  --color-surface: var(--surface);
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
   --color-beige: var(--beige);
@@ -29,5 +33,6 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
 }
