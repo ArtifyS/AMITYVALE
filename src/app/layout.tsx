@@ -18,6 +18,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Relationship & Intimacy Coaching | Private Online Sessions",
   description: "Private, confidential relationship and intimacy coaching online. Learn how to communicate better, resolve conflict, and rebuild intimacy.",
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
   openGraph: {
     title: "Relationship & Intimacy Coaching | Private Online Sessions",
     description: "Private online coaching to help you rebuild connection and intimacy.",

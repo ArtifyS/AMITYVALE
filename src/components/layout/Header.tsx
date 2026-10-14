@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useSyncExternalStore } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent, useReducedMotion } from "framer-motion";
@@ -222,15 +223,17 @@ export function Header() {
               {/* Logo */}
               <Link 
                 href="/" 
-                className="flex flex-col items-center justify-center relative group pt-1"
-                style={{ textShadow: "0 1px 8px rgba(255,255,255,0.9), 0 0 4px rgba(255,255,255,0.85)" }}
+                aria-label="Amity Vale"
+                className="flex items-center justify-center relative group shrink-0"
               >
-                <span className="font-serif text-[22px] lg:text-[24px] font-bold leading-none tracking-[0.02em]">
-                  <span className="text-[#0B2A4A]">AMITY</span> <span className="text-[#FF5A4F]">VALE</span>
-                </span>
-                <span className="text-[7.5px] lg:text-[8.5px] uppercase tracking-[0.2em] mt-1 text-[#6E747A] font-medium text-center">
-                  Relationship & Intimacy Coaching
-                </span>
+                <Image
+                  src="/nav_logo.png"
+                  alt="Amity Vale"
+                  width={2172}
+                  height={724}
+                  priority
+                  className="w-[clamp(125px,34vw,145px)] sm:w-[clamp(150px,20vw,180px)] lg:w-[clamp(170px,15vw,215px)] h-auto max-h-[42px] sm:max-h-[44px] lg:max-h-[48px] object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                />
               </Link>
 
               {/* Desktop Navigation */}

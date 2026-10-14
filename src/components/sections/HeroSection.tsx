@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 
 export function HeroSection() {
   const [hasMounted, setHasMounted] = useState(false);
@@ -19,40 +18,26 @@ export function HeroSection() {
     setHasMounted(true);
   }, []);
 
-  // Use simple values if reduced motion or server-side
   const isReady = hasMounted && !prefersReducedMotion;
-
   const easePremium = [0.22, 1, 0.36, 1] as const;
 
-  const titleReveal = {
+  // Single subtle entrance animation: opacity 0->1, scale 0.97->1, translateY 8px->0
+  const logoReveal = {
     hidden: { 
       opacity: isReady ? 0 : 1, 
-      y: isReady ? 18 : 0, 
-      letterSpacing: "0.06em",
-      clipPath: isReady ? "inset(100% 0 0 0)" : "inset(0 0 0 0)"
+      scale: isReady ? 0.97 : 1, 
+      y: isReady ? 8 : 0 
     },
     visible: { 
       opacity: 1, 
+      scale: 1, 
       y: 0, 
-      letterSpacing: "0.015em",
-      clipPath: "inset(0 0 0 0)",
-      transition: { duration: 0.95, delay: 0.18, ease: easePremium } 
+      transition: { 
+        duration: 1.0, 
+        delay: 0.15, 
+        ease: easePremium 
+      } 
     }
-  };
-
-  const lineReveal = {
-    hidden: { scaleX: isReady ? 0 : 1 },
-    visible: { scaleX: 1, transition: { duration: 0.65, delay: 0.68, ease: easePremium } }
-  };
-
-  const subtitleReveal = {
-    hidden: { opacity: isReady ? 0 : 1, y: isReady ? 10 : 0 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.82, ease: easePremium } }
-  };
-
-  const ctaReveal = {
-    hidden: { opacity: isReady ? 0 : 1, y: isReady ? 14 : 0, scale: isReady ? 0.985 : 1 },
-    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.72, delay: 1.08, ease: easePremium } }
   };
 
   return (
@@ -69,92 +54,37 @@ export function HeroSection() {
         className="absolute inset-0 w-full h-full object-cover z-0"
       />
 
-      {/* Refined Dark Mask with Subtle Radial Vignette around Text */}
+      {/* Subtle Radial Vignette Behind Logo for Pristine Readability */}
       <div 
-        className="absolute inset-0 z-10"
+        className="absolute inset-0 z-10 pointer-events-none"
         style={{
-          background: "rgba(0,0,0,0.30)"
-        }}
-      />
-      <div 
-        className="absolute inset-0 z-10"
-        style={{
-          background: "radial-gradient(circle at center, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.00) 55%)"
+          background: "radial-gradient(circle at center, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0.14) 45%, rgba(0,0,0,0.02) 75%, transparent 100%)"
         }}
       />
 
-      {/* Centered Hero Content */}
+      {/* Centered Hero Content: ONLY /hero_logo.png */}
       <motion.div 
-        className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6"
+        className="absolute inset-0 z-20 flex items-center justify-center px-6 pointer-events-none select-none"
         style={{
           y: prefersReducedMotion ? 0 : yOffset,
           opacity: prefersReducedMotion ? 1 : opacityOffset
         }}
       >
-        
-        {/* Main Headline */}
         <motion.div
           initial="hidden"
           animate="visible"
-          variants={titleReveal}
-          className="pb-0"
+          variants={logoReveal}
+          className="relative flex items-center justify-center w-[clamp(260px,76vw,340px)] sm:w-[clamp(320px,40vw,400px)] lg:w-[clamp(360px,32vw,460px)]"
         >
-          <h1 
-            className="font-serif text-[46px] md:text-[58px] lg:text-[68px] xl:text-[76px] font-normal text-[#FFFFFF] leading-[0.98] text-center tracking-[0.015em]"
-            style={{ textShadow: "0 3px 20px rgba(0,0,0,0.22)" }}
-          >
-            AMITY VALE
-          </h1>
+          <Image
+            src="/hero_logo.png"
+            alt="Amity Vale"
+            width={2172}
+            height={724}
+            priority
+            className="w-full h-auto object-contain drop-shadow-[0_4px_24px_rgba(0,0,0,0.35)]"
+          />
         </motion.div>
-
-        {/* Decorative Gold Line */}
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={lineReveal}
-          className="w-[42px] md:w-[56px] h-[1px] bg-[#D8A23D] mt-[18px] mb-[16px] origin-center"
-        />
-
-        {/* Supporting Line */}
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={subtitleReveal}
-        >
-          <p className="font-sans text-[15px] md:text-[17px] tracking-[0.035em] font-normal text-[rgba(255,255,255,0.92)] text-center mb-[30px]">
-            Relationships. Life. Faith. Connection.
-          </p>
-        </motion.div>
-
-        {/* CTA Button */}
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={ctaReveal}
-        >
-          <motion.div
-            animate={isReady ? { y: [0, -2, 0] } : false}
-            transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut", delay: 1.85 }}
-            className="rounded-[8px]"
-          >
-            <Link
-              href="/book"
-              className="group relative flex items-center justify-center bg-[#FF5A4F] text-[#FFFFFF] font-[600] tracking-[0.01em] rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5A4F] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent shadow-[0_8px_22px_rgba(255,90,79,0.22)] hover:shadow-[0_12px_28px_rgba(255,90,79,0.30)] hover:bg-[#F0443A] hover:-translate-y-[2px] hover:scale-[1.015] px-[22px] md:px-[28px] py-[15px] md:py-[16px] text-[14px] md:text-[15px]"
-              style={{
-                transition: "transform 420ms cubic-bezier(0.22, 1, 0.36, 1), background-color 350ms ease, box-shadow 420ms ease"
-              }}
-            >
-              <span className="relative z-10 flex items-center">
-                Book a Private Session
-                <ArrowRight 
-                  className="ml-2 w-[16px] h-[16px] group-hover:translate-x-[4px]" 
-                  style={{ transition: "transform 420ms cubic-bezier(0.22, 1, 0.36, 1)" }}
-                />
-              </span>
-            </Link>
-          </motion.div>
-        </motion.div>
-        
       </motion.div>
     </section>
   );

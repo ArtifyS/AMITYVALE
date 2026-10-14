@@ -2,58 +2,65 @@
 
 import React from "react";
 import Link from "next/link";
-import { Check } from "lucide-react";
+import { Check, Calendar, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function ConfirmedPageContent() {
   return (
-    <section className="py-20 md:py-32 bg-white min-h-[100dvh] flex items-center justify-center">
-      <div className="max-w-[600px] w-full px-6 mx-auto">
+    <section className="py-16 md:py-28 bg-white min-h-[85vh] flex items-center justify-center">
+      <div className="max-w-[580px] w-full px-6 mx-auto">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="bg-white p-10 md:p-14 rounded-[20px] border-[1px] border-[#161514]/10 shadow-[0_20px_60px_rgba(0,0,0,0.03)] flex flex-col items-center text-center"
+          transition={{ duration: 0.45, ease: "easeOut" }}
+          className="bg-white p-8 md:p-12 rounded-[24px] border border-[#0B2A4A]/10 shadow-[0_18px_50px_rgba(11,42,74,0.06)] flex flex-col items-center text-center"
         >
-          <div className="w-16 h-16 rounded-full bg-[#FF5A4F]/10 flex items-center justify-center text-[#FF5A4F] mb-8">
-            <Check size={32} strokeWidth={2} />
+          {/* Success Checkmark Circle */}
+          <div className="w-16 h-16 rounded-full bg-[#0E5A63]/10 text-[#0E5A63] flex items-center justify-center mb-6 ring-8 ring-[#0E5A63]/5">
+            <Check size={32} strokeWidth={2.5} />
           </div>
 
-          <h1 className="font-serif text-[32px] md:text-[38px] text-[#161514] leading-[1.1] mb-4">
-            Your Session <br className="hidden md:block" />Is Confirmed.
+          <span className="text-[11px] font-bold tracking-[0.18em] uppercase text-[#FF5A4F] mb-2">
+            Reservation Confirmed
+          </span>
+
+          <h1 className="font-serif text-[32px] md:text-[38px] text-[#0B2A4A] leading-[1.15] mb-3">
+            Your Session Is Confirmed.
           </h1>
-          <p className="text-[15px] text-[#161514]/70 mb-10 max-w-[340px]">
-            Your booking details have been sent to your email. We look forward to our conversation.
+
+          <p className="text-[15px] leading-relaxed text-[#0B2A4A]/70 mb-8 max-w-[420px]">
+            Your appointment has been reserved and confirmation details have been sent to your email. We look forward to our conversation.
           </p>
 
-          {/* Example Data Display */}
-          <div className="w-full bg-[#FCFAF8] border-[1px] border-[#161514]/5 rounded-[12px] p-6 mb-10 flex flex-col gap-4 text-left">
-            <div className="flex justify-between items-start gap-4">
-              <div className="flex flex-col">
-                <span className="font-sans text-[10px] font-medium tracking-[0.16em] uppercase text-[#161514]/40 mb-1">Session</span>
-                <span className="text-[14px] text-[#161514] font-medium">Focused Session</span>
-              </div>
-              <span className="font-serif text-[18px] text-[#161514]">30 Min</span>
+          {/* Quick Confirmation Overview */}
+          <div className="w-full bg-[#FCFAF8] border border-[#0B2A4A]/[0.08] rounded-[16px] p-5 mb-8 flex flex-col gap-3.5 text-left">
+            <div className="flex justify-between items-center">
+              <span className="text-[11px] font-semibold tracking-[0.14em] uppercase text-[#0B2A4A]/50">
+                Session Format
+              </span>
+              <span className="text-[13.5px] font-medium text-[#0B2A4A]">
+                Private Online Video (Link via email)
+              </span>
             </div>
-            <div className="h-[1px] w-full bg-[#161514]/5" />
-            <div className="flex flex-col">
-              <span className="font-sans text-[10px] font-medium tracking-[0.16em] uppercase text-[#161514]/40 mb-1">When</span>
-              <span className="text-[14px] text-[#161514] mb-1">Tuesday, October 13, 2026</span>
-              <span className="text-[14px] text-[#161514]">3:00 PM (America/New_York)</span>
-            </div>
-            <div className="h-[1px] w-full bg-[#161514]/5" />
-            <div className="flex flex-col">
-              <span className="font-sans text-[10px] font-medium tracking-[0.16em] uppercase text-[#161514]/40 mb-1">Where</span>
-              <span className="text-[14px] text-[#161514]">Online (Link sent to email)</span>
+            <div className="h-[1px] w-full bg-[#0B2A4A]/[0.06]" />
+            <div className="flex justify-between items-center">
+              <span className="text-[11px] font-semibold tracking-[0.14em] uppercase text-[#0B2A4A]/50">
+                Calendar Status
+              </span>
+              <span className="text-[13.5px] font-semibold text-[#0E5A63] flex items-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5" />
+                Invitation Sent
+              </span>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 w-full">
-            <button className="flex-1 h-[48px] rounded-[3px] border-[1px] border-[#161514]/10 bg-white text-[13px] font-medium uppercase tracking-wide text-[#161514] hover:bg-white transition-colors">
-              Add to Calendar
-            </button>
-            <Link href="/" className="flex-1 h-[48px] flex items-center justify-center rounded-[3px] bg-[#161514] text-[13px] font-medium uppercase tracking-wide text-white hover:bg-[#161514]/90 transition-colors">
-              Return Home
+          <div className="flex flex-col sm:flex-row gap-3.5 w-full">
+            <Link 
+              href="/" 
+              className="flex-1 h-[50px] flex items-center justify-center rounded-full bg-[#FF5A4F] text-[13.5px] font-semibold tracking-wide text-white hover:bg-[#F0443A] shadow-[0_6px_20px_rgba(255,90,79,0.3)] transition-all cursor-pointer gap-2"
+            >
+              <span>Return to Home</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
