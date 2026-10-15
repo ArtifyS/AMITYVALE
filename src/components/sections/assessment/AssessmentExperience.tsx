@@ -13,6 +13,7 @@ import {
   Compass, 
   Heart, 
   Users, 
+  ArrowUpRight,
   Leaf, 
   HelpCircle,
   Lock
@@ -26,6 +27,7 @@ import {
   AssessmentCategoryKey, 
   CategoryInfo,
   QuestionItem,
+  DimensionResult,
   AssessmentResultData,
   ScoreBand
 } from "@/lib/assessmentData";
@@ -40,11 +42,134 @@ type AssessmentStep =
   | "reflection"
   | "results";
 
+// Category visual styling tokens: subtle 3.5% tints, subtle borders, accent colors
+const CATEGORY_STYLES: Record<
+  AssessmentCategoryKey,
+  {
+    accent: string;
+    bgTint: string;
+    borderDefault: string;
+    iconBg: string;
+    iconBorder: string;
+    iconColor: string;
+  }
+> = {
+  romantic: {
+    accent: "#DE5D52",
+    bgTint: "rgba(222, 93, 82, 0.035)",
+    borderDefault: "rgba(222, 93, 82, 0.16)",
+    iconBg: "rgba(222, 93, 82, 0.09)",
+    iconBorder: "rgba(222, 93, 82, 0.18)",
+    iconColor: "#DE5D52",
+  },
+  family: {
+    accent: "#C28726",
+    bgTint: "rgba(194, 135, 38, 0.035)",
+    borderDefault: "rgba(194, 135, 38, 0.18)",
+    iconBg: "rgba(194, 135, 38, 0.09)",
+    iconBorder: "rgba(194, 135, 38, 0.18)",
+    iconColor: "#C28726",
+  },
+  friendship: {
+    accent: "#167E8A",
+    bgTint: "rgba(22, 126, 138, 0.035)",
+    borderDefault: "rgba(22, 126, 138, 0.18)",
+    iconBg: "rgba(22, 126, 138, 0.09)",
+    iconBorder: "rgba(22, 126, 138, 0.18)",
+    iconColor: "#167E8A",
+  },
+  faith: {
+    accent: "#B87A18",
+    bgTint: "rgba(184, 122, 24, 0.035)",
+    borderDefault: "rgba(184, 122, 24, 0.18)",
+    iconBg: "rgba(184, 122, 24, 0.09)",
+    iconBorder: "rgba(184, 122, 24, 0.18)",
+    iconColor: "#B87A18",
+  },
+  "personal-growth": {
+    accent: "#127A70",
+    bgTint: "rgba(18, 122, 112, 0.035)",
+    borderDefault: "rgba(18, 122, 112, 0.18)",
+    iconBg: "rgba(18, 122, 112, 0.09)",
+    iconBorder: "rgba(18, 122, 112, 0.18)",
+    iconColor: "#127A70",
+  },
+};
+
+// Helper to produce concise, emotionally intelligent main interpretation
+function getMainInterpretation(
+  cat: AssessmentCategoryKey,
+  focus: DimensionResult,
+  isBalanced: boolean
+): string {
+  if (isBalanced) {
+    switch (cat) {
+      case "romantic":
+        return "Your responses reflect a relatively steady baseline across your connection. Rather than sharp division, what stands out is the opportunity to protect everyday warmth and gently nurture deeper emotional intimacy.";
+      case "family":
+        return "Your answers suggest a relatively stable foundation with this family member. The opportunity is not about solving major crises, but maintaining healthy boundaries and intentional presence.";
+      case "friendship":
+        return "Your responses suggest a reasonably balanced friendship where care and contact exist, with room to deepen mutual understanding as your lives evolve.";
+      case "faith":
+        return "Your answers reflect an open and grounded relationship with your faith or spiritual life, with space to explore new questions without feeling unsettled.";
+      case "personal-growth":
+        return "Your answers indicate a thoughtful, balanced awareness of yourself, with steady room to align your daily choices more intentionally with your values.";
+    }
+  }
+
+  switch (focus.key) {
+    case "communication":
+      return cat === "romantic"
+        ? "There appears to be a desire for closeness, but important conversations may be getting caught in defensiveness or withdrawal before either of you feels completely met."
+        : "Conversations may be getting lost in misunderstanding or unspoken tension, making it harder to talk honestly about what matters most.";
+    case "trust":
+      return cat === "romantic"
+        ? "Your responses suggest that vulnerability may be feeling guarded right now, where sharing deeper feelings or doubts feels less protected than you would like."
+        : "Past experiences or guardedness may be making openness feel risky, leading to hesitation before sharing what is genuinely on your mind.";
+    case "connection":
+      return cat === "romantic"
+        ? "The emotional engagement between you may currently feel uneven, where one person carries more of the relational effort while the other drifts into distance."
+        : "The relationship may feel somewhat distant or one-sided, leaving a desire for more consistent mutual warmth and reciprocity.";
+    case "authenticity":
+      return cat === "family"
+        ? "You may be spending significant emotional energy managing reactions or keeping the peace, leaving less room to honor your own authentic limits and needs."
+        : "A recurring pattern of keeping the peace or accommodating others may be quietly draining your sense of ease and genuine connection.";
+    case "repair":
+      return cat === "romantic"
+        ? "Your answers suggest that conflict may not be ending in true repair, which can leave the same underlying tension returning again in subtle ways."
+        : "Tension often passes without being fully resolved, which can allow old grievances to linger quietly beneath the surface.";
+    case "meaning_direction":
+      return "You may be experiencing a season where familiar sources of meaning feel distant, leaving you searching for a clearer, more grounded spiritual sense of direction.";
+    case "honesty_questions":
+      return "You may be carrying honest doubts or questions that feel difficult to express openly, creating an internal tension between what you feel and what you think is expected of you.";
+    case "values_alignment":
+      return "There appears to be a quiet tension between what you value deeply and how daily time, obligations, or energy are currently unfolding.";
+    case "connection_support":
+      return "Spiritual life may currently feel solitary, without the supportive community, quiet reflection, or guidance you feel you need.";
+    case "belief_openness":
+      return "You may be untangling inherited expectations from your own genuine convictions, which often feels disorienting before it brings clarity.";
+    case "self_awareness":
+      return "Automatic emotional reactions may sometimes take the lead before you have space to pause, reflect, and choose how you truly want to respond.";
+    case "needs_boundaries":
+      return "You may find yourself frequently second-guessing your right to have limits, over-explaining boundaries, or setting your own needs aside.";
+    case "self_trust":
+      return "A tendency to question your own judgment or carry difficulties alone may be keeping you from making decisions with quiet confidence.";
+    case "learning_compassion":
+      return "Self-criticism may be quick to arise when things feel uncertain or imperfect, turning normal setbacks into heavier emotional burdens.";
+    case "direction_alignment":
+      return "Daily demands may be crowding out long-term personal clarity, making it difficult to feel anchored in where you are heading next.";
+    default:
+      return focus.focusCopy;
+  }
+}
+
 export function AssessmentExperience() {
   const prefersReducedMotion = useReducedMotion();
 
   // Assessment & Category State
   const [selectedCategoryKey, setSelectedCategoryKey] = useState<AssessmentCategoryKey | null>(null);
+  const [isSelecting, setIsSelecting] = useState<boolean>(false);
+  const [hoveredKey, setHoveredKey] = useState<AssessmentCategoryKey | null>(null);
   const [step, setStep] = useState<AssessmentStep>("intro");
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState<number>(0);
   const [answers, setAnswers] = useState<Record<number, number>>({});
@@ -55,8 +180,8 @@ export function AssessmentExperience() {
 
   // Lead capture state
   const [firstName, setFirstName] = useState<string>("");
+  const [firstNameError, setFirstNameError] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [marketingConsent, setMarketingConsent] = useState<boolean>(false);
   const [emailError, setEmailError] = useState<string>("");
   const [isSubmittingLead, setIsSubmittingLead] = useState<boolean>(false);
   const [leadSaveError, setLeadSaveError] = useState<string>("");
@@ -91,51 +216,73 @@ export function AssessmentExperience() {
 
   // Step 1: User selects category
   const handleSelectCategory = (catKey: AssessmentCategoryKey) => {
+    if (isSelecting) return;
+    setIsSelecting(true);
     setSelectedCategoryKey(catKey);
     setAnswers({});
     setSafetyAnswer(null);
     setOpenReflection("");
     setCurrentQuestionIdx(0);
 
-    // If email was already captured in this browser session, advance straight to prompt
-    if (leadCapturedInSession && email) {
-      // Quietly update selected area in background
-      fetch("/api/assessment-lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          firstName,
-          selectedArea: catKey,
-          marketingConsent,
-          leadSource: "free_connection_checkin",
-        }),
-      }).catch(() => {});
-      setStep("category_prompt");
-    } else {
-      setStep("email_capture");
-    }
-    scrollToCard();
+    // Quick selected state before transitioning smoothly
+    setTimeout(() => {
+      setIsSelecting(false);
+      // If email was already captured in this browser session, advance straight to prompt
+      if (leadCapturedInSession && email) {
+        // Quietly update selected area in background
+        fetch("/api/assessment-lead", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email,
+            firstName,
+            selectedArea: catKey,
+            marketingConsent: false,
+            leadSource: "free_connection_checkin",
+          }),
+        }).catch(() => {});
+        setStep("category_prompt");
+      } else {
+        setStep("email_capture");
+      }
+      scrollToCard();
+    }, 240);
   };
+
+  // Validation & Form Validity
+  const isEmailFormatValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const isFormValid = Boolean(firstName.trim().length > 0 && isEmailFormatValid);
 
   // Step 2: Handle Lead Capture Form Submission
   const handleLeadSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (isSubmittingLead || leadSuccessTransition) return;
 
+    let hasError = false;
+    const cleanFirstName = firstName.trim();
+    if (!cleanFirstName) {
+      setFirstNameError("Enter your first name to continue.");
+      hasError = true;
+    } else {
+      setFirstNameError("");
+    }
+
     const cleanEmail = email.trim();
     if (!cleanEmail) {
-      setEmailError("Enter a valid email address to continue.");
-      return;
+      setEmailError("Enter your email address to continue.");
+      hasError = true;
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(cleanEmail)) {
+        setEmailError("Enter a valid email address.");
+        hasError = true;
+      } else {
+        setEmailError("");
+      }
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(cleanEmail)) {
-      setEmailError("Enter a valid email address to continue.");
-      return;
-    }
+    if (hasError) return;
 
-    setEmailError("");
     setLeadSaveError("");
     setIsSubmittingLead(true);
 
@@ -145,9 +292,9 @@ export function AssessmentExperience() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: cleanEmail,
-          firstName: firstName.trim() || undefined,
+          firstName: cleanFirstName,
           selectedArea: selectedCategoryKey,
-          marketingConsent,
+          marketingConsent: false,
           leadSource: "free_connection_checkin",
         }),
       });
@@ -157,7 +304,7 @@ export function AssessmentExperience() {
         throw new Error(data.error || "Failed to save email");
       }
 
-      // Success: Briefly show "Ready." for ~350ms then advance
+      // Success: Briefly show "Ready" for ~300ms then advance
       setIsSubmittingLead(false);
       setLeadSuccessTransition(true);
       setLeadCapturedInSession(true);
@@ -166,7 +313,7 @@ export function AssessmentExperience() {
         setLeadSuccessTransition(false);
         setStep("category_prompt");
         scrollToCard();
-      }, 350);
+      }, 300);
     } catch (err) {
       setIsSubmittingLead(false);
       setLeadSaveError("We could not save your email just yet. Please try again.");
@@ -279,6 +426,9 @@ export function AssessmentExperience() {
     }
 
     if (step === "email_capture") {
+      setSelectedCategoryKey(null);
+      setIsSelecting(false);
+      setHoveredKey(null);
       setStep("intro");
       return;
     }
@@ -287,6 +437,8 @@ export function AssessmentExperience() {
   // Retake assessment (Preserves captured email in current session)
   const handleRetake = () => {
     setSelectedCategoryKey(null);
+    setIsSelecting(false);
+    setHoveredKey(null);
     setAnswers({});
     setSafetyAnswer(null);
     setOpenReflection("");
@@ -298,19 +450,19 @@ export function AssessmentExperience() {
     }
   };
 
-  // Category icons mapping
-  const renderCategoryIcon = (key: AssessmentCategoryKey, className: string = "w-5 h-5") => {
+  // Category icons mapping with refined line weights & subtle tint fills
+  const renderCategoryIcon = (key: AssessmentCategoryKey, className: string = "w-[18px] h-[18px]") => {
     switch (key) {
       case "romantic":
-        return <Heart className={className} />;
+        return <Heart className={className} strokeWidth={2.1} fill="currentColor" fillOpacity={0.16} />;
       case "family":
-        return <Users className={className} />;
+        return <Users className={className} strokeWidth={2.1} />;
       case "friendship":
-        return <Sparkles className={className} />;
+        return <Sparkles className={className} strokeWidth={2.1} fill="currentColor" fillOpacity={0.16} />;
       case "faith":
-        return <Compass className={className} />;
+        return <Compass className={className} strokeWidth={2.1} />;
       case "personal-growth":
-        return <Leaf className={className} />;
+        return <ArrowUpRight className={className} strokeWidth={2.3} />;
     }
   };
 
@@ -319,354 +471,469 @@ export function AssessmentExperience() {
     switch (band) {
       case "STEADIER":
         return (
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-[11.5px] font-sans font-semibold tracking-wide bg-[#0E5A63]/10 text-[#0E5A63] border border-[#0E5A63]/20">
-            Steadier
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-sans font-semibold tracking-wide bg-[#167E8A]/10 text-[#167E8A] border border-[#167E8A]/20">
+            Steadier area
           </span>
         );
       case "MIXED":
         return (
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-[11.5px] font-sans font-semibold tracking-wide bg-[#D8A23D]/15 text-[#9A701E] border border-[#D8A23D]/30">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-sans font-semibold tracking-wide bg-[#C28726]/12 text-[#9A6B1A] border border-[#C28726]/25">
             Mixed
           </span>
         );
       case "WORTH EXPLORING":
         return (
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-[11.5px] font-sans font-semibold tracking-wide bg-[#FF5A4F]/10 text-[#FF5A4F] border border-[#FF5A4F]/20">
-            Worth Exploring
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-sans font-semibold tracking-wide bg-[#DE5D52]/10 text-[#DE5D52] border border-[#DE5D52]/20">
+            Worth exploring
           </span>
         );
     }
   };
 
   return (
-    <div ref={containerRef} className="w-full min-h-[calc(100vh-76px)] bg-white py-8 md:py-16 px-4 sm:px-6 flex flex-col justify-center">
-      
+    <div
+      ref={containerRef}
+      className={`w-full min-h-[calc(100vh-76px)] bg-white px-4 sm:px-6 flex flex-col justify-center relative overflow-hidden ${
+        step === "intro"
+          ? "pt-5 pb-8 sm:pt-7 sm:pb-10 md:pt-8 md:pb-12"
+          : step === "email_capture"
+          ? "pt-6 pb-8 sm:pt-8 sm:pb-10 md:pt-8 md:pb-12"
+          : step === "results"
+          ? "py-8 sm:py-12 md:py-16"
+          : "py-8 md:py-16"
+      }`}
+    >
+      {/* Subtle decorative radial glow */}
+      {step === "intro" && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_45%_at_50%_0%,rgba(255,90,79,0.03),transparent_70%)]"
+        />
+      )}
+
       {/* ====================================================
           STEP 0: INTRO & CATEGORY SELECTION
           ==================================================== */}
       {step === "intro" && (
-        <div className="max-w-[1040px] mx-auto w-full">
-          {/* Hero Section */}
-          <div className="text-center max-w-[760px] mx-auto mb-12 md:mb-16">
-            <span className="inline-block font-sans uppercase tracking-[0.2em] text-[#FF5A4F] text-[11px] md:text-[12px] font-bold mb-4">
-              Free Reflective Check-In
+        <div className="max-w-[960px] mx-auto w-full relative z-10">
+          {/* Header Section */}
+          <div className="text-center max-w-[640px] mx-auto mb-5 sm:mb-6 md:mb-7">
+            <span className="inline-block font-sans uppercase tracking-[0.18em] text-[#FF5A4F] text-[11px] sm:text-[12px] font-bold mb-2 sm:mb-2.5">
+              Free Connection Check-In
             </span>
-            <h1 className="font-serif text-[38px] md:text-[52px] lg:text-[58px] leading-[1.08] text-[#0B2A4A] mb-5 tracking-tight">
-              A Few Questions.<br />
-              <span className="text-[#FF5A4F] italic">A Clearer Place to Begin.</span>
+            <h1 className="font-serif text-[34px] sm:text-[40px] md:text-[46px] leading-[1.04] text-[#0B2A4A] tracking-tight">
+              What Would You Like{" "}
+              <span className="text-[#FF5A4F] italic block sm:inline">to Focus On?</span>
             </h1>
-            <p className="text-[#5C5550] text-[16px] md:text-[18px] leading-[1.65] mb-6 max-w-[580px] mx-auto">
-              Take a few minutes to reflect on the relationship or part of life that feels most important right now.
+            <p className="text-[#26313A] text-[14px] sm:text-[15px] leading-relaxed mt-2.5 sm:mt-3">
+              Choose the area that feels most relevant right now.
             </p>
-            
-            {/* Trust line */}
-            <div className="inline-flex flex-wrap items-center justify-center gap-2 text-[12px] md:text-[13px] text-[#5C5550]/80 font-sans tracking-wide bg-[#F7F3EF] px-5 py-2 rounded-full mb-6">
-              <span>About 2–3 minutes</span>
-              <span>•</span>
-              <span>Private</span>
-              <span>•</span>
-              <span>No payment required</span>
+          </div>
+
+          {/* DESKTOP / TABLET SELECTION (3 + 2 Compact Grid) */}
+          <div className="hidden md:block w-full">
+            {/* ROW 1: 3 cards */}
+            <div className="grid grid-cols-3 gap-4 lg:gap-4.5 w-full">
+              {ASSESSMENT_CATEGORIES.slice(0, 3).map((cat) => {
+                const styles = CATEGORY_STYLES[cat.id];
+                const isSelected = selectedCategoryKey === cat.id;
+                const isHovered = hoveredKey === cat.id;
+
+                return (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    onClick={() => handleSelectCategory(cat.id)}
+                    onMouseEnter={() => setHoveredKey(cat.id)}
+                    onMouseLeave={() => setHoveredKey(null)}
+                    disabled={isSelecting}
+                    style={{
+                      backgroundColor: isSelected ? styles.iconBg : styles.bgTint,
+                      borderColor: isSelected || isHovered ? styles.accent : styles.borderDefault,
+                    }}
+                    className={`group relative w-full h-[132px] rounded-[20px] p-4 lg:p-4.5 text-left transition-all duration-200 ease-out cursor-pointer flex flex-col justify-between border shadow-[0_10px_28px_rgba(11,42,74,0.04)] hover:shadow-[0_14px_32px_rgba(11,42,74,0.08)] hover:-translate-y-[2.5px] ${
+                      isSelected ? "ring-2 ring-offset-1" : ""
+                    }`}
+                  >
+                    {/* Top row: Icon + Number */}
+                    <div className="flex items-center justify-between w-full">
+                      <div
+                        className="w-[38px] h-[38px] rounded-full flex items-center justify-center shrink-0 border transition-transform duration-200 group-hover:scale-105"
+                        style={{
+                          backgroundColor: styles.iconBg,
+                          borderColor: styles.iconBorder,
+                          color: styles.iconColor,
+                        }}
+                      >
+                        {isSelected ? (
+                          <Check className="w-4 h-4 stroke-[2.5]" />
+                        ) : (
+                          renderCategoryIcon(cat.id, "w-[18px] h-[18px]")
+                        )}
+                      </div>
+                      <span
+                        className="font-sans text-[12px] font-bold tracking-wider"
+                        style={{ color: styles.accent }}
+                      >
+                        {cat.number}
+                      </span>
+                    </div>
+
+                    {/* Bottom row: Title + Tiny Arrow */}
+                    <div className="flex items-end justify-between w-full gap-2 mt-auto">
+                      <h3 className="font-serif text-[21px] lg:text-[22px] text-[#0B2A4A] leading-[1.18] font-normal tracking-tight line-clamp-2">
+                        {cat.title}
+                      </h3>
+                      <div className="shrink-0 pb-0.5">
+                        {isSelected ? (
+                          <div
+                            className="w-5 h-5 rounded-full flex items-center justify-center text-white"
+                            style={{ backgroundColor: styles.accent }}
+                          >
+                            <Check className="w-3 h-3 stroke-[2.5]" />
+                          </div>
+                        ) : (
+                          <ArrowRight className="w-4 h-4 text-[#0B2A4A]/40 group-hover:text-[#0B2A4A] group-hover:translate-x-[3px] transition-all duration-200" />
+                        )}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
 
-            {/* Subtle Disclaimer */}
-            <p className="text-[12px] text-[#5C5550]/70 max-w-md mx-auto italic">
+            {/* ROW 2: 2 cards centered */}
+            <div className="flex justify-center gap-4 lg:gap-4.5 w-full mt-4 lg:mt-4.5">
+              {ASSESSMENT_CATEGORIES.slice(3, 5).map((cat) => {
+                const styles = CATEGORY_STYLES[cat.id];
+                const isSelected = selectedCategoryKey === cat.id;
+                const isHovered = hoveredKey === cat.id;
+
+                return (
+                  <div
+                    key={cat.id}
+                    className="w-[calc((100%-2rem)/3)] lg:w-[calc((100%-2.25rem)/3)]"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => handleSelectCategory(cat.id)}
+                      onMouseEnter={() => setHoveredKey(cat.id)}
+                      onMouseLeave={() => setHoveredKey(null)}
+                      disabled={isSelecting}
+                      style={{
+                        backgroundColor: isSelected ? styles.iconBg : styles.bgTint,
+                        borderColor: isSelected || isHovered ? styles.accent : styles.borderDefault,
+                      }}
+                      className={`group relative w-full h-[132px] rounded-[20px] p-4 lg:p-4.5 text-left transition-all duration-200 ease-out cursor-pointer flex flex-col justify-between border shadow-[0_10px_28px_rgba(11,42,74,0.04)] hover:shadow-[0_14px_32px_rgba(11,42,74,0.08)] hover:-translate-y-[2.5px] ${
+                        isSelected ? "ring-2 ring-offset-1" : ""
+                      }`}
+                    >
+                      {/* Top row: Icon + Number */}
+                      <div className="flex items-center justify-between w-full">
+                        <div
+                          className="w-[38px] h-[38px] rounded-full flex items-center justify-center shrink-0 border transition-transform duration-200 group-hover:scale-105"
+                          style={{
+                            backgroundColor: styles.iconBg,
+                            borderColor: styles.iconBorder,
+                            color: styles.iconColor,
+                          }}
+                        >
+                          {isSelected ? (
+                            <Check className="w-4 h-4 stroke-[2.5]" />
+                          ) : (
+                            renderCategoryIcon(cat.id, "w-[18px] h-[18px]")
+                          )}
+                        </div>
+                        <span
+                          className="font-sans text-[12px] font-bold tracking-wider"
+                          style={{ color: styles.accent }}
+                        >
+                          {cat.number}
+                        </span>
+                      </div>
+
+                      {/* Bottom row: Title + Tiny Arrow */}
+                      <div className="flex items-end justify-between w-full gap-2 mt-auto">
+                        <h3 className="font-serif text-[21px] lg:text-[22px] text-[#0B2A4A] leading-[1.18] font-normal tracking-tight line-clamp-2">
+                          {cat.title}
+                        </h3>
+                        <div className="shrink-0 pb-0.5">
+                          {isSelected ? (
+                            <div
+                              className="w-5 h-5 rounded-full flex items-center justify-center text-white"
+                              style={{ backgroundColor: styles.accent }}
+                            >
+                              <Check className="w-3 h-3 stroke-[2.5]" />
+                            </div>
+                          ) : (
+                            <ArrowRight className="w-4 h-4 text-[#0B2A4A]/40 group-hover:text-[#0B2A4A] group-hover:translate-x-[3px] transition-all duration-200" />
+                          )}
+                        </div>
+                      </div>
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* MOBILE SELECTION (5 Compact Horizontal Rows) */}
+          <div className="block md:hidden w-full space-y-2.5">
+            {ASSESSMENT_CATEGORIES.map((cat) => {
+              const styles = CATEGORY_STYLES[cat.id];
+              const isSelected = selectedCategoryKey === cat.id;
+
+              return (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => handleSelectCategory(cat.id)}
+                  disabled={isSelecting}
+                  style={{
+                    backgroundColor: isSelected ? styles.iconBg : styles.bgTint,
+                    borderColor: isSelected ? styles.accent : styles.borderDefault,
+                  }}
+                  className={`w-full h-[60px] px-4 rounded-[16px] flex items-center justify-between text-left transition-all duration-180 cursor-pointer border shadow-[0_4px_16px_rgba(11,42,74,0.03)] active:scale-[0.99] ${
+                    isSelected ? "ring-2 ring-offset-1" : ""
+                  }`}
+                >
+                  <div className="flex items-center gap-3.5 min-w-0 pr-2">
+                    <div
+                      className="w-[36px] h-[36px] rounded-full flex items-center justify-center shrink-0 border"
+                      style={{
+                        backgroundColor: styles.iconBg,
+                        borderColor: styles.iconBorder,
+                        color: styles.iconColor,
+                      }}
+                    >
+                      {isSelected ? (
+                        <Check className="w-4 h-4 stroke-[2.5]" />
+                      ) : (
+                        renderCategoryIcon(cat.id, "w-[17px] h-[17px]")
+                      )}
+                    </div>
+                    <span className="font-serif text-[16px] text-[#0B2A4A] font-medium leading-tight truncate">
+                      {cat.title}
+                    </span>
+                  </div>
+
+                  <div className="shrink-0">
+                    {isSelected ? (
+                      <div
+                        className="w-5 h-5 rounded-full flex items-center justify-center text-white"
+                        style={{ backgroundColor: styles.accent }}
+                      >
+                        <Check className="w-3 h-3 stroke-[2.5]" />
+                      </div>
+                    ) : (
+                      <ArrowRight className="w-4 h-4 text-[#0B2A4A]/40" />
+                    )}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Trust line & Disclaimer Below Options */}
+          <div className="mt-5 sm:mt-6 text-center">
+            <p className="text-[12px] sm:text-[12.5px] text-[#26313A] font-sans font-medium tracking-wide">
+              2–3 minutes &nbsp;•&nbsp; Private &nbsp;•&nbsp; Free
+            </p>
+            <p className="mt-1.5 text-[11px] sm:text-[11.5px] text-[#26313A]/70 italic max-w-md mx-auto px-4">
               This is a reflective coaching tool, not a diagnosis or clinical assessment.
             </p>
-          </div>
-
-          {/* Section: Choose the Area */}
-          <div className="mb-6 text-center">
-            <h2 className="font-serif text-[24px] md:text-[30px] text-[#0B2A4A] mb-2">
-              What Would You Like to Reflect On?
-            </h2>
-            <p className="text-[#5C5550] text-[14.5px] md:text-[15.5px]">
-              Choose the area that feels closest to what is on your mind.
-            </p>
-          </div>
-
-          {/* 5 Cards (3 + 2 layout on desktop) */}
-          <div className="grid grid-cols-1 md:grid-cols-6 gap-5 md:gap-6 max-w-[960px] mx-auto">
-            {/* Top row of 3 cards */}
-            {ASSESSMENT_CATEGORIES.slice(0, 3).map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => handleSelectCategory(cat.id)}
-                className={`group md:col-span-2 bg-white rounded-[24px] p-7 text-left border shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between ${
-                  selectedCategoryKey === cat.id ? "border-[#FF5A4F]/60 ring-2 ring-[#FF5A4F]/20" : "border-[#151312]/[0.08]"
-                }`}
-              >
-                {/* Accent Top Border */}
-                <div 
-                  className="absolute top-0 left-0 right-0 h-[4px] transition-all duration-300 group-hover:h-[6px]"
-                  style={{ backgroundColor: cat.accentColor }}
-                />
-
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <span 
-                      className="font-serif text-[18px] font-bold"
-                      style={{ color: cat.accentColor }}
-                    >
-                      {cat.number}
-                    </span>
-                    <div 
-                      className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
-                      style={{ backgroundColor: `${cat.accentColor}18`, color: cat.accentColor }}
-                    >
-                      {renderCategoryIcon(cat.id, "w-4 h-4")}
-                    </div>
-                  </div>
-
-                  <h3 className="font-serif text-[20px] md:text-[21px] text-[#0B2A4A] mb-2 leading-snug group-hover:text-[#FF5A4F] transition-colors">
-                    {cat.title}
-                  </h3>
-                  <p className="text-[13.5px] leading-[1.5] text-[#5C5550]">
-                    {cat.description}
-                  </p>
-                </div>
-
-                <div className="mt-6 flex items-center text-[12.5px] font-sans font-semibold tracking-wide text-[#0B2A4A] group-hover:text-[#FF5A4F] transition-colors">
-                  <span>Start Check-In</span>
-                  <ArrowRight className="w-3.5 h-3.5 ml-1.5 transition-transform group-hover:translate-x-1" />
-                </div>
-              </button>
-            ))}
-
-            {/* Bottom row of 2 cards (centered via 6-column grid offset) */}
-            {ASSESSMENT_CATEGORIES.slice(3, 5).map((cat, idx) => (
-              <button
-                key={cat.id}
-                onClick={() => handleSelectCategory(cat.id)}
-                className={`group md:col-span-3 ${
-                  idx === 0 ? "md:col-start-1 lg:col-start-1" : ""
-                } bg-white rounded-[24px] p-7 text-left border shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between ${
-                  selectedCategoryKey === cat.id ? "border-[#FF5A4F]/60 ring-2 ring-[#FF5A4F]/20" : "border-[#151312]/[0.08]"
-                }`}
-              >
-                {/* Accent Top Border */}
-                <div 
-                  className="absolute top-0 left-0 right-0 h-[4px] transition-all duration-300 group-hover:h-[6px]"
-                  style={{ backgroundColor: cat.accentColor }}
-                />
-
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <span 
-                      className="font-serif text-[18px] font-bold"
-                      style={{ color: cat.accentColor }}
-                    >
-                      {cat.number}
-                    </span>
-                    <div 
-                      className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
-                      style={{ backgroundColor: `${cat.accentColor}18`, color: cat.accentColor }}
-                    >
-                      {renderCategoryIcon(cat.id, "w-4 h-4")}
-                    </div>
-                  </div>
-
-                  <h3 className="font-serif text-[20px] md:text-[21px] text-[#0B2A4A] mb-2 leading-snug group-hover:text-[#FF5A4F] transition-colors">
-                    {cat.title}
-                  </h3>
-                  <p className="text-[13.5px] leading-[1.5] text-[#5C5550]">
-                    {cat.description}
-                  </p>
-                </div>
-
-                <div className="mt-6 flex items-center text-[12.5px] font-sans font-semibold tracking-wide text-[#0B2A4A] group-hover:text-[#FF5A4F] transition-colors">
-                  <span>Start Check-In</span>
-                  <ArrowRight className="w-3.5 h-3.5 ml-1.5 transition-transform group-hover:translate-x-1" />
-                </div>
-              </button>
-            ))}
           </div>
         </div>
       )}
 
       {/* ====================================================
-          STEP 1: EMAIL / LEAD CAPTURE (Centered Premium Card)
+          STEP 1: EMAIL / LEAD CAPTURE (Clean Open Page Layout)
           ==================================================== */}
       {step === "email_capture" && selectedCategory && (
         <motion.div
           key="email_capture"
-          initial={{ opacity: 0, y: 14 }}
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -14 }}
-          transition={{ duration: prefersReducedMotion ? 0.05 : 0.3 }}
-          className="max-w-[660px] mx-auto w-full"
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: prefersReducedMotion ? 0.05 : 0.28 }}
+          className="max-w-[580px] mx-auto w-full relative z-10 px-1 sm:px-0"
         >
-          <div className="bg-white rounded-[26px] md:rounded-[28px] p-7 sm:p-10 md:p-12 border border-[#FF5A4F]/25 shadow-[0_16px_45px_rgba(11,42,74,0.06)] relative overflow-hidden">
-            
-            {/* Top Accent Line with selected category color */}
-            <div 
-              className="absolute top-0 left-0 right-0 h-[4px]"
-              style={{ backgroundColor: selectedCategory.accentColor }}
-            />
-
-            {/* Back Button */}
+          {/* Back Button */}
+          <div className="mb-5 sm:mb-6">
             <button
               type="button"
               onClick={handleBack}
               disabled={isSubmittingLead}
-              className="inline-flex items-center gap-1.5 text-[12.5px] font-sans text-[#5C5550] hover:text-[#0B2A4A] transition-colors mb-6 disabled:opacity-40"
+              className="inline-flex items-center gap-1.5 text-[13px] font-sans font-medium text-[#0B2A4A] hover:text-[#FF5A4F] transition-colors disabled:opacity-40 cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back</span>
             </button>
+          </div>
 
-            {/* Context Badge */}
+          {/* Small Selected-Area Indicator */}
+          <div className="mb-4 sm:mb-5">
             <div 
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[12px] font-sans font-semibold mb-5 border"
-              style={{
-                backgroundColor: `${selectedCategory.accentColor}12`,
-                borderColor: `${selectedCategory.accentColor}35`,
-                color: selectedCategory.accentColor === "#FF5A4F" ? "#D94035" : selectedCategory.accentColor
-              }}
+              className="inline-flex items-center gap-2 text-[11.5px] font-sans font-bold tracking-[0.14em] uppercase"
+              style={{ color: CATEGORY_STYLES[selectedCategory.id]?.iconColor || selectedCategory.accentColor }}
             >
-              <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: selectedCategory.accentColor }} />
-              <span>You selected: <strong>{selectedCategory.title}</strong></span>
+              <span 
+                className="w-1.5 h-1.5 rounded-full" 
+                style={{ backgroundColor: CATEGORY_STYLES[selectedCategory.id]?.iconColor || selectedCategory.accentColor }} 
+              />
+              <span>Selected: {selectedCategory.title}</span>
             </div>
+          </div>
 
-            {/* Eyebrow & Headings */}
-            <span className="font-sans uppercase tracking-[0.2em] text-[#FF5A4F] text-[11px] font-bold block mb-2">
+          {/* Eyebrow, Short Heading, One Short Explanatory Line */}
+          <div className="mb-7 sm:mb-8">
+            <span className="font-sans uppercase tracking-[0.18em] text-[#FF5A4F] text-[11px] font-bold block mb-2 sm:mb-2.5">
               YOUR PRIVATE CHECK-IN
             </span>
-            <h2 className="font-serif text-[28px] sm:text-[34px] text-[#0B2A4A] leading-[1.2] mb-3">
-              Your Reflection Starts Here.
-            </h2>
-            <p className="text-[#5C5550] text-[14.5px] sm:text-[15.5px] leading-[1.6] mb-8">
-              Enter your email to continue your free Amity Vale Connection Check-In and receive guidance related to the area you selected.
+            <h1 className="font-serif text-[32px] sm:text-[38px] md:text-[40px] leading-[1.08] text-[#0B2A4A] tracking-tight mb-2.5 sm:mb-3">
+              Let’s Personalize Your Check-In.
+            </h1>
+            <p className="text-[#26313A] text-[14.5px] sm:text-[15.5px] leading-relaxed">
+              Enter your name and email to continue your free check-in and receive your results.
             </p>
+          </div>
 
-            {/* Lead Form */}
-            <form onSubmit={handleLeadSubmit} noValidate className="space-y-4">
-              
-              {/* First Name (Optional) */}
-              <div>
-                <div className="flex justify-between items-center mb-1.5">
-                  <label htmlFor="first_name_input" className="text-[13px] font-sans font-semibold text-[#0B2A4A]">
-                    First name
-                  </label>
-                  <span className="text-[11.5px] font-sans text-[#5C5550]/70">
-                    Optional
-                  </span>
-                </div>
-                <input
-                  id="first_name_input"
-                  name="given-name"
-                  type="text"
-                  autoComplete="given-name"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  placeholder="e.g. Sarah"
-                  className="w-full h-[52px] rounded-[13px] border border-[#0B2A4A]/15 px-4 text-[14.5px] font-sans text-[#0B2A4A] placeholder:text-[#5C5550]/40 bg-white focus:outline-none focus:border-[#FF5A4F] focus:ring-2 focus:ring-[#FF5A4F]/25 transition-all"
-                />
-              </div>
-
-              {/* Email Address (Required) */}
-              <div>
-                <div className="flex justify-between items-center mb-1.5">
-                  <label htmlFor="email_address_input" className="text-[13px] font-sans font-semibold text-[#0B2A4A]">
-                    Email address
-                  </label>
-                  <span className="text-[11.5px] font-sans text-[#FF5A4F] font-semibold">
-                    Required
-                  </span>
-                </div>
-                <input
-                  id="email_address_input"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    if (emailError) setEmailError("");
-                    if (leadSaveError) setLeadSaveError("");
-                  }}
-                  onBlur={() => {
-                    if (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-                      setEmailError("Enter a valid email address to continue.");
-                    }
-                  }}
-                  aria-invalid={Boolean(emailError)}
-                  aria-describedby={emailError ? "email_error_text" : undefined}
-                  placeholder="you@example.com"
-                  className={`w-full h-[52px] rounded-[13px] border px-4 text-[14.5px] font-sans text-[#0B2A4A] placeholder:text-[#5C5550]/40 bg-white focus:outline-none transition-all ${
-                    emailError 
-                      ? "border-[#FF5A4F] ring-1 ring-[#FF5A4F]" 
-                      : "border-[#0B2A4A]/15 focus:border-[#FF5A4F] focus:ring-2 focus:ring-[#FF5A4F]/25"
-                  }`}
-                />
-                {emailError && (
-                  <p id="email_error_text" className="text-[12px] text-[#FF5A4F] mt-1.5 font-medium flex items-center gap-1">
-                    <span>{emailError}</span>
-                  </p>
-                )}
-              </div>
-
-              {/* Marketing Consent Checkbox (Optional, unchecked by default) */}
-              <div className="pt-2">
-                <label className="flex items-start gap-3 cursor-pointer group">
-                  <input
-                    type="checkbox"
-                    checked={marketingConsent}
-                    onChange={(e) => setMarketingConsent(e.target.checked)}
-                    className="mt-1 w-4 h-4 rounded text-[#FF5A4F] border-[#0B2A4A]/25 focus:ring-[#FF5A4F]/30 accent-[#FF5A4F]"
-                  />
-                  <span className="text-[12.5px] sm:text-[13px] text-[#5C5550] group-hover:text-[#0B2A4A] leading-[1.45] transition-colors select-none">
-                    Send me occasional Amity Vale guidance and resources related to the area I selected.
-                  </span>
+          {/* Lead Form */}
+          <form onSubmit={handleLeadSubmit} noValidate className="space-y-[18px] sm:space-y-[20px]">
+            
+            {/* First Name (Required) */}
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <label htmlFor="first_name_input" className="text-[12px] font-sans font-bold tracking-wider text-[#0B2A4A] uppercase">
+                  First Name
                 </label>
+                <span className="text-[11px] font-sans font-semibold text-[#FF5A4F]">
+                  Required
+                </span>
               </div>
-
-              {/* Error Message if Network/Storage Fails */}
-              {leadSaveError && (
-                <div className="p-3.5 rounded-[14px] bg-[#FFF8F7] border border-[#FF5A4F]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-[13px] text-[#FF5A4F]">
-                  <p className="font-medium">{leadSaveError}</p>
-                  <button
-                    type="button"
-                    onClick={() => handleLeadSubmit()}
-                    className="text-[12.5px] font-semibold underline hover:no-underline shrink-0"
-                  >
-                    Try Again
-                  </button>
-                </div>
+              <input
+                id="first_name_input"
+                name="given-name"
+                type="text"
+                autoComplete="given-name"
+                value={firstName}
+                onChange={(e) => {
+                  setFirstName(e.target.value);
+                  if (firstNameError) setFirstNameError("");
+                  if (leadSaveError) setLeadSaveError("");
+                }}
+                onBlur={() => {
+                  if (!firstName.trim()) {
+                    setFirstNameError("Enter your first name to continue.");
+                  }
+                }}
+                placeholder="e.g. Sarah"
+                className={`w-full h-[54px] sm:h-[56px] rounded-[13px] px-4 text-[15px] font-sans text-[#0B2A4A] placeholder:text-[#0B2A4A]/30 bg-white border transition-all duration-150 focus:outline-none ${
+                  firstNameError
+                    ? "border-[#DE5D52] ring-2 ring-[#DE5D52]/20"
+                    : "border-[#0B2A4A]/15 focus:border-[#FF5A4F] focus:ring-2 focus:ring-[#FF5A4F]/20"
+                }`}
+              />
+              {firstNameError && (
+                <p className="text-[12px] text-[#DE5D52] font-medium mt-1.5">
+                  {firstNameError}
+                </p>
               )}
+            </div>
 
-              {/* Submit CTA */}
-              <Button
+            {/* Email Address (Required) */}
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <label htmlFor="email_address_input" className="text-[12px] font-sans font-bold tracking-wider text-[#0B2A4A] uppercase">
+                  Email Address
+                </label>
+                <span className="text-[11px] font-sans font-semibold text-[#FF5A4F]">
+                  Required
+                </span>
+              </div>
+              <input
+                id="email_address_input"
+                name="email"
+                type="email"
+                autoComplete="email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (emailError) setEmailError("");
+                  if (leadSaveError) setLeadSaveError("");
+                }}
+                onBlur={() => {
+                  const trimmed = email.trim();
+                  if (!trimmed) {
+                    setEmailError("Enter your email address to continue.");
+                  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+                    setEmailError("Enter a valid email address.");
+                  }
+                }}
+                placeholder="you@example.com"
+                className={`w-full h-[54px] sm:h-[56px] rounded-[13px] px-4 text-[15px] font-sans text-[#0B2A4A] placeholder:text-[#0B2A4A]/30 bg-white border transition-all duration-150 focus:outline-none ${
+                  emailError
+                    ? "border-[#DE5D52] ring-2 ring-[#DE5D52]/20"
+                    : "border-[#0B2A4A]/15 focus:border-[#FF5A4F] focus:ring-2 focus:ring-[#FF5A4F]/20"
+                }`}
+              />
+              {emailError && (
+                <p className="text-[12px] text-[#DE5D52] font-medium mt-1.5">
+                  {emailError}
+                </p>
+              )}
+            </div>
+
+            {/* Error Message if Network/Storage Fails */}
+            {leadSaveError && (
+              <div className="p-3.5 rounded-[13px] bg-[#FFF8F7] border border-[#DE5D52]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-[13px] text-[#DE5D52]">
+                <p className="font-medium">{leadSaveError}</p>
+                <button
+                  type="button"
+                  onClick={() => handleLeadSubmit()}
+                  className="text-[12.5px] font-semibold underline hover:no-underline shrink-0 cursor-pointer"
+                >
+                  Try Again
+                </button>
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <div className="pt-2 sm:pt-3">
+              <button
                 type="submit"
-                disabled={!email.trim() || isSubmittingLead || leadSuccessTransition}
-                size="lg"
-                className="w-full h-[54px] rounded-full bg-[#FF5A4F] hover:bg-[#F0443A] text-white text-[15px] font-sans font-semibold shadow-none flex items-center justify-center gap-2 mt-6 disabled:opacity-45 disabled:cursor-not-allowed transition-all"
+                disabled={!isFormValid || isSubmittingLead || leadSuccessTransition}
+                className={`w-full h-[54px] sm:h-[56px] rounded-[14px] text-[15px] font-sans font-semibold flex items-center justify-center gap-2 transition-all duration-200 ${
+                  !isFormValid || isSubmittingLead || leadSuccessTransition
+                    ? "bg-[#EFEAE6] text-[#26313A]/35 cursor-not-allowed border-none shadow-none"
+                    : "bg-[#FF5A4F] hover:bg-[#E54F44] text-white cursor-pointer shadow-[0_4px_14px_rgba(255,90,79,0.25)] hover:shadow-[0_6px_20px_rgba(255,90,79,0.32)] hover:-translate-y-0.5 active:translate-y-0"
+                }`}
               >
                 {leadSuccessTransition ? (
                   <>
-                    <Check className="w-4 h-4 stroke-[3]" />
-                    <span>Ready.</span>
+                    <Check className="w-4 h-4 stroke-[2.5]" />
+                    <span>Ready</span>
                   </>
                 ) : isSubmittingLead ? (
                   <span>Saving...</span>
                 ) : (
                   <>
                     <span>Continue to My Check-In</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                   </>
                 )}
-              </Button>
+              </button>
+            </div>
+          </form>
 
-            </form>
-
-            {/* Privacy Trust Statement */}
-            <p className="text-[12px] text-[#5C5550]/75 leading-[1.55] text-center mt-6">
-              Your email is used to provide your check-in experience and relevant Amity Vale guidance. Unsubscribe anytime.{" "}
-              <Link href="/about" className="underline hover:text-[#0B2A4A] transition-colors font-medium">
+          {/* Privacy Supporting Line */}
+          <div className="mt-4 sm:mt-5 text-center">
+            <p className="text-[12px] sm:text-[12.5px] text-[#26313A]/70 leading-relaxed">
+              Your details are used to provide your check-in experience and results.{" "}
+              <Link href="#" className="underline hover:text-[#0B2A4A] transition-colors">
                 Privacy Policy
               </Link>
             </p>
-
           </div>
         </motion.div>
       )}
@@ -1007,160 +1274,109 @@ export function AssessmentExperience() {
       )}
 
       {/* ====================================================
-          STEP 6: DETERMINISTIC RESULTS VIEW
+          STEP 6: REFINED EDITORIAL RESULTS VIEW
           ==================================================== */}
       {step === "results" && resultData && selectedCategory && (
-        <div className="max-w-[940px] mx-auto w-full">
+        <div className="max-w-[820px] mx-auto w-full relative z-10 px-1 sm:px-0">
           
-          {/* Results Header */}
-          <div className="text-center max-w-[700px] mx-auto mb-10 md:mb-14">
+          {/* A) Intro / Result Hero */}
+          <div className="text-center max-w-[680px] mx-auto mb-10 md:mb-14">
             <span className="font-sans uppercase tracking-[0.2em] text-[#FF5A4F] text-[11px] md:text-[12px] font-bold mb-3 block">
               Your Check-In
             </span>
-            <h1 className="font-serif text-[34px] sm:text-[44px] md:text-[50px] leading-[1.1] text-[#0B2A4A] mb-4">
-              Here’s What Your Answers Suggest.
+            <h1 className="font-serif text-[32px] sm:text-[40px] md:text-[46px] leading-[1.12] text-[#0B2A4A] tracking-tight mb-4">
+              {firstName.trim() ? (
+                <>
+                  {firstName.trim()},{" "}
+                  <span className="text-[#FF5A4F] italic">here is what your check-in suggests.</span>
+                </>
+              ) : (
+                <>
+                  Here is what your{" "}
+                  <span className="text-[#FF5A4F] italic">check-in suggests.</span>
+                </>
+              )}
             </h1>
-            <p className="text-[#5C5550] text-[16px] md:text-[17px] leading-[1.65]">
-              {resultData.overallReflection}
+            <p className="text-[#26313A] text-[15px] sm:text-[16px] leading-[1.65]">
+              Based on your reflection on {selectedCategory.title}, your answers suggest a few patterns that may deserve more attention, care, or conversation.
             </p>
           </div>
 
-          {/* Safety Alert (If Flagged) */}
-          {resultData.safetyFlag && (
-            <div className="mb-8 bg-[#FFF8F7] border border-[#FF5A4F]/30 rounded-[24px] p-6 md:p-8 flex gap-4 md:gap-5 items-start shadow-sm">
-              <div className="w-10 h-10 rounded-full bg-[#FF5A4F]/10 flex items-center justify-center shrink-0 mt-0.5">
-                <ShieldAlert className="w-5 h-5 text-[#FF5A4F]" />
-              </div>
-              <div>
-                <h3 className="font-serif text-[19px] md:text-[21px] text-[#0B2A4A] mb-2 font-semibold">
-                  Something Important to Notice
-                </h3>
-                <p className="text-[#5C5550] text-[14.5px] leading-[1.6] mb-3">
-                  Your answers suggest that feeling safe and respected may deserve attention before focusing only on communication techniques. If fear, threats, control, or safety are part of this relationship, consider seeking appropriate support in addition to coaching.
-                </p>
-                <p className="text-[13px] text-[#FF5A4F] font-medium">
-                  If you are in immediate danger, contact the emergency services available where you live.
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Core Insights Grid: Steadier vs Worth Exploring */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            
-            {/* Steadier Area Card */}
-            <div className="bg-white rounded-[24px] p-7 md:p-8 border border-[#151312]/[0.08] shadow-[0_8px_30px_rgba(0,0,0,0.04)] relative overflow-hidden flex flex-col justify-between">
-              <div className="absolute top-0 left-0 right-0 h-[4px] bg-[#0E5A63]" />
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-[11px] font-sans font-bold uppercase tracking-[0.15em] text-[#0E5A63]">
-                    A Steadier Area
-                  </span>
-                  {renderBandBadge(resultData.primaryStrength.band)}
-                </div>
-                <h3 className="font-serif text-[22px] md:text-[24px] text-[#0B2A4A] mb-3">
-                  {resultData.primaryStrength.label}
-                </h3>
-                <p className="text-[#5C5550] text-[14.5px] leading-[1.65]">
-                  {resultData.primaryStrength.strengthCopy}
-                </p>
-              </div>
-            </div>
-
-            {/* Worth Exploring Card */}
-            <div className="bg-white rounded-[24px] p-7 md:p-8 border border-[#151312]/[0.08] shadow-[0_8px_30px_rgba(0,0,0,0.04)] relative overflow-hidden flex flex-col justify-between">
-              <div className="absolute top-0 left-0 right-0 h-[4px] bg-[#FF5A4F]" />
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-[11px] font-sans font-bold uppercase tracking-[0.15em] text-[#FF5A4F]">
-                    {resultData.isBalanced ? "One Area to Notice" : "Worth Exploring"}
-                  </span>
-                  {renderBandBadge(resultData.primaryFocus.band)}
-                </div>
-                <h3 className="font-serif text-[22px] md:text-[24px] text-[#0B2A4A] mb-3">
-                  {resultData.primaryFocus.label}
-                </h3>
-                <p className="text-[#5C5550] text-[14.5px] leading-[1.65]">
-                  {resultData.primaryFocus.focusCopy}
-                </p>
-              </div>
-            </div>
-
+          {/* B) Main Interpretation Section */}
+          <div className="bg-[#FAF7F4] rounded-[22px] p-6 sm:p-8 md:p-10 border border-[#0B2A4A]/[0.06] mb-12 md:mb-16">
+            <span className="font-sans text-[11px] font-bold uppercase tracking-[0.16em] text-[#FF5A4F] block mb-2">
+              A Pattern Worth Noticing
+            </span>
+            <h2 className="font-serif text-[22px] sm:text-[26px] text-[#0B2A4A] font-medium leading-snug mb-3.5">
+              What your reflection is pointing toward
+            </h2>
+            <p className="text-[#26313A] text-[15.5px] sm:text-[16.5px] leading-[1.7]">
+              {getMainInterpretation(
+                resultData.category,
+                resultData.primaryFocus,
+                resultData.isBalanced
+              )}
+            </p>
           </div>
 
-          {/* Pattern to Notice & Next Step */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+          {/* C) Three Insight Sections Only */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-7 lg:gap-8 mb-12 md:mb-16">
             
-            {/* Pattern to Notice */}
-            <div className="bg-[#FAF7F4] rounded-[24px] p-7 md:p-8 border border-[#151312]/[0.05]">
-              <span className="text-[11px] font-sans font-bold uppercase tracking-[0.15em] text-[#5C5550] block mb-2">
-                Pattern to Notice
+            {/* 1. A Steadier Area */}
+            <div className="pt-4 border-t-2 border-[#167E8A]">
+              <span className="font-sans text-[11px] font-bold uppercase tracking-[0.16em] text-[#167E8A] block mb-2">
+                A Steadier Area
               </span>
-              <h4 className="font-serif text-[19px] text-[#0B2A4A] mb-3 font-semibold">
-                How this dynamic often develops
-              </h4>
-              <p className="text-[#5C5550] text-[14.5px] leading-[1.65]">
-                {resultData.primaryFocus.patternCopy}
+              <h3 className="font-serif text-[19px] sm:text-[20px] text-[#0B2A4A] font-medium leading-snug mb-2.5">
+                {resultData.primaryStrength.label}
+              </h3>
+              <p className="text-[#26313A] text-[14px] sm:text-[14.5px] leading-[1.65]">
+                {resultData.primaryStrength.strengthCopy}
               </p>
             </div>
 
-            {/* One Small Next Step */}
-            <div className="bg-[#F4ECE6] rounded-[24px] p-7 md:p-8 border border-[#FF5A4F]/20 relative">
-              <span className="text-[11px] font-sans font-bold uppercase tracking-[0.15em] text-[#FF5A4F] block mb-2">
-                One Small Next Step
+            {/* 2. Worth Exploring */}
+            <div className="pt-4 border-t-2 border-[#DE5D52]">
+              <span className="font-sans text-[11px] font-bold uppercase tracking-[0.16em] text-[#DE5D52] block mb-2">
+                Worth Exploring
               </span>
-              <h4 className="font-serif text-[19px] text-[#0B2A4A] mb-3 font-semibold">
-                Something concrete you can try
-              </h4>
-              <p className="text-[#151312] text-[14.5px] leading-[1.65]">
+              <h3 className="font-serif text-[19px] sm:text-[20px] text-[#0B2A4A] font-medium leading-snug mb-2.5">
+                {resultData.primaryFocus.label}
+              </h3>
+              <p className="text-[#26313A] text-[14px] sm:text-[14.5px] leading-[1.65]">
+                {resultData.primaryFocus.focusCopy}
+              </p>
+            </div>
+
+            {/* 3. One Next Step */}
+            <div className="pt-4 border-t-2 border-[#C28726]">
+              <span className="font-sans text-[11px] font-bold uppercase tracking-[0.16em] text-[#C28726] block mb-2">
+                One Next Step
+              </span>
+              <h3 className="font-serif text-[19px] sm:text-[20px] text-[#0B2A4A] font-medium leading-snug mb-2.5">
+                A gentle place to begin
+              </h3>
+              <p className="text-[#26313A] text-[14px] sm:text-[14.5px] leading-[1.65]">
                 {resultData.primaryFocus.nextStepCopy}
               </p>
             </div>
 
           </div>
 
-          {/* Path-Specific Observations (if applicable) */}
-          {resultData.pathObservations.length > 0 && (
-            <div className="mb-10 bg-white rounded-[24px] p-6 md:p-7 border border-[#151312]/[0.08] shadow-sm">
-              <span className="text-[11px] font-sans font-bold uppercase tracking-[0.15em] text-[#D8A23D] block mb-2">
-                Context Observations
-              </span>
-              <div className="space-y-2">
-                {resultData.pathObservations.map((obs, idx) => (
-                  <p key={idx} className="text-[#5C5550] text-[14.5px] leading-[1.6]">
-                    • {obs}
-                  </p>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Optional User Reflection Display */}
-          {resultData.openReflectionText && (
-            <div className="mb-10 bg-[#FFFDFB] rounded-[24px] p-6 md:p-8 border border-[#D8A23D]/30 shadow-sm">
-              <span className="text-[11px] font-sans font-bold uppercase tracking-[0.15em] text-[#D8A23D] block mb-2">
-                Your 3-Month Reflection
-              </span>
-              <p className="font-serif italic text-[17px] text-[#0B2A4A] leading-[1.5]">
-                “{resultData.openReflectionText}”
-              </p>
-            </div>
-          )}
-
-          {/* Qualitative 5 Dimensions Overview */}
-          <div className="bg-white rounded-[26px] p-6 md:p-8 border border-[#151312]/[0.08] shadow-[0_8px_30px_rgba(0,0,0,0.03)] mb-12">
-            <div className="mb-6">
-              <h3 className="font-serif text-[21px] md:text-[23px] text-[#0B2A4A] mb-1">
+          {/* D) Reflective Summary by Area (Compact List) */}
+          <div className="mb-12 md:mb-16">
+            <div className="mb-4">
+              <h3 className="font-serif text-[22px] sm:text-[24px] text-[#0B2A4A] font-medium mb-1">
                 Reflective Summary by Area
               </h3>
-              <p className="text-[13.5px] text-[#5C5550]">
-                A qualitative breakdown of the five dimensions explored in this check-in.
+              <p className="text-[13.5px] text-[#26313A]/70">
+                A simple overview of the patterns reflected in this check-in.
               </p>
             </div>
 
-            <div className="divide-y divide-[#151312]/[0.06]">
+            <div className="divide-y divide-[#0B2A4A]/[0.08] border-y border-[#0B2A4A]/[0.08]">
               {resultData.dimensions.map((dim) => (
-                <div key={dim.key} className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div key={dim.key} className="py-3.5 flex items-center justify-between gap-4">
                   <span className="text-[14.5px] font-sans font-medium text-[#0B2A4A]">
                     {dim.label}
                   </span>
@@ -1172,52 +1388,70 @@ export function AssessmentExperience() {
             </div>
           </div>
 
-          {/* Conversion CTA Block */}
-          <div className="bg-[#0B2A4A] rounded-[28px] p-8 md:p-12 text-white text-center relative overflow-hidden mb-10 shadow-lg">
-            {/* Soft decorative glow */}
-            <div className="absolute top-0 right-0 w-[240px] h-[240px] rounded-full bg-[#FF5A4F] opacity-15 blur-3xl pointer-events-none" />
+          {/* E) Conditional Safety Note (Only if triggered) */}
+          {resultData.safetyFlag && (
+            <div className="mb-10 bg-[#FFF9F8] border border-[#DE5D52]/25 rounded-[18px] p-5 sm:p-6 text-left">
+              <h4 className="font-serif text-[18px] sm:text-[19px] text-[#0B2A4A] font-medium mb-2">
+                Something important to notice
+              </h4>
+              <p className="text-[14px] text-[#26313A] leading-relaxed mb-2.5">
+                Your answers suggest that feeling safe and respected may deserve attention before focusing only on communication. If fear, control, or threats are part of this situation, additional support beyond coaching may be important.
+              </p>
+              <p className="text-[12.5px] text-[#DE5D52] font-medium">
+                If you are in immediate danger, contact emergency or local support services available where you live.
+              </p>
+            </div>
+          )}
+
+          {/* F) Coaching CTA Section */}
+          <div className="bg-[#0B2A4A] rounded-[24px] p-8 sm:p-10 md:p-12 text-white text-center relative overflow-hidden mb-8 shadow-md">
+            <div
+              aria-hidden="true"
+              className="absolute -top-20 -right-20 w-[240px] h-[240px] rounded-full bg-[#FF5A4F] opacity-15 blur-3xl pointer-events-none"
+            />
             
-            <div className="relative z-10 max-w-[620px] mx-auto">
-              <span className="text-[11px] font-sans font-bold uppercase tracking-[0.2em] text-[#FF5A4F] block mb-3">
+            <div className="relative z-10 max-w-[580px] mx-auto">
+              <span className="font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-[#FF5A4F] block mb-2.5">
                 Next Steps in Coaching
               </span>
-              <h3 className="font-serif text-[28px] md:text-[36px] text-white leading-[1.2] mb-4">
+              <h3 className="font-serif text-[28px] sm:text-[34px] md:text-[36px] text-white leading-[1.18] mb-3">
                 Want to Talk Through What Came Up?
               </h3>
-              <p className="text-white/80 text-[15px] md:text-[16px] leading-[1.65] mb-8">
-                A private coaching session offers a dedicated, confidential conversation to explore these dynamics and clarify your next steps.
+              <p className="text-white/80 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-7 max-w-[500px] mx-auto">
+                A private coaching session can help you explore these patterns more clearly and decide what your next step could look like.
               </p>
 
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5">
                 <Button
                   size="lg"
-                  className="w-full sm:w-auto bg-[#FF5A4F] hover:bg-[#F0443A] text-white rounded-full px-8 h-[52px] text-[14px] font-sans font-semibold shadow-none"
-                  asChild
-                >
-                  <Link href={selectedCategory.coachingHref}>
-                    {selectedCategory.coachingCtaLabel}
-                  </Link>
-                </Button>
-
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full sm:w-auto border-white/30 text-white hover:bg-white/10 rounded-full px-8 h-[52px] text-[14px] font-sans font-semibold"
+                  className="w-full sm:w-auto bg-[#FF5A4F] hover:bg-[#E54F44] text-white rounded-[14px] px-8 h-[52px] text-[14.5px] font-sans font-semibold shadow-none cursor-pointer"
                   asChild
                 >
                   <Link href="/book">
                     Book a Private Session
                   </Link>
                 </Button>
+
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full sm:w-auto border-white/25 text-white hover:bg-white/10 rounded-[14px] px-7 h-[52px] text-[14px] font-sans font-medium cursor-pointer"
+                  asChild
+                >
+                  <Link href={selectedCategory.coachingHref}>
+                    Explore Coaching Areas
+                  </Link>
+                </Button>
               </div>
             </div>
           </div>
 
-          {/* Retake Check-In Option */}
-          <div className="text-center pt-2 pb-8">
+          {/* G) Retake Link */}
+          <div className="text-center pt-2 pb-6">
             <button
+              type="button"
               onClick={handleRetake}
-              className="inline-flex items-center gap-2 text-[13px] font-sans font-medium text-[#5C5550] hover:text-[#0B2A4A] transition-colors"
+              className="inline-flex items-center gap-1.5 text-[12.5px] font-sans font-medium text-[#26313A]/60 hover:text-[#0B2A4A] transition-colors cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Retake the Check-In</span>

@@ -11,6 +11,13 @@
   --accent-soft: #FCE8E0;
   --beige: #E9DDD3;
   --dark: #151312;
+  --navbar-height: 72px;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --navbar-height: 76px;
+  }
 }
 
 @theme inline {

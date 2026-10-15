@@ -113,7 +113,7 @@ export function FinalCTA() {
                 className="mt-8 flex items-center justify-center"
               >
                 <span className="font-sans text-[11px] md:text-[12px] uppercase tracking-[0.2em] text-[#FDFBF7]/60 font-bold">
-                  Private â€¢ Online â€¢ Personalized
+                  PRIVATE • ONLINE • PERSONALIZED
                 </span>
               </motion.div>
 
