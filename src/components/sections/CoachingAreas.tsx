@@ -13,19 +13,19 @@ const areas = [
     href: "/coaching#romantic",
     eyebrow: "RELATIONSHIPS",
     headline: <>Deepen Romantic <span className="text-[#FF5A4F] italic">Connection.</span></>,
-    description: "Strengthen communication, rebuild trust, and create a relationship that feels safer, closer, and more understood.",
-    descriptionMobile: "Strengthen communication, rebuild trust, and create a relationship that feels closer and more understood.",
+    description: "Strengthen communication, rebuild trust, and underscore a relation that is safer, closer, and better understood.",
+    descriptionMobile: "Strengthen communication, rebuild trust, and underscore a relation that is safer, closer, and better understood.",
     cta: "Explore relationship coaching",
     image: "/coaching_relationship_1791377157722.jpg",
   },
   {
-    id: "family",
-    href: "/coaching#family",
-    eyebrow: "FAMILY",
-    headline: <>Create More Peace <span className="text-[#FF5A4F] italic">at Home.</span></>,
-    description: "Navigate difficult dynamics with parents, children, and loved ones with more clarity, compassion, and steadiness.",
-    descriptionMobile: "Navigate family dynamics, boundaries, and difficult conversations with greater clarity and compassion.",
-    cta: "Explore family coaching",
+    id: "business",
+    href: "/coaching#business",
+    eyebrow: "BUSINESS",
+    headline: <>Foster Solid Foundations <span className="text-[#FF5A4F] italic">Among Those with Whom You Work.</span></>,
+    description: "Navigate challenging dynamics with the following fixes; for example, attitude, behavior, clarity, conduct, and altitude.",
+    descriptionMobile: "Navigate challenging dynamics with the following fixes; for example, attitude, behavior, clarity, conduct, and altitude.",
+    cta: "Explore business coaching",
     image: "/coaching_family_1791377169631.jpg",
   },
   {
@@ -120,7 +120,7 @@ export function CoachingAreas() {
               Support for the Relationships <span className="text-[#FF5A4F] italic">That Shape Your Life.</span>
             </h2>
             <p className="text-[#26313A] text-[16px] md:text-[18px] leading-[1.6] max-w-[600px] mx-auto">
-              Private coaching for love, family, friendship, faith, and personal growth.
+              Confidential coaching for business, friendships, and personal development.
             </p>
           </motion.div>
         </div>

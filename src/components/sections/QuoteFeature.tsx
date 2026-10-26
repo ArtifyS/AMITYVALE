@@ -52,12 +52,12 @@ export function QuoteFeature() {
               </span>
               <blockquote className="font-serif text-[28px] md:text-[36px] lg:text-[42px] leading-[1.15] text-[#FDFBF7] mb-8 font-medium">
                 &ldquo;What Keeps Repeating<br />
-                Can Be Understood &mdash;<br />
-                <span className="italic text-[#FF5A4F]">And Changed.</span>&rdquo;
+                Negatively Must Not Recur &hellip;<br />
+                <span className="italic text-[#FF5A4F]">And, Must Change.</span>&rdquo;
               </blockquote>
               <div className="flex items-center">
                 <div className="h-[1px] w-8 bg-white/30 mr-4" />
-                <span className="text-[#FDFBF7]/70 text-sm tracking-wide">Amity Vale Coaching Philosophy</span>
+                <span className="text-[#FDFBF7]/70 text-sm tracking-wide">Amityhale Coaching Philosophy</span>
               </div>
             </div>
           </motion.div>

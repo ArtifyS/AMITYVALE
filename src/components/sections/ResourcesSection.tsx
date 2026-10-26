@@ -19,9 +19,9 @@ const articles = [
   },
   {
     id: 2,
-    category: "FAMILY",
-    title: "How to Set Boundaries With Family Without Feeling Guilty",
-    excerpt: "How to protect your needs while navigating love, history, expectations, and difficult family dynamics.",
+    category: "BUSINESS",
+    title: "How to Set Boundaries with Colleagues Without Feeling Compromised",
+    excerpt: "How to safeguard professionalism while navigating the corporate terrain.",
     readTime: "6–8 min read",
     image: "/article_family_1791392286386.jpg"
   },
@@ -73,7 +73,7 @@ export function ResourcesSection() {
               Ideas for the Relationships <br className="block sm:hidden" /><span className="text-[#FF5A4F] italic">That Shape Your Life.</span>
             </h2>
             <p className="text-[#5C5550] text-[16px] md:text-[17px] leading-[1.6] mb-6 max-w-[620px] lg:max-w-[680px]">
-              Thoughtful guidance on relationships, family, friendship, faith, and personal growth.
+              Thoughtful guidance on business, faith, family, friendship, and personal growth.
             </p>
             <Link 
               href="/articles" 

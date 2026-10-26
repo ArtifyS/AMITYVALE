@@ -130,12 +130,11 @@ export function CoachIntroduction() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.35 }}
-              className="absolute -bottom-5 -left-2 md:-bottom-2 md:-left-6 z-20 bg-white/95 backdrop-blur-md py-3.5 px-6 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-[#FF5A4F]/50"
+              className="absolute -bottom-5 -left-2 md:-bottom-2 md:-left-6 z-20 bg-white/95 backdrop-blur-md py-2.5 px-5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-[#FF5A4F]/50"
             >
-              <p className="font-serif text-[16px] leading-tight text-foreground">
-                Angel <br/>
-                <span className="text-[10px] font-sans uppercase tracking-[0.12em] text-[#FF5A4F] font-bold">Lead Coach</span>
-              </p>
+              <span className="text-[11px] font-sans uppercase tracking-[0.14em] text-[#FF5A4F] font-bold">
+                Lead Coach
+              </span>
             </motion.div>
           </motion.div>
 
@@ -159,18 +158,18 @@ export function CoachIntroduction() {
                 Relationships are complex, and intimacy requires ongoing attention. Sometimes, what you need most is a <strong className="font-semibold text-[#FF5A4F]">neutral, experienced perspective</strong> to help you navigate the conversations you’ve been avoiding.
               </p>
               <p>
-                I provide <strong className="font-semibold text-[#FF5A4F]">private, one-to-one support</strong> tailored to your unique dynamic. Through practical guidance and compassionate listening, we explore relationship and intimacy concerns in a completely <strong className="font-semibold text-[#FF5A4F]">safe, non-judgmental space</strong>.
+                I provide <strong className="font-semibold text-[#FF5A4F]">private, one-on-one support</strong> tailored to your unique situation. Through practical guidance and compassionate listening, we explore relationship and intimacy concerns in a completely <strong className="font-semibold text-[#FF5A4F]">safe, non-judgmental space</strong>.
               </p>
             </div>
 
             <ul className="space-y-3 mb-10">
               <li className="flex items-center text-[14px] md:text-[15px] text-[#26313A]">
                 <div className="w-[5px] h-[5px] rounded-full bg-[#FF5A4F] mr-4 opacity-80 shrink-0" />
-                <span><strong className="font-semibold text-[#FF5A4F]">Private one-to-one</strong> guidance</span>
+                <span><strong className="font-semibold text-[#FF5A4F]">Private one-on-one</strong> guidance</span>
               </li>
               <li className="flex items-center text-[14px] md:text-[15px] text-[#26313A]">
                 <div className="w-[5px] h-[5px] rounded-full bg-[#FF5A4F] mr-4 opacity-80 shrink-0" />
-                <span><strong className="font-semibold text-[#FF5A4F]">Online support</strong> for individuals and couples</span>
+                <span><strong className="font-semibold text-[#FF5A4F]">Online support</strong> for businesses, couples, and individuals</span>
               </li>
               <li className="flex items-center text-[14px] md:text-[15px] text-[#26313A]">
                 <div className="w-[5px] h-[5px] rounded-full bg-[#FF5A4F] mr-4 opacity-80 shrink-0" />
@@ -183,7 +182,7 @@ export function CoachIntroduction() {
                 Book a Private Consultation
               </Button>
               <Link href="/about" className="text-[14px] font-semibold text-foreground hover:text-[#FF5A4F] transition-colors flex items-center group">
-                Learn more about Angel 
+                Learn more about
                 <ArrowRight className="w-4 h-4 ml-1.5 transform group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>

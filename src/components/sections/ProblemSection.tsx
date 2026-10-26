@@ -102,7 +102,7 @@ export function ProblemSection() {
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
             className="relative z-10 font-sans uppercase tracking-[0.18em] text-[#FF5A4F] text-[11px] md:text-[12px] font-semibold mb-6 md:mb-8 flex flex-col items-center"
           >
-            <span>A Human Truth</span>
+            <span>A Human Reality</span>
           </motion.div>
 
           {/* Main Statement */}

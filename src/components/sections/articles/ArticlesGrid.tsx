@@ -9,9 +9,9 @@ import { ArrowRight } from "lucide-react";
 const articles = [
   {
     id: 2,
-    category: "FAMILY",
-    title: "How to Set Boundaries With Family Without Feeling Guilty",
-    excerpt: "How to protect your needs while navigating love, history, expectations, and difficult family dynamics.",
+    category: "BUSINESS",
+    title: "How to Set Boundaries with Colleagues Without Feeling Compromised",
+    excerpt: "How to safeguard professionalism while navigating the corporate terrain.",
     readTime: "6–8 min read",
     image: "/article_family_1791392286386.jpg"
   },

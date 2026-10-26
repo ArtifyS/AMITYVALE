@@ -39,9 +39,9 @@ export const ARTICLES_DATA: Article[] = [
   {
     id: "set-boundaries-with-family",
     slug: "set-boundaries-with-family",
-    title: "How to Set Boundaries With Family Without Feeling Guilty",
-    excerpt: "How to protect your needs while navigating love, shared history, expectations, and difficult family dynamics.",
-    category: "Family",
+    title: "How to Set Boundaries with Colleagues Without Feeling Compromised",
+    excerpt: "How to safeguard professionalism while navigating the corporate terrain.",
+    category: "Business",
     readTime: "6–8 min read",
     image: "/article_family_1791392286386.jpg",
     featured: false,
