@@ -7,7 +7,8 @@ const categories = [
   "Relationships",
   "Family",
   "Faith & Spiritual Life",
-  "Personal Growth"
+  "Personal Growth",
+  "Business"
 ];
 
 export function ArticlesFilter() {

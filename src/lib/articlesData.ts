@@ -2,7 +2,8 @@ export type ArticleCategory =
   | "Relationships"
   | "Family"
   | "Faith & Spiritual Life"
-  | "Personal Growth";
+  | "Personal Growth"
+  | "Business";
 
 export interface Article {
   id: string;
@@ -22,6 +23,7 @@ export const CATEGORIES: ("All Articles" | ArticleCategory)[] = [
   "Family",
   "Faith & Spiritual Life",
   "Personal Growth",
+  "Business",
 ];
 
 export const ARTICLES_DATA: Article[] = [
