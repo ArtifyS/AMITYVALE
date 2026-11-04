@@ -23,13 +23,13 @@ const articles = [
     title: "How to Set Boundaries with Colleagues Without Feeling Compromised",
     excerpt: "How to safeguard professionalism while navigating the corporate terrain.",
     readTime: "6–8 min read",
-    image: "/article_family_1791392286386.jpg"
+    image: "/business_article.png"
   },
   {
     id: 3,
-    category: "FAITH & SPIRITUAL LIFE",
-    title: "When God Feels Distant: How to Reconnect With Your Faith",
-    excerpt: "An honest look at spiritual distance, doubt, meaning, and finding your way back to a relationship with faith.",
+    category: "FAITH & SPIRITUAL ALIGNMENT",
+    title: "When God Feels Distant: God Is Never Distant. Reconnect!",
+    excerpt: "A profound look at your faith and how it equates to your understanding of spirituality. Remove any self-doubts. Your questions; your answers.",
     readTime: "5–7 min read",
     image: "/article_faith_1791392297766.jpg"
   }

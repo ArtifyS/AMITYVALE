@@ -42,13 +42,16 @@ export function ArticlesJournal() {
     return ARTICLES_DATA.find((a) => a.featured) || ARTICLES_DATA[0];
   }, []);
 
-  // Filtered articles list for grid (excluding the featured article to avoid immediate repetition)
+  // Filtered articles list for grid:
+  // On default "All Articles", exclude the featured article to avoid duplicate repetition.
+  // When explicitly filtering by category (e.g. "Relationships"), show all articles matching that category.
   const filteredArticles = useMemo(() => {
-    const list = ARTICLES_DATA.filter((a) => a.id !== featuredArticle.id);
-    
-    let result = list;
-    if (activeCategory !== "All Articles") {
-      result = list.filter((a) => a.category === activeCategory);
+    let result: Article[];
+
+    if (activeCategory === "All Articles") {
+      result = ARTICLES_DATA.filter((a) => a.id !== featuredArticle.id);
+    } else {
+      result = ARTICLES_DATA.filter((a) => a.category === activeCategory);
     }
 
     // Sort newest to oldest
@@ -250,7 +253,9 @@ export function ArticlesJournal() {
             </div>
 
             <span className="text-[12px] font-sans font-medium text-[#5B6470] tracking-wide shrink-0">
-              {filteredArticles.length} {filteredArticles.length === 1 ? "article" : "articles"}
+              {activeCategory === "All Articles"
+                ? `${ARTICLES_DATA.length} articles`
+                : `${filteredArticles.length} ${filteredArticles.length === 1 ? "article" : "articles"}`}
             </span>
           </div>
 

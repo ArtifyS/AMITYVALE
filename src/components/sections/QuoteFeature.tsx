@@ -57,7 +57,7 @@ export function QuoteFeature() {
               </blockquote>
               <div className="flex items-center">
                 <div className="h-[1px] w-8 bg-white/30 mr-4" />
-                <span className="text-[#FDFBF7]/70 text-sm tracking-wide">Amityhale Coaching Philosophy</span>
+                <span className="text-[#FDFBF7]/70 text-sm tracking-wide">AmityHale Coaching Philosophy</span>
               </div>
             </div>
           </motion.div>

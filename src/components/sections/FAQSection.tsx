@@ -7,7 +7,7 @@ import { Plus, Minus } from "lucide-react";
 const faqs = [
   {
     question: "What happens during a private coaching session?",
-    answer: "Sessions are structured as safe, open dialogues. We start by identifying your immediate concerns, then explore the underlying dynamics, and conclude with practical, actionable steps to improve your communication and connection before the next session."
+    answer: "Sessions are structured as safe, open dialogues. We start by identifying your immediate concerns, then explore the underlying Rapport, and conclude with practical, actionable steps to improve your communication and connection before the next session."
   },
   {
     question: "Can I book a session individually or as a couple?",
@@ -19,7 +19,7 @@ const faqs = [
   },
   {
     question: "Is my information kept private?",
-    answer: "Absolutely. Confidentiality is the foundation of our work. Everything discussed in your sessions remains strictly private, and we use secure platforms designed to protect your personal information."
+    answer: "Absolutely! Confidentiality is the foundation of our work. Everything discussed in your sessions remains strictly private, and we use secure platforms designed to protect your personal information."
   },
   {
     question: "How do I choose the right session length?",

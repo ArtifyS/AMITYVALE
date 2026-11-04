@@ -224,18 +224,16 @@ export function Header() {
               <Link 
                 href="/" 
                 aria-label="Amity Vale"
-                className="relative flex items-center justify-start shrink-0 overflow-visible w-[160px] sm:w-[200px] lg:w-[250px] h-[46px] sm:h-[52px] lg:h-[58px] group"
+                className="relative flex items-center justify-start shrink-0 w-[160px] sm:w-[200px] lg:w-[235px] h-[36px] sm:h-[40px] lg:h-[44px] group"
               >
-                <div className="absolute left-[-4px] sm:left-[-6px] lg:left-[-8px] top-1/2 -translate-y-[calc(50%-2px)] w-full h-full pointer-events-none flex items-center justify-start overflow-visible">
-                  <Image
-                    src="/nav_logo.png"
-                    alt="Amity Vale"
-                    width={2172}
-                    height={724}
-                    priority
-                    className="w-full h-full object-contain object-left origin-left scale-[1.38] sm:scale-[1.44] lg:scale-[1.50] transition-transform duration-300 group-hover:scale-[1.53]"
-                  />
-                </div>
+                <Image
+                  src="/nav_logo.png"
+                  alt="Amity Vale"
+                  width={1980}
+                  height={322}
+                  priority
+                  className="w-full h-full object-contain object-left transition-transform duration-300 group-hover:scale-[1.03]"
+                />
               </Link>
 
               {/* Desktop Navigation */}

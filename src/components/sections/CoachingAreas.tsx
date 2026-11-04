@@ -23,10 +23,10 @@ const areas = [
     href: "/coaching#business",
     eyebrow: "BUSINESS",
     headline: <>Foster Solid Foundations <span className="text-[#FF5A4F] italic">Among Those with Whom You Work.</span></>,
-    description: "Navigate challenging dynamics with the following fixes; for example, attitude, behavior, clarity, conduct, and altitude.",
-    descriptionMobile: "Navigate challenging dynamics with the following fixes; for example, attitude, behavior, clarity, conduct, and altitude.",
+    description: "Navigate challenging scenarios with the following fixes; for example, altitude, attitude, behavior, clarity, and conduct.",
+    descriptionMobile: "Navigate challenging scenarios with the following fixes; for example, altitude, attitude, behavior, clarity, and conduct.",
     cta: "Explore business coaching",
-    image: "/coaching_family_1791377169631.jpg",
+    image: "/coaching_business.jpg",
   },
   {
     id: "friendship",
@@ -46,7 +46,7 @@ const areas = [
     description: "Explore questions of purpose, belief, inner conflict, and your relationship with God, faith, and personal direction.",
     descriptionMobile: "Explore faith, purpose, inner conflict, and your relationship with God and personal direction.",
     cta: "Explore faith-centered coaching",
-    image: "/coaching_faith_1791377192170.jpg",
+    image: "/personal_faith.png",
   }
 ];
 

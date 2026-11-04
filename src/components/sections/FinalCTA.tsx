@@ -74,7 +74,7 @@ export function FinalCTA() {
                 }}
                 className="font-serif text-[42px] sm:text-[52px] md:text-[62px] lg:text-[70px] leading-[1.05] text-[#FDFBF7] mb-6 tracking-tight"
               >
-                Do Not Let Distance Become<br />
+                Do Not Allow Anxiety to Become<br />
                 <span className="text-[#FF5A4F] inline-block mt-2">Your New Normal.</span>
               </motion.h2>
               
@@ -113,7 +113,7 @@ export function FinalCTA() {
                 className="mt-8 flex items-center justify-center"
               >
                 <span className="font-sans text-[11px] md:text-[12px] uppercase tracking-[0.2em] text-[#FDFBF7]/60 font-bold">
-                  PRIVATE • ONLINE • PERSONALIZED
+                  CONFIDENTIAL • ONLINE • PERSONALIZED
                 </span>
               </motion.div>
 
