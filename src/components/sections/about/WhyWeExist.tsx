@@ -29,7 +29,7 @@ export function WhyWeExist() {
             className="w-full lg:w-[45%] flex flex-col"
           >
             <span className="font-sans uppercase tracking-[0.16em] text-[#6E747A] text-[11px] md:text-[12px] font-bold mb-4 block">
-              WHY AMITY VALE EXISTS
+              WHY AmityHale EXISTS
             </span>
             <h2 className="font-serif text-[38px] md:text-[46px] lg:text-[52px] leading-[1.1] text-[#0B2A4A] tracking-tight">
               The People We Care About Can Be the <br className="hidden lg:block" />
@@ -50,7 +50,7 @@ export function WhyWeExist() {
                 Relationships rarely become difficult because people stop caring. More often, they become caught in patterns, assumptions, and conversations that no longer move them forward.
               </p>
               <p>
-                Amity Vale creates space to slow those patterns down, understand what is really happening, and choose a more intentional way to relate.
+                AmityHale creates space to slow those patterns down, understand what is really happening, and choose a more intentional way to relate.
               </p>
             </div>
 

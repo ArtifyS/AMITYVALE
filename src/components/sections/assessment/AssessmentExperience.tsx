@@ -13,6 +13,7 @@ import {
   Compass, 
   Heart, 
   Users, 
+  Activity,
   ArrowUpRight,
   Leaf, 
   HelpCircle,
@@ -25,6 +26,7 @@ import {
   getQuestionsForCategory, 
   calculateResults,
   AssessmentCategoryKey, 
+  RelationshipFocus,
   CategoryInfo,
   QuestionItem,
   DimensionResult,
@@ -35,6 +37,7 @@ import { Button } from "@/components/ui/Button";
 
 type AssessmentStep = 
   | "intro"
+  | "relationship_focus"
   | "email_capture"
   | "category_prompt"
   | "question"
@@ -54,7 +57,7 @@ const CATEGORY_STYLES: Record<
     iconColor: string;
   }
 > = {
-  romantic: {
+  intimacy: {
     accent: "#DE5D52",
     bgTint: "rgba(222, 93, 82, 0.035)",
     borderDefault: "rgba(222, 93, 82, 0.16)",
@@ -62,23 +65,23 @@ const CATEGORY_STYLES: Record<
     iconBorder: "rgba(222, 93, 82, 0.18)",
     iconColor: "#DE5D52",
   },
-  family: {
-    accent: "#C28726",
-    bgTint: "rgba(194, 135, 38, 0.035)",
-    borderDefault: "rgba(194, 135, 38, 0.18)",
-    iconBg: "rgba(194, 135, 38, 0.09)",
-    iconBorder: "rgba(194, 135, 38, 0.18)",
-    iconColor: "#C28726",
+  relationship: {
+    accent: "#0B2A4A",
+    bgTint: "rgba(11, 42, 74, 0.035)",
+    borderDefault: "rgba(11, 42, 74, 0.16)",
+    iconBg: "rgba(11, 42, 74, 0.08)",
+    iconBorder: "rgba(11, 42, 74, 0.16)",
+    iconColor: "#0B2A4A",
   },
-  friendship: {
-    accent: "#167E8A",
-    bgTint: "rgba(22, 126, 138, 0.035)",
-    borderDefault: "rgba(22, 126, 138, 0.18)",
-    iconBg: "rgba(22, 126, 138, 0.09)",
-    iconBorder: "rgba(22, 126, 138, 0.18)",
-    iconColor: "#167E8A",
+  health: {
+    accent: "#0E5A63",
+    bgTint: "rgba(14, 90, 99, 0.035)",
+    borderDefault: "rgba(14, 90, 99, 0.18)",
+    iconBg: "rgba(14, 90, 99, 0.09)",
+    iconBorder: "rgba(14, 90, 99, 0.18)",
+    iconColor: "#0E5A63",
   },
-  faith: {
+  spiritual: {
     accent: "#B87A18",
     bgTint: "rgba(184, 122, 24, 0.035)",
     borderDefault: "rgba(184, 122, 24, 0.18)",
@@ -86,7 +89,7 @@ const CATEGORY_STYLES: Record<
     iconBorder: "rgba(184, 122, 24, 0.18)",
     iconColor: "#B87A18",
   },
-  "personal-growth": {
+  personal_growth: {
     accent: "#127A70",
     bgTint: "rgba(18, 122, 112, 0.035)",
     borderDefault: "rgba(18, 122, 112, 0.18)",
@@ -100,42 +103,49 @@ const CATEGORY_STYLES: Record<
 function getMainInterpretation(
   cat: AssessmentCategoryKey,
   focus: DimensionResult,
-  isBalanced: boolean
+  isBalanced: boolean,
+  relationshipFocus?: RelationshipFocus | null
 ): string {
   if (isBalanced) {
     switch (cat) {
-      case "romantic":
+      case "intimacy":
         return "Your responses reflect a relatively steady baseline across your connection. Rather than sharp division, what stands out is the opportunity to protect everyday warmth and gently nurture deeper emotional intimacy.";
-      case "family":
-        return "Your answers suggest a relatively stable foundation with this family member. The opportunity is not about solving major crises, but maintaining healthy boundaries and intentional presence.";
-      case "friendship":
-        return "Your responses suggest a reasonably balanced friendship where care and contact exist, with room to deepen mutual understanding as your lives evolve.";
-      case "faith":
-        return "Your answers reflect an open and grounded relationship with your faith or spiritual life, with space to explore new questions without feeling unsettled.";
-      case "personal-growth":
+      case "relationship":
+        if (relationshipFocus === "business") {
+          return "Your responses suggest a reasonably functional working dynamic, with opportunities to sharpen alignment and streamline communication under pressure.";
+        }
+        if (relationshipFocus === "family") {
+          return "Your answers suggest a relatively stable foundation with this family member. The opportunity is about maintaining healthy boundaries and intentional presence.";
+        }
+        return "Your responses suggest a steady partnership baseline, with room to deepen mutual understanding as your shared life evolves.";
+      case "health":
+        return "Your answers reflect a thoughtful baseline in your wellbeing habits, with room to fine-tune daily pacing and protect recovery.";
+      case "spiritual":
+        return "Your answers reflect an open and grounded relationship with your spiritual life, with space to explore new questions without feeling unsettled.";
+      case "personal_growth":
         return "Your answers indicate a thoughtful, balanced awareness of yourself, with steady room to align your daily choices more intentionally with your values.";
     }
   }
 
   switch (focus.key) {
     case "communication":
-      return cat === "romantic"
+      return cat === "intimacy"
         ? "There appears to be a desire for closeness, but important conversations may be getting caught in defensiveness or withdrawal before either of you feels completely met."
         : "Conversations may be getting lost in misunderstanding or unspoken tension, making it harder to talk honestly about what matters most.";
     case "trust":
-      return cat === "romantic"
+      return cat === "intimacy"
         ? "Your responses suggest that vulnerability may be feeling guarded right now, where sharing deeper feelings or doubts feels less protected than you would like."
         : "Past experiences or guardedness may be making openness feel risky, leading to hesitation before sharing what is genuinely on your mind.";
     case "connection":
-      return cat === "romantic"
+      return cat === "intimacy"
         ? "The emotional engagement between you may currently feel uneven, where one person carries more of the relational effort while the other drifts into distance."
         : "The relationship may feel somewhat distant or one-sided, leaving a desire for more consistent mutual warmth and reciprocity.";
     case "authenticity":
-      return cat === "family"
+      return relationshipFocus === "family"
         ? "You may be spending significant emotional energy managing reactions or keeping the peace, leaving less room to honor your own authentic limits and needs."
         : "A recurring pattern of keeping the peace or accommodating others may be quietly draining your sense of ease and genuine connection.";
     case "repair":
-      return cat === "romantic"
+      return cat === "intimacy"
         ? "Your answers suggest that conflict may not be ending in true repair, which can leave the same underlying tension returning again in subtle ways."
         : "Tension often passes without being fully resolved, which can allow old grievances to linger quietly beneath the surface.";
     case "meaning_direction":
@@ -158,6 +168,16 @@ function getMainInterpretation(
       return "Self-criticism may be quick to arise when things feel uncertain or imperfect, turning normal setbacks into heavier emotional burdens.";
     case "direction_alignment":
       return "Daily demands may be crowding out long-term personal clarity, making it difficult to feel anchored in where you are heading next.";
+    case "energy_rest":
+      return "Fatigue or disrupted recovery habits may be diminishing the physical and emotional energy you bring to daily responsibilities.";
+    case "boundaries_pacing":
+      return "Demands from others or external pressures may frequently push past your physical or emotional energy limits.";
+    case "awareness_response":
+      return "You may tend to push through early warning signals of exhaustion until your body forces an unplanned pause.";
+    case "mindset_consistency":
+      return "Disruptions to your schedule may trigger all-or-nothing discouragement, making it harder to sustain steady wellbeing habits.";
+    case "sustainable_goals":
+      return "Your wellness priorities may feel somewhat disconnected from the actual reality and demands of your current life season.";
     default:
       return focus.focusCopy;
   }
@@ -168,6 +188,7 @@ export function AssessmentExperience() {
 
   // Assessment & Category State
   const [selectedCategoryKey, setSelectedCategoryKey] = useState<AssessmentCategoryKey | null>(null);
+  const [relationshipFocus, setRelationshipFocus] = useState<RelationshipFocus | null>(null);
   const [isSelecting, setIsSelecting] = useState<boolean>(false);
   const [hoveredKey, setHoveredKey] = useState<AssessmentCategoryKey | null>(null);
   const [step, setStep] = useState<AssessmentStep>("intro");
@@ -196,13 +217,12 @@ export function AssessmentExperience() {
   );
 
   const questions: QuestionItem[] = selectedCategoryKey
-    ? getQuestionsForCategory(selectedCategoryKey)
+    ? getQuestionsForCategory(selectedCategoryKey, relationshipFocus)
     : [];
 
   const isInterpersonal = 
-    selectedCategoryKey === "romantic" || 
-    selectedCategoryKey === "family" || 
-    selectedCategoryKey === "friendship";
+    selectedCategoryKey === "intimacy" || 
+    selectedCategoryKey === "relationship";
 
   // Smooth scroll helper
   const scrollToCard = () => {
@@ -227,26 +247,55 @@ export function AssessmentExperience() {
     // Quick selected state before transitioning smoothly
     setTimeout(() => {
       setIsSelecting(false);
-      // If email was already captured in this browser session, advance straight to prompt
-      if (leadCapturedInSession && email) {
-        // Quietly update selected area in background
-        fetch("/api/assessment-lead", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email,
-            firstName,
-            selectedArea: catKey,
-            marketingConsent: false,
-            leadSource: "free_connection_checkin",
-          }),
-        }).catch(() => {});
-        setStep("category_prompt");
+      if (catKey === "relationship") {
+        setStep("relationship_focus");
       } else {
-        setStep("email_capture");
+        setRelationshipFocus(null);
+        // If email was already captured in this browser session, advance straight to prompt
+        if (leadCapturedInSession && email) {
+          // Quietly update selected area in background
+          fetch("/api/assessment-lead", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email,
+              firstName,
+              selectedArea: catKey,
+              relationshipFocus: null,
+              marketingConsent: false,
+              leadSource: "free_connection_checkin",
+            }),
+          }).catch(() => {});
+          setStep("category_prompt");
+        } else {
+          setStep("email_capture");
+        }
       }
       scrollToCard();
     }, 240);
+  };
+
+  // Step 1b: User selects relationship sub-area (Business, Family, Partnerships)
+  const handleSelectRelationshipFocus = (focus: RelationshipFocus) => {
+    setRelationshipFocus(focus);
+    if (leadCapturedInSession && email) {
+      fetch("/api/assessment-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          firstName,
+          selectedArea: "relationship",
+          relationshipFocus: focus,
+          marketingConsent: false,
+          leadSource: "free_connection_checkin",
+        }),
+      }).catch(() => {});
+      setStep("category_prompt");
+    } else {
+      setStep("email_capture");
+    }
+    scrollToCard();
   };
 
   // Validation & Form Validity
@@ -294,6 +343,7 @@ export function AssessmentExperience() {
           email: cleanEmail,
           firstName: cleanFirstName,
           selectedArea: selectedCategoryKey,
+          relationshipFocus: relationshipFocus,
           marketingConsent: false,
           leadSource: "free_connection_checkin",
         }),
@@ -369,7 +419,8 @@ export function AssessmentExperience() {
       selectedCategoryKey,
       answers,
       safetyAnswer || undefined,
-      openReflection
+      openReflection,
+      relationshipFocus
     );
     setResultData(computed);
     setStep("results");
@@ -414,7 +465,11 @@ export function AssessmentExperience() {
 
     if (step === "category_prompt") {
       if (leadCapturedInSession) {
-        setStep("intro");
+        if (selectedCategoryKey === "relationship") {
+          setStep("relationship_focus");
+        } else {
+          setStep("intro");
+        }
       } else {
         setStep("email_capture");
       }
@@ -422,7 +477,20 @@ export function AssessmentExperience() {
     }
 
     if (step === "email_capture") {
+      if (selectedCategoryKey === "relationship") {
+        setStep("relationship_focus");
+      } else {
+        setSelectedCategoryKey(null);
+        setIsSelecting(false);
+        setHoveredKey(null);
+        setStep("intro");
+      }
+      return;
+    }
+
+    if (step === "relationship_focus") {
       setSelectedCategoryKey(null);
+      setRelationshipFocus(null);
       setIsSelecting(false);
       setHoveredKey(null);
       setStep("intro");
@@ -433,6 +501,7 @@ export function AssessmentExperience() {
   // Retake assessment (Preserves captured email in current session)
   const handleRetake = () => {
     setSelectedCategoryKey(null);
+    setRelationshipFocus(null);
     setIsSelecting(false);
     setHoveredKey(null);
     setAnswers({});
@@ -449,15 +518,15 @@ export function AssessmentExperience() {
   // Category icons mapping with refined line weights & subtle tint fills
   const renderCategoryIcon = (key: AssessmentCategoryKey, className: string = "w-[18px] h-[18px]") => {
     switch (key) {
-      case "romantic":
+      case "intimacy":
         return <Heart className={className} strokeWidth={2.1} fill="currentColor" fillOpacity={0.16} />;
-      case "family":
+      case "relationship":
         return <Users className={className} strokeWidth={2.1} />;
-      case "friendship":
-        return <Sparkles className={className} strokeWidth={2.1} fill="currentColor" fillOpacity={0.16} />;
-      case "faith":
+      case "health":
+        return <Activity className={className} strokeWidth={2.1} />;
+      case "spiritual":
         return <Compass className={className} strokeWidth={2.1} />;
-      case "personal-growth":
+      case "personal_growth":
         return <ArrowUpRight className={className} strokeWidth={2.3} />;
     }
   };
@@ -490,7 +559,7 @@ export function AssessmentExperience() {
     <div
       ref={containerRef}
       className={`w-full min-h-[calc(100vh-76px)] bg-white px-4 sm:px-6 flex flex-col justify-center relative overflow-hidden ${
-        step === "intro"
+        step === "intro" || step === "relationship_focus"
           ? "pt-5 pb-8 sm:pt-7 sm:pb-10 md:pt-8 md:pb-12"
           : step === "email_capture"
           ? "pt-6 pb-8 sm:pt-8 sm:pb-10 md:pt-8 md:pb-12"
@@ -543,6 +612,8 @@ export function AssessmentExperience() {
                     onMouseEnter={() => setHoveredKey(cat.id)}
                     onMouseLeave={() => setHoveredKey(null)}
                     disabled={isSelecting}
+                    title={cat.description}
+                    aria-label={`${cat.title}: ${cat.description}`}
                     style={{
                       backgroundColor: isSelected ? styles.iconBg : styles.bgTint,
                       borderColor: isSelected || isHovered ? styles.accent : styles.borderDefault,
@@ -616,6 +687,8 @@ export function AssessmentExperience() {
                       onMouseEnter={() => setHoveredKey(cat.id)}
                       onMouseLeave={() => setHoveredKey(null)}
                       disabled={isSelecting}
+                      title={cat.description}
+                      aria-label={`${cat.title}: ${cat.description}`}
                       style={{
                         backgroundColor: isSelected ? styles.iconBg : styles.bgTint,
                         borderColor: isSelected || isHovered ? styles.accent : styles.borderDefault,
@@ -685,6 +758,8 @@ export function AssessmentExperience() {
                   type="button"
                   onClick={() => handleSelectCategory(cat.id)}
                   disabled={isSelecting}
+                  title={cat.description}
+                  aria-label={`${cat.title}: ${cat.description}`}
                   style={{
                     backgroundColor: isSelected ? styles.iconBg : styles.bgTint,
                     borderColor: isSelected ? styles.accent : styles.borderDefault,
@@ -743,6 +818,83 @@ export function AssessmentExperience() {
       )}
 
       {/* ====================================================
+          STEP 0.5: RELATIONSHIP FOCUS (Business, Family, Partnerships)
+          ==================================================== */}
+      {step === "relationship_focus" && selectedCategory && (
+        <motion.div
+          key="relationship_focus"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: prefersReducedMotion ? 0.05 : 0.25 }}
+          className="max-w-[700px] mx-auto w-full relative z-10 px-2 sm:px-0"
+        >
+          {/* Back Button */}
+          <div className="mb-4 sm:mb-5 text-left">
+            <button
+              type="button"
+              onClick={handleBack}
+              className="inline-flex items-center gap-1.5 text-[13px] font-sans font-medium text-[#0B2A4A] hover:text-[#FF5A4F] transition-colors cursor-pointer"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Back to Categories</span>
+            </button>
+          </div>
+
+          {/* Step Header */}
+          <div className="text-center max-w-[560px] mx-auto mb-7 sm:mb-8">
+            <span className="inline-block font-sans uppercase tracking-[0.18em] text-[#0B2A4A] text-[11px] sm:text-[12px] font-bold mb-2">
+              RELATIONSHIP COACHING
+            </span>
+            <h2 className="font-serif text-[28px] sm:text-[34px] md:text-[38px] leading-[1.14] text-[#0B2A4A] tracking-tight mb-2.5">
+              Which Area Is Closest to Your Situation?
+            </h2>
+            <p className="text-[#26313A] text-[14px] sm:text-[15px] leading-relaxed">
+              Choose the application that best fits the relationship you want to reflect on.
+            </p>
+          </div>
+
+          {/* 3 Selectable Options (Alphabetical: Business, Family, Partnerships) */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4 max-w-[640px] mx-auto w-full mb-6">
+            {[
+              {
+                id: "business" as const,
+                label: "Business",
+                desc: "Founders, executive teams, and workplace dynamics.",
+              },
+              {
+                id: "family" as const,
+                label: "Family",
+                desc: "Boundaries, transitions, and generational patterns.",
+              },
+              {
+                id: "partnerships" as const,
+                label: "Partnerships",
+                desc: "Trust, shared goals, and relational alignment.",
+              },
+            ].map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => handleSelectRelationshipFocus(item.id)}
+                className="group relative p-4.5 sm:p-5 rounded-[18px] bg-white border border-[#0B2A4A]/12 hover:border-[#0B2A4A] hover:shadow-[0_10px_26px_rgba(11,42,74,0.07)] hover:-translate-y-0.5 transition-all text-left flex flex-col justify-between min-h-[105px] cursor-pointer"
+              >
+                <div className="flex items-center justify-between w-full mb-2">
+                  <span className="font-serif text-[19px] sm:text-[20px] text-[#0B2A4A] font-semibold">
+                    {item.label}
+                  </span>
+                  <ArrowRight className="w-4 h-4 text-[#0B2A4A]/40 group-hover:text-[#0B2A4A] group-hover:translate-x-1 transition-all" />
+                </div>
+                <p className="text-[12.5px] text-[#26313A]/70 leading-snug">
+                  {item.desc}
+                </p>
+              </button>
+            ))}
+          </div>
+        </motion.div>
+      )}
+
+      {/* ====================================================
           STEP 1: EMAIL / LEAD CAPTURE (Clean Open Page Layout)
           ==================================================== */}
       {step === "email_capture" && selectedCategory && (
@@ -777,7 +929,10 @@ export function AssessmentExperience() {
                 className="w-1.5 h-1.5 rounded-full" 
                 style={{ backgroundColor: CATEGORY_STYLES[selectedCategory.id]?.iconColor || selectedCategory.accentColor }} 
               />
-              <span>Selected: {selectedCategory.title}</span>
+              <span>
+                Selected: {selectedCategory.title}
+                {relationshipFocus ? ` • ${relationshipFocus.charAt(0).toUpperCase() + relationshipFocus.slice(1)}` : ""}
+              </span>
             </div>
           </div>
 
@@ -1310,7 +1465,8 @@ export function AssessmentExperience() {
               {getMainInterpretation(
                 resultData.category,
                 resultData.primaryFocus,
-                resultData.isBalanced
+                resultData.isBalanced,
+                resultData.relationshipFocus
               )}
             </p>
           </div>

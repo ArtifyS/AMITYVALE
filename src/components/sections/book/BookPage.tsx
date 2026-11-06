@@ -121,10 +121,10 @@ function BookPageContent() {
             PRIVATE BOOKING
           </span>
           <h1 className="font-serif text-[30px] sm:text-[36px] md:text-[40px] leading-[1.12] tracking-[-0.01em] text-[#0B2A4A] mb-2">
-            Book the Time <span className="italic font-normal text-[#FF5A4F]">That Feels Right.</span>
+            Book the Time <span className="italic font-normal text-[#FF5A4F]">That Is Right.</span>
           </h1>
           <p className="text-[14px] sm:text-[15px] leading-[1.5] text-[#0B2A4A]/70">
-            Choose what you need, select your time, and complete your booking.
+            Choose what works for you: select your time, and complete your Booking.
           </p>
         </header>
 

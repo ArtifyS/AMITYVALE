@@ -1,5 +1,5 @@
 -- Supabase Table: assessment_leads
--- Stores leads captured from the Amity Vale Connection Check-In
+-- Stores leads captured from the AmityHale Connection Check-In
 
 CREATE TABLE IF NOT EXISTS public.assessment_leads (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

@@ -5,12 +5,17 @@ import path from "path";
 
 // Stable internal category values
 const CATEGORY_MAP: Record<string, string> = {
-  romantic: "romantic",
-  family: "family",
-  friendship: "friendship",
-  faith: "faith",
-  "personal-growth": "personal_growth",
+  intimacy: "intimacy",
+  relationship: "relationship",
+  health: "health",
+  spiritual: "spiritual",
   personal_growth: "personal_growth",
+  // Legacy migrations
+  romantic: "intimacy",
+  family: "relationship",
+  friendship: "relationship",
+  faith: "spiritual",
+  "personal-growth": "personal_growth",
 };
 
 interface LeadRecord {
@@ -18,6 +23,7 @@ interface LeadRecord {
   email: string;
   first_name: string | null;
   selected_area: string;
+  relationship_focus?: string | null;
   marketing_consent: boolean;
   lead_source: string;
   created_at: string;
@@ -27,7 +33,7 @@ interface LeadRecord {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { email, firstName, selectedArea, marketingConsent, leadSource } = body;
+    const { email, firstName, selectedArea, relationshipFocus, marketingConsent, leadSource } = body;
 
     if (!email || typeof email !== "string") {
       return NextResponse.json(
@@ -45,7 +51,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const internalArea = CATEGORY_MAP[selectedArea] || "romantic";
+    const internalArea = CATEGORY_MAP[selectedArea] || "intimacy";
+    const validFocus =
+      relationshipFocus === "business" ||
+      relationshipFocus === "family" ||
+      relationshipFocus === "partnerships"
+        ? relationshipFocus
+        : null;
     const cleanFirstName = typeof firstName === "string" ? firstName.trim() : null;
     const consent = Boolean(marketingConsent);
     const source = typeof leadSource === "string" ? leadSource : "free_connection_checkin";
@@ -57,15 +69,21 @@ export async function POST(req: NextRequest) {
     const supabase = getSupabaseServerClient();
     if (supabase) {
       try {
+        const leadPayload: Record<string, any> = {
+          email: cleanEmail,
+          first_name: cleanFirstName || null,
+          selected_area: internalArea,
+          marketing_consent: consent,
+          lead_source: source,
+          updated_at: now,
+        };
+
+        if (validFocus) {
+          leadPayload.relationship_focus = validFocus;
+        }
+
         const { error } = await supabase.from("assessment_leads").upsert(
-          {
-            email: cleanEmail,
-            first_name: cleanFirstName || null,
-            selected_area: internalArea,
-            marketing_consent: consent,
-            lead_source: source,
-            updated_at: now,
-          },
+          leadPayload,
           { onConflict: "email" }
         );
 
@@ -104,6 +122,7 @@ export async function POST(req: NextRequest) {
           ...existingLeads[existingIndex],
           first_name: cleanFirstName || existingLeads[existingIndex].first_name,
           selected_area: internalArea,
+          relationship_focus: validFocus || existingLeads[existingIndex].relationship_focus,
           marketing_consent: consent,
           lead_source: source,
           updated_at: now,
@@ -115,6 +134,7 @@ export async function POST(req: NextRequest) {
           email: cleanEmail,
           first_name: cleanFirstName || null,
           selected_area: internalArea,
+          relationship_focus: validFocus,
           marketing_consent: consent,
           lead_source: source,
           created_at: now,
@@ -125,7 +145,6 @@ export async function POST(req: NextRequest) {
 
       await fs.writeFile(filePath, JSON.stringify(existingLeads, null, 2), "utf-8");
     } catch (fsErr) {
-      // Local filesystem write error (expected on Vercel or read-only serverless environments)
       console.warn("Local leads file write skipped (serverless read-only filesystem):", fsErr);
     }
 
@@ -135,19 +154,20 @@ export async function POST(req: NextRequest) {
         email: cleanEmail,
         first_name: cleanFirstName,
         selected_area: internalArea,
+        relationship_focus: validFocus,
         marketing_consent: consent,
       },
       savedToDatabase: supabaseSaved,
     });
   } catch (err) {
     console.error("Assessment lead POST handler error:", err);
-    // Return graceful success so users/clients are never blocked during assessments
     return NextResponse.json({
       success: true,
       data: {
         email: "",
         first_name: null,
-        selected_area: "romantic",
+        selected_area: "intimacy",
+        relationship_focus: null,
         marketing_consent: false,
       },
     });

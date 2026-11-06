@@ -79,7 +79,7 @@ export function HeroSection() {
         >
           <Image
             src="/hero_logo.png"
-            alt="Amity Vale"
+            alt="AmityHale"
             width={2172}
             height={724}
             priority

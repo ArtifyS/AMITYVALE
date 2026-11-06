@@ -147,10 +147,10 @@ export function StepCoaching({ state, setState, next }: StepCoachingProps) {
       {/* Step Heading */}
       <div className="text-center mb-8 max-w-[620px] mx-auto">
         <h2 className="font-serif text-[28px] sm:text-[34px] md:text-[36px] text-[#0B2A4A] tracking-[-0.01em] leading-tight mb-2">
-          What Would You Like Support With?
+          Which Support Would You Like?
         </h2>
         <p className="text-[14.5px] sm:text-[15.5px] text-[#0B2A4A]/70 leading-relaxed">
-          Choose the area that feels closest to what you want to talk about.
+          Choose the area(s) closest to your immediate needs.
         </p>
       </div>
 

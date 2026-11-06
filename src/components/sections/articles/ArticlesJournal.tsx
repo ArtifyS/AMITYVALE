@@ -411,7 +411,7 @@ export function ArticlesJournal() {
                       </h4>
 
                       {/* Excerpt */}
-                      <p className="text-[#26313A] text-[14.5px] md:text-[15px] leading-[1.6] mb-4 line-clamp-2">
+                      <p className="text-[#26313A] text-[14.5px] md:text-[15px] leading-[1.6] mb-4 line-clamp-3">
                         {article.excerpt}
                       </p>
 

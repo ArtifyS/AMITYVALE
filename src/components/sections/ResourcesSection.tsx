@@ -6,34 +6,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { DecorativeAccent } from "@/components/ui/DecorativeAccent";
-
-// Structured cleanly for future CMS integration
-const articles = [
-  {
-    id: 1,
-    category: "RELATIONSHIPS",
-    title: "How to Communicate Better Without Turning It Into Blows",
-    excerpt: "Practical ways to express what matters, listen differently, and keep difficult conversations from becoming another argument.",
-    readTime: "5–7 min read",
-    image: "/article_communication_1791392276197.jpg"
-  },
-  {
-    id: 2,
-    category: "BUSINESS",
-    title: "How to Set Boundaries with Colleagues Without Feeling Compromised",
-    excerpt: "How to safeguard professionalism while navigating the corporate terrain.",
-    readTime: "6–8 min read",
-    image: "/business_article.png"
-  },
-  {
-    id: 3,
-    category: "FAITH & SPIRITUAL ALIGNMENT",
-    title: "Is God Distant? God Never Is. Reconnect!",
-    excerpt: "A profound look at your faith and how it equates to your understanding of spirituality. Remove any self-doubts. Your questions; your answers.",
-    readTime: "5–7 min read",
-    image: "/article_faith_1791392297766.jpg"
-  }
-];
+import { ARTICLES_DATA } from "@/lib/articlesData";
 
 export function ResourcesSection() {
   return (
@@ -88,56 +61,67 @@ export function ResourcesSection() {
 
         {/* Article Rows */}
         <div className="flex flex-col max-w-[920px] mx-auto relative z-10">
-          {articles.map((article, index) => (
-            <motion.article
-              key={article.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.7, delay: index * 0.1, ease: "easeOut" }}
-              className={`group cursor-pointer flex flex-col md:flex-row items-center md:items-stretch gap-6 md:gap-12 lg:gap-16 ${
-                index !== articles.length - 1 ? "border-b border-[#0B2A4A]/[0.08] pb-10 md:pb-12 mb-10 md:mb-12" : ""
-              }`}
-            >
-              {/* Image Side (Approx 42% Desktop) */}
-              <div className="w-full md:w-[42%] shrink-0">
-                <div className="relative w-full aspect-[16/10] md:aspect-[4/3] rounded-[18px] md:rounded-[22px] overflow-hidden bg-[#F7F2EE] border-[2px] border-[#FF5A4F]/70 shadow-[0_12px_28px_rgba(11,42,74,0.09),0_3px_10px_rgba(11,42,74,0.05)] md:shadow-[0_18px_42px_rgba(11,42,74,0.10),0_5px_14px_rgba(11,42,74,0.06)] transition-all duration-[500ms] ease-[cubic-bezier(0.22,1,0.36,1)] md:group-hover:scale-[1.015] md:group-hover:shadow-[0_22px_48px_rgba(11,42,74,0.13),0_6px_16px_rgba(11,42,74,0.07)] motion-reduce:transform-none motion-reduce:md:group-hover:scale-100">
-                  <Image 
-                    src={article.image}
-                    alt={article.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 42vw"
-                  />
+          {ARTICLES_DATA.map((article, index) => {
+            const articleHref = `/articles/${article.slug}`;
+            return (
+              <motion.article
+                key={article.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.7, delay: index * 0.1, ease: "easeOut" }}
+                className={`group flex flex-col md:flex-row items-center md:items-stretch gap-6 md:gap-12 lg:gap-16 ${
+                  index !== ARTICLES_DATA.length - 1 ? "border-b border-[#0B2A4A]/[0.08] pb-10 md:pb-12 mb-10 md:mb-12" : ""
+                }`}
+              >
+                {/* Image Side (Approx 42% Desktop) */}
+                <div className="w-full md:w-[42%] shrink-0">
+                  <Link 
+                    href={articleHref}
+                    className="block relative w-full aspect-[16/10] md:aspect-[4/3] rounded-[18px] md:rounded-[22px] overflow-hidden bg-[#F7F2EE] border-[2px] border-[#FF5A4F]/70 shadow-[0_12px_28px_rgba(11,42,74,0.09),0_3px_10px_rgba(11,42,74,0.05)] md:shadow-[0_18px_42px_rgba(11,42,74,0.10),0_5px_14px_rgba(11,42,74,0.06)] transition-all duration-[500ms] ease-[cubic-bezier(0.22,1,0.36,1)] md:group-hover:scale-[1.015] md:group-hover:shadow-[0_22px_48px_rgba(11,42,74,0.13),0_6px_16px_rgba(11,42,74,0.07)] motion-reduce:transform-none motion-reduce:md:group-hover:scale-100"
+                  >
+                    <Image 
+                      src={article.image}
+                      alt={article.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 42vw"
+                    />
+                  </Link>
                 </div>
-              </div>
 
-              {/* Content Side (Approx 58% Desktop) */}
-              <div className="w-full md:w-[58%] flex flex-col justify-center py-2 md:py-4">
-                <div className="flex items-center text-[10px] md:text-[11px] font-sans font-bold uppercase tracking-[0.12em] text-[#FF5A4F] mb-3 md:mb-4">
-                  {article.category}
-                  <span className="mx-2.5 text-[#151312]/15">•</span>
-                  <span className="text-[#5C5550] font-normal tracking-normal normal-case">{article.readTime}</span>
-                </div>
-                
-                <h3 className="font-serif text-[26px] md:text-[30px] lg:text-[34px] leading-[1.15] text-[#0B2A4A] mb-3 md:mb-4 transition-colors duration-[400ms]">
-                  {article.title}
-                </h3>
-                
-                <p className="text-[#4D5358] text-[15px] md:text-[16px] leading-[1.6] mb-5 md:mb-6 max-w-[540px]">
-                  {article.excerpt}
-                </p>
+                {/* Content Side (Approx 58% Desktop) */}
+                <div className="w-full md:w-[58%] flex flex-col justify-center py-2 md:py-4">
+                  <div className="flex items-center text-[10px] md:text-[11px] font-sans font-bold uppercase tracking-[0.12em] text-[#FF5A4F] mb-3 md:mb-4">
+                    {article.category}
+                    <span className="mx-2.5 text-[#151312]/15">•</span>
+                    <span className="text-[#5C5550] font-normal tracking-normal normal-case">{article.readTime}</span>
+                  </div>
+                  
+                  <h3 className="font-serif text-[26px] md:text-[30px] lg:text-[34px] leading-[1.15] text-[#0B2A4A] mb-3 md:mb-4 transition-colors duration-[400ms]">
+                    <Link href={articleHref} className="hover:text-[#FF5A4F] transition-colors">
+                      {article.title}
+                    </Link>
+                  </h3>
+                  
+                  <p className="text-[#4D5358] text-[15px] md:text-[16px] leading-[1.6] mb-5 md:mb-6 max-w-[540px]">
+                    {article.excerpt}
+                  </p>
 
-                <div className="mt-auto">
-                  <span className="inline-flex items-center text-[13px] font-sans font-semibold text-[#0B2A4A] group-hover:text-[#FF5A4F] transition-colors duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] relative pb-[2px]">
-                    <span className="relative z-10">Read Article</span>
-                    <span className="absolute bottom-0 left-0 w-full h-[1px] bg-[#FF5A4F] scale-x-0 group-hover:scale-x-100 transition-transform duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] origin-left" />
-                    <ArrowRight className="ml-2.5 w-3.5 h-3.5 transition-transform duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-[4px]" />
-                  </span>
+                  <div className="mt-auto">
+                    <Link 
+                      href={articleHref}
+                      className="inline-flex items-center text-[13px] font-sans font-semibold text-[#0B2A4A] group-hover:text-[#FF5A4F] transition-colors duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] relative pb-[2px]"
+                    >
+                      <span className="relative z-10">Read Article</span>
+                      <span className="absolute bottom-0 left-0 w-full h-[1px] bg-[#FF5A4F] scale-x-0 group-hover:scale-x-100 transition-transform duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] origin-left" />
+                      <ArrowRight className="ml-2.5 w-3.5 h-3.5 transition-transform duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-[4px]" />
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            </motion.article>
-          ))}
+              </motion.article>
+            );
+          })}
         </div>
 
       </div>

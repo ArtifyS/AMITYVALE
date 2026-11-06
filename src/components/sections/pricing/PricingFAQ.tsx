@@ -15,7 +15,7 @@ const faqData = [
   },
   {
     q: "Are sessions online?",
-    a: "Yes. Amity Vale sessions take place online via private, high-definition video. You will receive a direct access link upon booking, allowing you to meet with Angel comfortably from anywhere in the world."
+    a: "Yes. AmityHale sessions take place online via private, high-definition video. You will receive a direct access link upon booking, allowing you to meet with Angel comfortably from anywhere in the world."
   },
   {
     q: "What happens after I book?",

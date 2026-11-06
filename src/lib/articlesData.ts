@@ -28,7 +28,7 @@ export const ARTICLES_DATA: Article[] = [
   {
     id: "communicate-better",
     slug: "communicate-better",
-    title: "How to Communicate Better Without Turning It Into a Fight",
+    title: "How to Communicate Better Without Turning It Into Blows",
     excerpt: "Practical ways to express what matters, listen differently, and keep difficult conversations from becoming another argument.",
     category: "Relationships",
     readTime: "5–7 min read",
@@ -50,7 +50,7 @@ export const ARTICLES_DATA: Article[] = [
   {
     id: "when-god-feels-distant",
     slug: "when-god-feels-distant",
-    title: "When God Feels Distant: God Is Never Distant. Reconnect!",
+    title: "Is God Distant? God Never Is. Reconnect!",
     excerpt: "A profound look at your faith and how it equates to your understanding of spirituality. Remove any self-doubts. Your questions; your answers.",
     category: "Faith & Spiritual Life",
     readTime: "5–7 min read",

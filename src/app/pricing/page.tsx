@@ -7,7 +7,7 @@ import { PricingFAQ } from "@/components/sections/pricing/PricingFAQ";
 import { PricingFinalCTA } from "@/components/sections/pricing/PricingFinalCTA";
 
 export const metadata: Metadata = {
-  title: "Sessions & Pricing | Amity Vale Relationship Coaching",
+  title: "Sessions & Pricing | AmityHale Relationship Coaching",
   description: "Straightforward pricing for private online relationship and intimacy coaching sessions. Choose 15, 30, 45, or 60 minutes for individuals or couples.",
 };
 

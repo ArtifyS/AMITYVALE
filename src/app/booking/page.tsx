@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import { BookPage as BookPageContent } from "@/components/sections/book/BookPage";
 
 export const metadata: Metadata = {
-  title: "Book a Private Session | Amity Vale",
-  description: "Choose your Amity Vale relationship and intimacy coaching session length and schedule a private online appointment.",
+  title: "Book a Private Session | AmityHale",
+  description: "Choose your AmityHale relationship and intimacy coaching session length and schedule a private online appointment.",
 };
 
 export default function BookingPage() {

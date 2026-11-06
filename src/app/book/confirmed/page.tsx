@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { ConfirmedPageContent } from "@/components/sections/book/ConfirmedPage";
 
 export const metadata: Metadata = {
-  title: "Booking Confirmed | Amity Vale",
+  title: "Booking Confirmed | AmityHale",
   robots: "noindex",
 };
 

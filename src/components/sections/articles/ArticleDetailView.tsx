@@ -106,22 +106,34 @@ export function ArticleDetailView({ article, relatedArticles }: Props) {
             </span>
 
             {/* H1 Title */}
-            <h1 className="font-serif text-[36px] sm:text-[48px] md:text-[58px] lg:text-[64px] leading-[1.0] tracking-tight text-[#FDFBF7] mb-4 sm:mb-5">
-              How to Communicate Better <br className="hidden sm:inline" />
-              Without Turning It Into <br className="hidden md:inline" />
-              <span className="text-[#FF5A4F] italic">a Fight.</span>
-            </h1>
+            {article.slug === "communicate-better" ? (
+              <h1 className="font-serif text-[36px] sm:text-[48px] md:text-[58px] lg:text-[64px] leading-[1.0] tracking-tight text-[#FDFBF7] mb-4 sm:mb-5">
+                How to Communicate Better <br className="hidden sm:inline" />
+                Without Turning It Into <br className="hidden md:inline" />
+                <span className="text-[#FF5A4F] italic">Blows</span>
+              </h1>
+            ) : article.slug === "when-god-feels-distant" ? (
+              <h1 className="font-serif text-[36px] sm:text-[48px] md:text-[58px] lg:text-[64px] leading-[1.0] tracking-tight text-[#FDFBF7] mb-4 sm:mb-5">
+                Is God Distant? <br className="hidden sm:inline" />
+                God Never Is. <br className="hidden md:inline" />
+                <span className="text-[#FF5A4F] italic">Reconnect!</span>
+              </h1>
+            ) : (
+              <h1 className="font-serif text-[36px] sm:text-[48px] md:text-[58px] lg:text-[64px] leading-[1.0] tracking-tight text-[#FDFBF7] mb-4 sm:mb-5">
+                {article.title}
+              </h1>
+            )}
 
             {/* Subtitle */}
             <p className="text-[17px] sm:text-[18.5px] md:text-[19.5px] leading-[1.5] text-white/90 font-normal mb-5 max-w-[680px]">
-              Practical ways to express what matters, listen differently, and keep difficult conversations from becoming another argument.
+              {article.excerpt}
             </p>
 
             {/* Minimal Metadata */}
             <div className="flex items-center gap-2.5 text-[11.5px] sm:text-[12.5px] font-sans uppercase tracking-[0.12em] text-white/70 font-semibold">
-              <span>8 MIN READ</span>
+              <span>{article.readTime}</span>
               <span className="text-white/30">•</span>
-              <span>AMITY VALE JOURNAL</span>
+              <span>AmityHale JOURNAL</span>
               {formattedDate && (
                 <>
                   <span className="text-white/30">•</span>
@@ -147,28 +159,58 @@ export function ArticleDetailView({ article, relatedArticles }: Props) {
         <div className="max-w-[880px] mx-auto px-5 sm:px-8">
           {/* ARTICLE LEAD */}
           <p className="font-serif text-[28px] sm:text-[34px] md:text-[38px] leading-[1.12] text-[#0B2A4A] tracking-tight mb-8">
-            It starts with something small.
+            {article.slug === "when-god-feels-distant"
+              ? "A profound look at your faith and how it equates to your understanding of spirituality."
+              : article.slug === "set-boundaries-with-family"
+              ? "How to safeguard professionalism while navigating the corporate terrain."
+              : "It starts with something small."}
           </p>
 
           <div className="max-w-[800px] space-y-5 text-[18px] sm:text-[19px] md:text-[19.5px] leading-[1.78] text-[#26313A]">
-            <p>
-              A conversation about money. An evening when your partner seems distracted. A responsibility you have mentioned three times already.
-            </p>
-            <p>
-              You bring it up because it matters to you. But somewhere between explaining how you feel and trying to be understood, the conversation changes. Voices become sharper. Someone gets defensive. Old frustrations resurface.
-            </p>
-            <p>
-              And suddenly, you are no longer talking about the thing that bothered you. You are arguing about how you are talking to each other.
-            </p>
-            <p>
-              If this sounds familiar, you are not necessarily failing at communication. You may simply be caught in a pattern that neither of you knows how to interrupt.
-            </p>
+            {article.slug === "when-god-feels-distant" ? (
+              <>
+                <p>
+                  A profound look at your faith and how it equates to your understanding of spirituality. Remove any self-doubts. Your questions; your answers.
+                </p>
+                <p>
+                  Spiritual alignment is not about distant rituals—it is about cultivating an inner dialogue and quiet confidence in your personal walk with God.
+                </p>
+              </>
+            ) : article.slug === "set-boundaries-with-family" ? (
+              <>
+                <p>
+                  Setting healthy boundaries in professional spaces isn&apos;t about creating division—it is about establishing mutual respect, preventing burnout, and safeguarding your integrity while navigating demanding corporate terrain.
+                </p>
+                <p>
+                  When expectations and workload begin encroaching on your personal ethics or well-being, knowing how to articulate limits calmly and clearly makes all the difference.
+                </p>
+              </>
+            ) : (
+              <>
+                <p>
+                  A conversation about money. An evening when your partner seems distracted. A responsibility you have mentioned three times already.
+                </p>
+                <p>
+                  You bring it up because it matters to you. But somewhere between explaining how you feel and trying to be understood, the conversation changes. Voices become sharper. Someone gets defensive. Old frustrations resurface.
+                </p>
+                <p>
+                  And suddenly, you are no longer talking about the thing that bothered you. You are arguing about how you are talking to each other.
+                </p>
+                <p>
+                  If this sounds familiar, you are not necessarily failing at communication. You may simply be caught in a pattern that neither of you knows how to interrupt.
+                </p>
+              </>
+            )}
           </div>
 
           {/* KEY THESIS CALLOUT */}
           <div className="my-10 sm:my-12 max-w-[840px] pl-6 sm:pl-8 py-5 pr-6 border-l-[3.5px] border-[#FF5A4F] bg-[#FAF8F5]/85 rounded-r-[14px]">
             <p className="font-serif text-[20px] sm:text-[23px] md:text-[25px] leading-[1.45] text-[#0B2A4A] italic">
-              “Communicating better with your partner starts with three changes: expressing your needs without attacking, listening without immediately defending yourself, and knowing when to pause before a disagreement becomes hurtful.”
+              {article.slug === "when-god-feels-distant"
+                ? "“A profound look at your faith and how it equates to your understanding of spirituality. Remove any self-doubts. Your questions; your answers.”"
+                : article.slug === "set-boundaries-with-family"
+                ? "“Safeguarding professionalism while navigating the corporate terrain requires clarity, composure, and unwavering self-respect.”"
+                : "“Communicating better with your partner starts with three changes: expressing your needs without attacking, listening without immediately defending yourself, and knowing when to pause before a disagreement becomes hurtful.”"}
             </p>
           </div>
 

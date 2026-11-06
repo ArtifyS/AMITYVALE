@@ -11,13 +11,13 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const article = ARTICLES_DATA.find((a) => a.slug === slug);
-  if (!article) return { title: "Article Not Found | Amity Vale" };
+  if (!article) return { title: "Article Not Found | AmityHale" };
 
   return {
-    title: `${article.title} | Amity Vale`,
+    title: `${article.title} | AmityHale`,
     description: article.excerpt,
     openGraph: {
-      title: `${article.title} | Amity Vale`,
+      title: `${article.title} | AmityHale`,
       description: article.excerpt,
       images: [
         {
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${article.title} | Amity Vale`,
+      title: `${article.title} | AmityHale`,
       description: article.excerpt,
       images: [article.image],
     },
@@ -67,8 +67,8 @@ export default async function ArticleDetailPage({ params }: Props) {
     datePublished: article.publishedDate,
     publisher: {
       "@type": "Organization",
-      name: "Amity Vale",
-      url: "https://amityvale.com",
+      name: "AmityHale",
+      url: "https://amityhale.com",
     },
   };
 

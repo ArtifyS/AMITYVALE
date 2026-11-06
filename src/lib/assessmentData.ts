@@ -1,9 +1,11 @@
 export type AssessmentCategoryKey = 
-  | "romantic"
-  | "family"
-  | "friendship"
-  | "faith"
-  | "personal-growth";
+  | "intimacy"
+  | "relationship"
+  | "health"
+  | "spiritual"
+  | "personal_growth";
+
+export type RelationshipFocus = "business" | "family" | "partnerships";
 
 export interface CategoryInfo {
   id: AssessmentCategoryKey;
@@ -20,62 +22,62 @@ export interface CategoryInfo {
 
 export const ASSESSMENT_CATEGORIES: CategoryInfo[] = [
   {
-    id: "romantic",
+    id: "intimacy",
     number: "01",
-    title: "Romantic Relationships",
-    description: "Communication, trust, closeness, conflict, and intimacy.",
-    accentColor: "#FF5A4F",
-    accentBg: "bg-[#FF5A4F]/10",
-    accentBorder: "border-[#FF5A4F]",
+    title: "Intimacy Coaching",
+    description: "Emotional trust, physical closeness, and the bond you share.",
+    accentColor: "#DE5D52",
+    accentBg: "bg-[#DE5D52]/10",
+    accentBorder: "border-[#DE5D52]",
+    promptIntro: "Thinking about this connection over the past month, how true has each statement felt?",
+    coachingHref: "/coaching#intimacy",
+    coachingCtaLabel: "Explore Intimacy Coaching",
+  },
+  {
+    id: "relationship",
+    number: "02",
+    title: "Relationship Coaching",
+    description: "Business, family, and partnerships shaped by communication, expectations, and shared responsibilities.",
+    accentColor: "#0B2A4A",
+    accentBg: "bg-[#0B2A4A]/10",
+    accentBorder: "border-[#0B2A4A]",
     promptIntro: "Thinking about this relationship over the past month, how true has each statement felt?",
-    coachingHref: "/coaching#romantic",
+    coachingHref: "/coaching#relationship",
     coachingCtaLabel: "Explore Relationship Coaching",
   },
   {
-    id: "family",
-    number: "02",
-    title: "Family Relationships",
-    description: "Parents, siblings, adult children, boundaries, and family dynamics.",
-    accentColor: "#D8A23D",
-    accentBg: "bg-[#D8A23D]/10",
-    accentBorder: "border-[#D8A23D]",
-    promptIntro: "Thinking about this relationship over the past month, how true has each statement felt?",
-    coachingHref: "/coaching#family",
-    coachingCtaLabel: "Explore Family Coaching",
-  },
-  {
-    id: "friendship",
+    id: "health",
     number: "03",
-    title: "Friendship & Social Connection",
-    description: "Trust, distance, conflict, belonging, and changing friendships.",
+    title: "Health Coaching",
+    description: "Wellness priorities, changing routines, and the realities that health-related decisions can place on everyday life.",
     accentColor: "#0E5A63",
     accentBg: "bg-[#0E5A63]/10",
     accentBorder: "border-[#0E5A63]",
-    promptIntro: "Thinking about this relationship over the past month, how true has each statement felt?",
-    coachingHref: "/coaching#friendship",
-    coachingCtaLabel: "Explore Friendship Coaching",
+    promptIntro: "Thinking about your daily habits, energy, and physical routines recently, how true has each statement felt?",
+    coachingHref: "/coaching#health",
+    coachingCtaLabel: "Explore Health Coaching",
   },
   {
-    id: "faith",
+    id: "spiritual",
     number: "04",
-    title: "Faith & Spiritual Life",
-    description: "Faith, doubt, values, meaning, and spiritual connection.",
-    accentColor: "#D8A23D",
-    accentBg: "bg-[#D8A23D]/10",
-    accentBorder: "border-[#D8A23D]",
-    promptIntro: "Thinking about your faith or spiritual life recently, how true has each statement felt?",
-    coachingHref: "/coaching#faith",
-    coachingCtaLabel: "Explore Faith & Spiritual Life Coaching",
+    title: "Spiritual Coaching",
+    description: "Beliefs, values, purpose, and the questions that shape how you understand your spiritual life.",
+    accentColor: "#B87A18",
+    accentBg: "bg-[#B87A18]/10",
+    accentBorder: "border-[#B87A18]",
+    promptIntro: "Thinking about your beliefs, values, or spiritual life recently, how true has each statement felt?",
+    coachingHref: "/coaching#spiritual",
+    coachingCtaLabel: "Explore Spiritual Coaching",
   },
   {
-    id: "personal-growth",
+    id: "personal_growth",
     number: "05",
     title: "Personal Growth",
-    description: "Self-understanding, boundaries, confidence, patterns, and direction.",
-    accentColor: "#FF5A4F",
-    accentBg: "bg-[#FF5A4F]/10",
-    accentBorder: "border-[#0E5A63]",
-    promptIntro: "Thinking about yourself and your life recently, how true has each statement felt?",
+    description: "Identity, life transitions, self-discovery, and the changes taking place within you.",
+    accentColor: "#127A70",
+    accentBg: "bg-[#127A70]/10",
+    accentBorder: "border-[#127A70]",
+    promptIntro: "Thinking about yourself and your personal chapter recently, how true has each statement felt?",
     coachingHref: "/coaching#personal-growth",
     coachingCtaLabel: "Explore Personal Growth Coaching",
   },
@@ -112,9 +114,14 @@ export const CORE_INTERPERSONAL_QUESTIONS: QuestionItem[] = [
   { id: 10, text: "When I think about this relationship, I can imagine a constructive way forward." },
 ];
 
-export const ROMANTIC_ADDITIONAL_QUESTIONS: QuestionItem[] = [
+export const INTIMACY_ADDITIONAL_QUESTIONS: QuestionItem[] = [
   { id: 11, text: "We can talk about affection, closeness, or intimacy without pressure, ridicule, or avoidance." },
-  { id: 12, text: "Our expectations about commitment, closeness, and the future are clear enough to discuss honestly." },
+  { id: 12, text: "Our expectations about commitment, closeness, and emotional presence are clear enough to discuss honestly." },
+];
+
+export const BUSINESS_ADDITIONAL_QUESTIONS: QuestionItem[] = [
+  { id: 11, text: "Our roles, responsibilities, and professional expectations are clear and mutually respected." },
+  { id: 12, text: "We can resolve operational friction or misaligned objectives without defensive escalation." },
 ];
 
 export const FAMILY_ADDITIONAL_QUESTIONS: QuestionItem[] = [
@@ -122,21 +129,34 @@ export const FAMILY_ADDITIONAL_QUESTIONS: QuestionItem[] = [
   { id: 12, text: "Old family roles or past conflicts do not completely control how we relate to each other today." },
 ];
 
-export const FRIENDSHIP_ADDITIONAL_QUESTIONS: QuestionItem[] = [
-  { id: 11, text: "I feel valued for who I am, not mainly contacted when something is needed from me." },
-  { id: 12, text: "I can talk honestly about changes in closeness, expectations, or priorities without feeling that the friendship will immediately fall apart." },
+export const PARTNERSHIP_ADDITIONAL_QUESTIONS: QuestionItem[] = [
+  { id: 11, text: "We can discuss shared commitments, financial priorities, or long-term alignment with transparency." },
+  { id: 12, text: "Trust and mutual respect are strong enough to navigate tough partnership crossroads." },
 ];
 
-export const FAITH_QUESTIONS: QuestionItem[] = [
-  { id: 1, text: "My faith or spiritual life currently gives me some sense of meaning or direction." },
-  { id: 2, text: "I can be honest about doubt or difficult questions without feeling that I have to pretend." },
-  { id: 3, text: "My values and the way I live feel reasonably aligned." },
-  { id: 4, text: "I have moments or practices that help me feel spiritually connected." },
+export const HEALTH_QUESTIONS: QuestionItem[] = [
+  { id: 1, text: "My daily habits and physical routines currently support the energy I need for what matters most." },
+  { id: 2, text: "I am able to prioritize sleep, rest, or recovery without feeling constant guilt or compromise." },
+  { id: 3, text: "When lifestyle changes or wellness adjustments feel necessary, I have clarity on what first steps to take." },
+  { id: 4, text: "I can communicate my wellness boundaries, energy limits, and pacing to the people around me." },
+  { id: 5, text: "Stress or demanding schedules do not completely derail my essential daily self-care routines." },
+  { id: 6, text: "I approach health adjustments with patience and consistency rather than extreme or temporary measures." },
+  { id: 7, text: "My everyday environment makes it manageable to sustain positive, nourishing choices." },
+  { id: 8, text: "I notice when my body or mind signals fatigue and I take reasonable steps to respond." },
+  { id: 9, text: "I have realistic, steady goals for my wellbeing that fit the current season of my life." },
+  { id: 10, text: "When routines are disrupted, I am able to reset without harsh self-blame or losing momentum." },
+];
+
+export const SPIRITUAL_QUESTIONS: QuestionItem[] = [
+  { id: 1, text: "My spiritual life or personal worldview currently gives me some sense of meaning or direction." },
+  { id: 2, text: "I can be honest about doubt, uncertainty, or difficult questions without feeling that I have to pretend." },
+  { id: 3, text: "My core values and the way I live my everyday life feel reasonably aligned." },
+  { id: 4, text: "I have moments, environments, or practices that help me feel grounded and spiritually connected." },
   { id: 5, text: "I can tell the difference between what I truly believe and what others expect me to believe." },
-  { id: 6, text: "When faith feels difficult, I have someone or somewhere I can safely explore it." },
+  { id: 6, text: "When questions feel difficult, I have someone or somewhere I can safely explore them." },
   { id: 7, text: "My beliefs generally help me approach other people with greater clarity, compassion, or responsibility." },
   { id: 8, text: "I feel able to reconsider beliefs or assumptions that no longer make sense to me." },
-  { id: 9, text: "I have some sense of what I want my spiritual life to grow toward." },
+  { id: 9, text: "I have some sense of what I want my spiritual life or inner journey to grow toward." },
   { id: 10, text: "I can live with some uncertainty without feeling that I must have every answer immediately." },
 ];
 
@@ -153,17 +173,26 @@ export const PERSONAL_GROWTH_QUESTIONS: QuestionItem[] = [
   { id: 10, text: "When I notice something about myself I want to change, I can approach it with curiosity rather than only criticism." },
 ];
 
-export function getQuestionsForCategory(category: AssessmentCategoryKey): QuestionItem[] {
+export function getQuestionsForCategory(
+  category: AssessmentCategoryKey,
+  relationshipFocus?: RelationshipFocus | null
+): QuestionItem[] {
   switch (category) {
-    case "romantic":
-      return [...CORE_INTERPERSONAL_QUESTIONS, ...ROMANTIC_ADDITIONAL_QUESTIONS];
-    case "family":
-      return [...CORE_INTERPERSONAL_QUESTIONS, ...FAMILY_ADDITIONAL_QUESTIONS];
-    case "friendship":
-      return [...CORE_INTERPERSONAL_QUESTIONS, ...FRIENDSHIP_ADDITIONAL_QUESTIONS];
-    case "faith":
-      return FAITH_QUESTIONS;
-    case "personal-growth":
+    case "intimacy":
+      return [...CORE_INTERPERSONAL_QUESTIONS, ...INTIMACY_ADDITIONAL_QUESTIONS];
+    case "relationship":
+      if (relationshipFocus === "business") {
+        return [...CORE_INTERPERSONAL_QUESTIONS, ...BUSINESS_ADDITIONAL_QUESTIONS];
+      }
+      if (relationshipFocus === "family") {
+        return [...CORE_INTERPERSONAL_QUESTIONS, ...FAMILY_ADDITIONAL_QUESTIONS];
+      }
+      return [...CORE_INTERPERSONAL_QUESTIONS, ...PARTNERSHIP_ADDITIONAL_QUESTIONS];
+    case "health":
+      return HEALTH_QUESTIONS;
+    case "spiritual":
+      return SPIRITUAL_QUESTIONS;
+    case "personal_growth":
       return PERSONAL_GROWTH_QUESTIONS;
   }
 }
@@ -239,7 +268,55 @@ export const INTERPERSONAL_DIMENSIONS: DimensionDefinition[] = [
   },
 ];
 
-export const FAITH_DIMENSIONS: DimensionDefinition[] = [
+export const HEALTH_DIMENSIONS: DimensionDefinition[] = [
+  {
+    key: "energy_rest",
+    label: "Daily Rhythm & Rest",
+    qIds: [1, 2],
+    strengthCopy: "Your daily rhythms and recovery practices appear to provide a dependable foundation for your ongoing energy.",
+    focusCopy: "Fatigue or disrupted sleep habits may be diminishing the energy you have for daily demands.",
+    patternCopy: "When schedules become compressed, rest and recovery are often the first necessities set aside.",
+    nextStepCopy: "Identify one small evening or morning ritual that protects 20 minutes of undisturbed rest or recovery.",
+  },
+  {
+    key: "boundaries_pacing",
+    label: "Boundaries & Pacing",
+    qIds: [4, 5],
+    strengthCopy: "You show an ability to communicate your capacity and protect your energy even during busier periods.",
+    focusCopy: "Demands from others or external pressures may frequently push past your physical or emotional limits.",
+    patternCopy: "Reluctance to communicate physical limits often leads to accumulated depletion and burnout.",
+    nextStepCopy: "Practice communicating one clear scheduling or energy boundary this week without over-explaining.",
+  },
+  {
+    key: "awareness_response",
+    label: "Body Awareness & Reset",
+    qIds: [3, 8],
+    strengthCopy: "You notice signals of fatigue or tension and respond with constructive adjustments.",
+    focusCopy: "You may tend to push through warning signs of exhaustion until your body forces an unplanned pause.",
+    patternCopy: "Ignoring early signals of tension makes it harder to reset before fatigue becomes chronic.",
+    nextStepCopy: "When you first notice signs of fatigue during the day, take a five-minute pause before continuing.",
+  },
+  {
+    key: "mindset_consistency",
+    label: "Mindset & Consistency",
+    qIds: [6, 10],
+    strengthCopy: "You approach lifestyle habits with sustainable consistency rather than all-or-nothing extremes.",
+    focusCopy: "Disruptions to your schedule may trigger discouragement or difficulty getting back on track.",
+    patternCopy: "All-or-nothing expectations around wellness often turn minor disruptions into extended pauses.",
+    nextStepCopy: "Focus on maintaining one minimum baseline habit even on the busiest or most imperfect days.",
+  },
+  {
+    key: "sustainable_goals",
+    label: "Sustainable Direction",
+    qIds: [7, 9],
+    strengthCopy: "Your wellness priorities fit the actual reality and demands of your current life season.",
+    focusCopy: "Your health goals may feel disconnected from your everyday environment or current commitments.",
+    patternCopy: "Setting health expectations that do not account for life's current demands creates constant friction.",
+    nextStepCopy: "Choose one realistic wellness priority that directly fits your current weekly schedule.",
+  },
+];
+
+export const SPIRITUAL_DIMENSIONS: DimensionDefinition[] = [
   {
     key: "meaning_direction",
     label: "Meaning & Direction",
@@ -286,6 +363,9 @@ export const FAITH_DIMENSIONS: DimensionDefinition[] = [
     nextStepCopy: "Ask yourself which of your beliefs feels like your own genuine conviction, versus one you maintain primarily to satisfy others.",
   },
 ];
+
+// Alias for compatibility
+export const FAITH_DIMENSIONS = SPIRITUAL_DIMENSIONS;
 
 export const PERSONAL_GROWTH_DIMENSIONS: DimensionDefinition[] = [
   {
@@ -343,6 +423,7 @@ export function getBandForScore(score: number): ScoreBand {
 
 export interface AssessmentResultData {
   category: AssessmentCategoryKey;
+  relationshipFocus?: RelationshipFocus | null;
   dimensions: DimensionResult[];
   isBalanced: boolean;
   primaryStrength: DimensionResult;
@@ -357,13 +438,16 @@ export function calculateResults(
   category: AssessmentCategoryKey,
   answers: Record<number, number>,
   safetyAnswer?: string,
-  openReflectionText?: string
+  openReflectionText?: string,
+  relationshipFocus?: RelationshipFocus | null
 ): AssessmentResultData {
   let dimensionDefs: DimensionDefinition[];
-  if (category === "faith") {
-    dimensionDefs = FAITH_DIMENSIONS;
-  } else if (category === "personal-growth") {
+  if (category === "spiritual") {
+    dimensionDefs = SPIRITUAL_DIMENSIONS;
+  } else if (category === "personal_growth") {
     dimensionDefs = PERSONAL_GROWTH_DIMENSIONS;
+  } else if (category === "health") {
+    dimensionDefs = HEALTH_DIMENSIONS;
   } else {
     dimensionDefs = INTERPERSONAL_DIMENSIONS;
   }
@@ -391,7 +475,7 @@ export function calculateResults(
   const lowest = sorted[sorted.length - 1];
   const isBalanced = highest.score - lowest.score < 0.35;
 
-  // Primary focus is lowest. If balanced, we still identify lowest as "one area you may still want to pay attention to".
+  // Primary focus is lowest
   const primaryStrength = highest;
   const primaryFocus = lowest;
 
@@ -409,40 +493,47 @@ export function calculateResults(
 
   // Path-specific observations
   const pathObservations: string[] = [];
-  if (category === "romantic") {
+  if (category === "intimacy") {
     const q11 = answers[11] ?? 3;
     const q12 = answers[12] ?? 3;
     if (q11 >= 4 && q12 >= 4) {
       pathObservations.push("Closeness and future expectations appear to be reasonably discussable.");
     } else {
-      pathObservations.push("Closeness, intimacy, or expectations about the relationship may deserve a more direct and pressure-free conversation.");
+      pathObservations.push("Closeness, intimacy, or expectations about the connection may deserve a more direct and pressure-free conversation.");
     }
-  } else if (category === "family") {
+  } else if (category === "relationship") {
     const q11 = answers[11] ?? 3;
     const q12 = answers[12] ?? 3;
-    if (q11 < 4) {
-      pathObservations.push("You may be carrying more responsibility for this person’s emotions or problems than feels sustainable.");
+    if (relationshipFocus === "business") {
+      if (q11 < 4) pathObservations.push("Role boundaries and professional clarity may need explicit re-alignment.");
+      if (q12 < 4) pathObservations.push("Operational friction may benefit from clearer, less defensive communication protocols.");
+      if (q11 >= 4 && q12 >= 4) pathObservations.push("Professional expectations and objective alignment appear reasonably solid.");
+    } else if (relationshipFocus === "family") {
+      if (q11 < 4) pathObservations.push("You may be carrying more emotional responsibility for family members than feels sustainable.");
+      if (q12 < 4) pathObservations.push("Old roles or family patterns may still be influencing your interactions.");
+      if (q11 >= 4 && q12 >= 4) pathObservations.push("Family boundaries and mutual care show constructive grounding.");
+    } else {
+      if (q11 < 4) pathObservations.push("Long-term alignment and shared priorities may benefit from more transparent dialogue.");
+      if (q12 < 4) pathObservations.push("Partnership trust and decision-making may need dedicated space to realign.");
+      if (q11 >= 4 && q12 >= 4) pathObservations.push("Trust and long-term partnership goals appear to have meaningful shared foundation.");
     }
-    if (q12 < 4) {
-      pathObservations.push("Old roles or unresolved family history may still be shaping present-day interactions.");
-    }
-  } else if (category === "friendship") {
-    const q11 = answers[11] ?? 3;
-    const q12 = answers[12] ?? 3;
-    if (q11 < 4) {
-      pathObservations.push("The friendship may feel less reciprocal or affirming than you would like.");
-    }
-    if (q12 < 4) {
-      pathObservations.push("Changes in closeness or expectations may be difficult to discuss openly.");
+  } else if (category === "health") {
+    const q1 = answers[1] ?? 3;
+    const q2 = answers[2] ?? 3;
+    if (q1 < 4 || q2 < 4) {
+      pathObservations.push("Daily rest and energy pacing appear to be key areas for steady, realistic adjustments.");
+    } else {
+      pathObservations.push("Daily recovery habits and rhythm show a steady, supportive baseline.");
     }
   }
 
-  // Safety flag check (only for romantic, family, friendship)
-  const isInterpersonal = category === "romantic" || category === "family" || category === "friendship";
+  // Safety flag check (only for intimacy and relationship)
+  const isInterpersonal = category === "intimacy" || category === "relationship";
   const safetyFlag = isInterpersonal && (safetyAnswer === "Sometimes" || safetyAnswer === "Often");
 
   return {
     category,
+    relationshipFocus,
     dimensions,
     isBalanced,
     primaryStrength,

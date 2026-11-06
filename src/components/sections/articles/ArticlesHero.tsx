@@ -58,17 +58,17 @@ export function ArticlesHero() {
         >
           {/* Featured Image - Takes up 60% on desktop */}
           <div className="w-full lg:w-[62%] relative z-10">
-            <div className="relative aspect-[4/3] md:aspect-[16/10] lg:aspect-[4/3] w-full rounded-[24px] md:rounded-[32px] overflow-hidden shadow-[0_20px_50px_rgba(11,42,74,0.12)] border-[3px] border-white transition-transform duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]">
+            <Link href="/articles/communicate-better" className="block relative aspect-[4/3] md:aspect-[16/10] lg:aspect-[4/3] w-full rounded-[24px] md:rounded-[32px] overflow-hidden shadow-[0_20px_50px_rgba(11,42,74,0.12)] border-[3px] border-white transition-transform duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]">
               <Image 
                 src="/article_communication_1791392276197.jpg"
-                alt="How to Communicate Better Without Turning It Into a Fight"
+                alt="How to Communicate Better Without Turning It Into Blows"
                 fill
                 className="object-cover transition-transform duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
                 priority
                 sizes="(max-width: 1024px) 100vw, 62vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0B2A4A]/40 to-transparent opacity-0 md:opacity-100 mix-blend-multiply transition-opacity duration-500 group-hover:opacity-20" />
-            </div>
+            </Link>
           </div>
 
           {/* Featured Text Box - Overlaps the image on desktop */}
@@ -84,7 +84,9 @@ export function ArticlesHero() {
             </div>
 
             <h2 className="font-serif text-[28px] md:text-[36px] lg:text-[42px] leading-[1.1] text-[#0B2A4A] mb-5 group-hover:text-[#FF5A4F] transition-colors duration-300">
-              How to Communicate Better Without Turning It Into a Fight
+              <Link href="/articles/communicate-better">
+                How to Communicate Better Without Turning It Into Blows
+              </Link>
             </h2>
             
             <p className="text-[#5C5550] text-[15px] md:text-[17px] leading-[1.65] mb-8">
@@ -94,7 +96,6 @@ export function ArticlesHero() {
             <Link 
               href="/articles/communicate-better" 
               className="inline-flex items-center text-[13px] md:text-[14px] font-sans font-bold text-[#151312] group-hover:text-[#FF5A4F] transition-colors duration-[320ms] w-fit"
-              onClick={(e) => e.preventDefault()} // Placeholder
             >
               Read Full Article
               <ArrowRight className="ml-2.5 w-4 h-4 transition-transform duration-[320ms] group-hover:translate-x-1" />

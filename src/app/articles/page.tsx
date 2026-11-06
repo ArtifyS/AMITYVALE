@@ -3,7 +3,7 @@ import { ArticlesNewsletterCTA } from "@/components/sections/articles/ArticlesNe
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Articles & Journal | Amity Vale",
+  title: "Articles & Journal | AmityHale",
   description: "Explore our latest thoughts, insights, and guidance on relationships, family, faith, and personal growth.",
 };
 

@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { DecorativeAccent } from "@/components/ui/DecorativeAccent";
 
@@ -96,12 +97,18 @@ export function FinalCTA() {
                 }}
                 className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5 w-full sm:w-auto"
               >
-                <button className="h-[56px] px-10 rounded-full bg-[#FF5A4F] text-white font-sans font-bold text-[14.5px] tracking-wide hover:bg-[#D9735A] hover:-translate-y-0.5 transition-all duration-300 shadow-sm w-full sm:w-auto min-w-[240px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5A4F]/50">
+                <Link 
+                  href="/booking"
+                  className="h-[56px] px-10 rounded-full bg-[#FF5A4F] text-white font-sans font-bold text-[14.5px] tracking-wide hover:bg-[#D9735A] hover:-translate-y-0.5 transition-all duration-300 shadow-sm w-full sm:w-auto min-w-[240px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5A4F]/50"
+                >
                   Book a Private Session
-                </button>
-                <button className="h-[56px] px-10 rounded-full bg-white/5 border border-white/20 text-[#FDFBF7] font-sans font-bold text-[14.5px] tracking-wide hover:bg-white/10 hover:border-white/30 hover:-translate-y-0.5 transition-all duration-300 w-full sm:w-auto min-w-[240px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50">
-                  Take the Free Assessment
-                </button>
+                </Link>
+                <Link 
+                  href="/assessment"
+                  className="h-[56px] px-10 rounded-full bg-white/5 border border-white/20 text-[#FDFBF7] font-sans font-bold text-[14.5px] tracking-wide hover:bg-white/10 hover:border-white/30 hover:-translate-y-0.5 transition-all duration-300 w-full sm:w-auto min-w-[240px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+                >
+                  Take the Free Check-In
+                </Link>
               </motion.div>
 
               {/* Trust Micro-line */}

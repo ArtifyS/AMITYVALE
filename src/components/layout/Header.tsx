@@ -8,9 +8,10 @@ import { motion, AnimatePresence, useScroll, useMotionValueEvent, useReducedMoti
 import { Menu, X, ArrowRight } from "lucide-react";
 
 const navLinks = [
+  { name: "Home", href: "/" },
   { name: "About", href: "/about" },
-  { name: "Coaching", href: "/coaching" },
   { name: "Articles", href: "/articles" },
+  { name: "Coaching", href: "/coaching" },
   { name: "Pricing", href: "/pricing" },
 ];
 
@@ -223,12 +224,12 @@ export function Header() {
               {/* Logo */}
               <Link 
                 href="/" 
-                aria-label="Amity Vale"
+                aria-label="AmityHale"
                 className="relative flex items-center justify-start shrink-0 w-[160px] sm:w-[200px] lg:w-[235px] h-[36px] sm:h-[40px] lg:h-[44px] group"
               >
                 <Image
                   src="/nav_logo.png"
-                  alt="Amity Vale"
+                  alt="AmityHale"
                   width={1980}
                   height={322}
                   priority
@@ -239,11 +240,13 @@ export function Header() {
               {/* Desktop Navigation */}
               <nav className="hidden lg:flex items-center h-full">
                 <div 
-                  className="flex items-center space-x-8"
+                  className="flex items-center space-x-6 xl:space-x-8"
                   style={{ textShadow: "0 1px 6px rgba(255,255,255,0.9), 0 0 3px rgba(255,255,255,0.8)" }}
                 >
                   {navLinks.map((link) => {
-                    const isActive = pathname === link.href || (link.href === '/articles' && pathname.startsWith('/articles'));
+                    const isActive = link.href === "/" 
+                      ? pathname === "/" 
+                      : pathname === link.href || (link.href === '/articles' && pathname.startsWith('/articles'));
                     return (
                       <Link
                         key={link.name}
@@ -263,8 +266,12 @@ export function Header() {
                   })}
                 </div>
 
-                <div className="w-[1px] h-[14px] bg-[#0B2A4A]/10 mx-7" />
-                
+                {/* Visible elegant divider immediately BEFORE Login */}
+                <div 
+                  className="w-[1px] h-[28px] mx-6 xl:mx-7 shrink-0"
+                  style={{ backgroundColor: "rgba(11, 42, 74, 0.32)" }}
+                />
+
                 <Link
                   href="/login"
                   className={`text-[13px] font-medium relative group py-2 transition-colors duration-300 ${
@@ -280,7 +287,7 @@ export function Header() {
                 
                 <Link 
                   href="/book" 
-                  className="relative flex items-center justify-center h-[42px] px-[24px] pr-[28px] text-[13.5px] rounded-full ml-8 font-[600] tracking-[0.01em] bg-[#FF5A4F] text-white shadow-[0_4px_16px_rgba(255,90,79,0.3)] hover:bg-[#F0443A] hover:-translate-y-[1px] hover:shadow-[0_8px_24px_rgba(255,90,79,0.4)] transition-all duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] group overflow-hidden"
+                  className="relative flex items-center justify-center h-[42px] px-[24px] pr-[28px] text-[13.5px] rounded-full ml-6 xl:ml-8 font-[600] tracking-[0.01em] bg-[#FF5A4F] text-white shadow-[0_4px_16px_rgba(255,90,79,0.3)] hover:bg-[#F0443A] hover:-translate-y-[1px] hover:shadow-[0_8px_24px_rgba(255,90,79,0.4)] transition-all duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] group overflow-hidden"
                 >
                   Book a Session
                   <ArrowRight className="ml-1.5 w-[14px] h-[14px] transition-transform duration-[320ms] group-hover:translate-x-[2px]" />
@@ -319,7 +326,9 @@ export function Header() {
           >
             <nav className="flex flex-col space-y-6 text-center mt-8">
               {navLinks.map((link) => {
-                const isActive = pathname === link.href || (link.href === '/articles' && pathname.startsWith('/articles'));
+                const isActive = link.href === "/" 
+                  ? pathname === "/" 
+                  : pathname === link.href || (link.href === '/articles' && pathname.startsWith('/articles'));
                 return (
                   <Link
                     key={link.name}

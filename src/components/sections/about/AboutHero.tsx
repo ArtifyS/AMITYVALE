@@ -8,14 +8,6 @@ import { motion, useReducedMotion } from "framer-motion";
 export function AboutHero() {
   const prefersReducedMotion = useReducedMotion();
 
-  const handleScrollToMeet = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    const target = document.getElementById("meet-angel");
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
   return (
     <section 
       className="relative w-full bg-white pt-[28px] pb-[40px] md:pt-[36px] md:pb-[44px] lg:pt-[44px] lg:pb-[36px] overflow-hidden flex flex-col justify-center min-h-0 lg:min-h-[calc(100svh-76px)]"
@@ -31,7 +23,7 @@ export function AboutHero() {
             className="w-full lg:w-[49%] xl:w-[48%] flex flex-col text-center lg:text-left z-10 lg:-mt-3"
           >
             <span className="font-sans uppercase tracking-[0.16em] text-[#0B2A4A] text-[11px] md:text-[12px] font-bold mb-[18px] lg:mb-[20px] block">
-              ABOUT AMITY VALE
+              ABOUT AmityHale
             </span>
             
             <h1 className="font-serif text-[clamp(2.45rem,10.5vw,3.35rem)] lg:text-[clamp(34px,3.8vw,50px)] leading-[1.02] lg:leading-[1.08] tracking-tight mb-[20px] lg:mb-[22px] text-[#0B2A4A]">
@@ -40,21 +32,13 @@ export function AboutHero() {
             </h1>
             
             <p className="text-[#5C5550] text-[15.5px] md:text-[16.5px] leading-[1.6] max-w-[90%] md:max-w-[480px] lg:max-w-[490px] mx-auto lg:mx-0 mb-[26px] lg:mb-[28px]">
-              Amity Vale was created around a simple belief: the relationships that shape our lives deserve more understanding, honesty, and intention.
+              AmityHale was created around a simple belief: the relationships that shape our lives deserve more understanding, honesty, and intention.
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-[11px] sm:gap-4 w-full">
-              <a 
-                href="#meet-angel"
-                onClick={handleScrollToMeet}
-                className="flex items-center justify-center h-[50px] px-8 rounded-full bg-[#FF5A4F] text-white font-sans font-bold text-[13.5px] tracking-wide shadow-[0_6px_20px_rgba(255,90,79,0.22)] hover:bg-[#E84E44] hover:-translate-y-[1px] transition-all duration-300 w-full sm:w-auto"
-              >
-                Meet Angel
-              </a>
-              
+            <div className="flex items-center justify-center lg:justify-start w-full">
               <Link
                 href="/coaching"
-                className="flex items-center justify-center h-[50px] px-8 rounded-full bg-transparent border-[1.5px] border-[#0B2A4A]/15 text-[#0B2A4A] font-sans font-bold text-[13.5px] tracking-wide hover:bg-[#0B2A4A]/5 hover:-translate-y-[1px] transition-all duration-300 w-full sm:w-auto"
+                className="flex items-center justify-center h-[50px] px-8 rounded-full bg-[#FF5A4F] text-white font-sans font-bold text-[13.5px] tracking-wide shadow-[0_6px_20px_rgba(255,90,79,0.22)] hover:bg-[#E84E44] hover:-translate-y-[1px] transition-all duration-300 w-full sm:w-auto"
               >
                 Explore Coaching
               </Link>
