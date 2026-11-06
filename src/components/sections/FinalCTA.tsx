@@ -85,7 +85,7 @@ export function FinalCTA() {
                 }}
                 className="text-[#FDFBF7]/85 text-[16px] md:text-[18px] mb-12 max-w-2xl mx-auto leading-[1.65]"
               >
-                Rebuilding connection takes time, but the first step can begin with one honest conversation. Choose the path that feels right for you.
+                Rebuilding connections take time; however, the first step can begin with one honest conversation. Choose the path that works best for you.
               </motion.p>
               
               {/* CTAs */}

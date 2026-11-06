@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
-import { ArrowRight } from "lucide-react";
 import { DecorativeAccent } from "@/components/ui/DecorativeAccent";
 
 export function CoachIntroduction() {
@@ -155,10 +154,10 @@ export function CoachIntroduction() {
             
             <div className="space-y-5 text-[#26313A] text-[15px] md:text-[17px] leading-[1.7] mb-8 max-w-xl font-normal">
               <p>
-                Relationships are complex, and intimacy requires ongoing attention. Sometimes, what you need most is a <strong className="font-semibold text-[#FF5A4F]">neutral, experienced perspective</strong> to help you navigate the conversations you’ve been avoiding.
+                Relationships are complex, and intimacy requires ongoing attention. Sometimes, what you need most is a <strong className="font-semibold text-[#FF5A4F]">neutral</strong> and <strong className="font-semibold text-[#FF5A4F]">experienced perspective</strong> to help you navigate the conversations you’ve been avoiding.
               </p>
               <p>
-                I provide <strong className="font-semibold text-[#FF5A4F]">private, one-on-one support</strong> tailored to your unique situation. Through practical guidance and compassionate listening, we explore relationship and intimacy concerns in a completely <strong className="font-semibold text-[#FF5A4F]">safe, non-judgmental space</strong>.
+                I provide <strong className="font-semibold text-[#FF5A4F]">private, one-on-one support</strong> tailored to your unique situation. Through practical guidance and active-listening, we explore relationship and intimacy concerns in a completely <strong className="font-semibold text-[#FF5A4F]">safe</strong> and <strong className="font-semibold text-[#FF5A4F]">non-judgmental space.</strong>
               </p>
             </div>
 
@@ -177,14 +176,12 @@ export function CoachIntroduction() {
               </li>
             </ul>
 
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-8">
-              <Button size="lg" className="rounded-full px-8 shadow-sm">
-                Book a Private Consultation
+            <div className="flex items-start">
+              <Button asChild size="lg" className="rounded-full px-8 shadow-sm">
+                <Link href="/book">
+                  Book a Private Consultation
+                </Link>
               </Button>
-              <Link href="/about" className="text-[14px] font-semibold text-foreground hover:text-[#FF5A4F] transition-colors flex items-center group">
-                Learn more about
-                <ArrowRight className="w-4 h-4 ml-1.5 transform group-hover:translate-x-1 transition-transform" />
-              </Link>
             </div>
           </motion.div>
 

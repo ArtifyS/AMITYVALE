@@ -12,7 +12,7 @@ const articles = [
   {
     id: 1,
     category: "RELATIONSHIPS",
-    title: "How to Communicate Better Without Turning It Into a Fight",
+    title: "How to Communicate Better Without Turning It Into Blows",
     excerpt: "Practical ways to express what matters, listen differently, and keep difficult conversations from becoming another argument.",
     readTime: "5–7 min read",
     image: "/article_communication_1791392276197.jpg"
@@ -28,7 +28,7 @@ const articles = [
   {
     id: 3,
     category: "FAITH & SPIRITUAL ALIGNMENT",
-    title: "When God Feels Distant: God Is Never Distant. Reconnect!",
+    title: "Is God Distant? God Never Is. Reconnect!",
     excerpt: "A profound look at your faith and how it equates to your understanding of spirituality. Remove any self-doubts. Your questions; your answers.",
     readTime: "5–7 min read",
     image: "/article_faith_1791392297766.jpg"
@@ -124,7 +124,7 @@ export function ResourcesSection() {
                   {article.title}
                 </h3>
                 
-                <p className="text-[#4D5358] text-[15px] md:text-[16px] leading-[1.6] mb-5 md:mb-6 line-clamp-3 md:line-clamp-2 max-w-[540px]">
+                <p className="text-[#4D5358] text-[15px] md:text-[16px] leading-[1.6] mb-5 md:mb-6 max-w-[540px]">
                   {article.excerpt}
                 </p>
 

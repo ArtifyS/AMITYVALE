@@ -7,15 +7,15 @@ import { Plus, Minus } from "lucide-react";
 const faqs = [
   {
     question: "What happens during a private coaching session?",
-    answer: "Sessions are structured as safe, open dialogues. We start by identifying your immediate concerns, then explore the underlying Rapport, and conclude with practical, actionable steps to improve your communication and connection before the next session."
+    answer: "Sessions are structured as safe, open dialogues. We start by identifying your immediate concerns, then explore the underlying Rapport. We then conclude with practical, actionable, steps to improve your communication and connection before your next session."
   },
   {
     question: "Can I book a session individually or as a couple?",
-    answer: "Both. Many clients prefer to start individually to gain clarity on their own feelings before inviting their partner. Others prefer to attend together from the very beginning. We can adapt to whatever feels safest for you."
+    answer: "Both. Many clients prefer to start individually to gain clarity on their own reality before inviting their partner. Others prefer to attend together from the very beginning. We can adapt to whatever situation is comfortable for you."
   },
   {
-    question: "How do online sessions work?",
-    answer: "All sessions are conducted via a secure, private video link provided upon booking. You can join from any device. We recommend finding a quiet, comfortable space where you won't be interrupted."
+    question: "How do Online sessions work?",
+    answer: "All sessions are conducted via a secure, private video link provided upon Booking. You can join from any device. We recommend finding a quiet, comfortable space where you won't be interrupted."
   },
   {
     question: "Is my information kept private?",
@@ -23,7 +23,7 @@ const faqs = [
   },
   {
     question: "How do I choose the right session length?",
-    answer: "15-minute sessions are best for quick check-ins. 30-45 minutes are ideal for individuals focusing on a specific issue. 60-minute sessions are strongly recommended for couples to ensure both partners have ample time to be heard."
+    answer: "15-minute sessions are best for quick Check-Ins. 30-45 minutes are ideal for individuals focusing on a specific issue. 60-minute sessions are strongly recommended for couples to ensure both partners have ample time to be heard."
   }
 ];
 

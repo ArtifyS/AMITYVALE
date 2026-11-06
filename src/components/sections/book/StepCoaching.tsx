@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect } from "react";
 import { BookingState } from "./BookPage";
-import { Check, ArrowRight } from "lucide-react";
+import { Check, ArrowRight, Layers } from "lucide-react";
 
 interface StepCoachingProps {
   state: BookingState;
@@ -21,44 +21,68 @@ export interface CoachingAreaOption {
 
 export const COACHING_AREAS: CoachingAreaOption[] = [
   {
-    id: "romantic",
+    id: "intimacy",
     number: "01",
-    title: "Romantic Relationships",
-    description: "Communication, connection, trust, and intimacy.",
+    title: "Intimacy Coaching",
+    description: "Strengthen emotional trust, physical closeness, and relational awareness.",
     accentColor: "#FF5A4F", // Coral
     badgeBg: "rgba(255, 90, 79, 0.1)",
   },
   {
-    id: "family",
+    id: "relationships",
     number: "02",
-    title: "Family Relationships",
-    description: "Parents, siblings, boundaries, and family dynamics.",
-    accentColor: "#D8A23D", // Gold
-    badgeBg: "rgba(216, 162, 61, 0.12)",
+    title: "Relationship Coaching",
+    description: "Disciplined strategy for business teams, family dynamics, and partnerships.",
+    accentColor: "#0B2A4A", // Navy
+    badgeBg: "rgba(11, 42, 74, 0.08)",
   },
   {
-    id: "friendship",
+    id: "health",
     number: "03",
-    title: "Friendship & Social Connection",
-    description: "Trust, distance, conflict, and changing friendships.",
+    title: "Health Coaching",
+    description: "Coordination around wellness priorities, lifestyle adjustments, and shared routines.",
     accentColor: "#0E5A63", // Teal
     badgeBg: "rgba(14, 90, 99, 0.1)",
   },
   {
-    id: "faith",
+    id: "spiritual",
     number: "04",
-    title: "Faith & Spiritual Life",
-    description: "Faith, purpose, doubt, meaning, and spiritual connection.",
-    accentColor: "#0B2A4A", // Navy + Gold
-    badgeBg: "rgba(11, 42, 74, 0.08)",
+    title: "Spiritual Coaching",
+    description: "Belief systems, differing convictions, shared values, and purpose.",
+    accentColor: "#D8A23D", // Gold
+    badgeBg: "rgba(216, 162, 61, 0.12)",
   },
   {
-    id: "personal",
+    id: "personal-growth",
     number: "05",
     title: "Personal Growth",
-    description: "Patterns, confidence, boundaries, and life transitions.",
-    accentColor: "#FF5A4F", // Coral + Teal
+    description: "Personal evolution, identity, and life transitions alongside important bonds.",
+    accentColor: "#FF5A4F", // Coral
     badgeBg: "rgba(255, 90, 79, 0.08)",
+  },
+];
+
+export interface RelationshipSubOption {
+  id: string;
+  title: string;
+  description: string;
+}
+
+export const RELATIONSHIP_SUB_AREAS: RelationshipSubOption[] = [
+  {
+    id: "business",
+    title: "Business Coaching",
+    description: "Founders, business partners, and executive teams.",
+  },
+  {
+    id: "family",
+    title: "Family Coaching",
+    description: "Generational patterns, boundaries, and family transitions.",
+  },
+  {
+    id: "partnerships",
+    title: "Partnership Coaching",
+    description: "Trust reconstruction, emotional intimacy, and shared expectations.",
   },
 ];
 
@@ -74,14 +98,35 @@ export function StepCoaching({ state, setState, next }: StepCoachingProps) {
   }, []);
 
   const handleSelect = (id: string) => {
-    setState({ coachingArea: id });
+    if (id === "relationships") {
+      // For relationships, let the user pick a sub-discipline or continue
+      setState({ coachingArea: id });
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+      return;
+    }
+
+    setState({ coachingArea: id, coachingSubArea: null });
 
     // Cancel existing timer if any
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
 
-    // Auto-advance after 300ms visual confirmation
+    // Auto-advance after 300ms visual confirmation for non-sub disciplines
+    timerRef.current = setTimeout(() => {
+      timerRef.current = null;
+      next();
+    }, 300);
+  };
+
+  const handleSelectSub = (subId: string) => {
+    setState({ coachingSubArea: subId });
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
     timerRef.current = setTimeout(() => {
       timerRef.current = null;
       next();
@@ -110,7 +155,7 @@ export function StepCoaching({ state, setState, next }: StepCoachingProps) {
       </div>
 
       {/* Selectable Cards Layout: 3 on first row, 2 centered on second row (desktop) */}
-      <div className="flex flex-wrap justify-center gap-4 sm:gap-5 mb-10 w-full">
+      <div className="flex flex-wrap justify-center gap-4 sm:gap-5 mb-8 w-full">
         {COACHING_AREAS.map((item) => {
           const isSelected = state.coachingArea === item.id;
 
@@ -195,6 +240,45 @@ export function StepCoaching({ state, setState, next }: StepCoachingProps) {
           );
         })}
       </div>
+
+      {/* Secondary Sub-Area Selector for Relationship Coaching */}
+      {state.coachingArea === "relationships" && (
+        <div className="mb-8 p-5 sm:p-6 bg-[#FDFBF7] rounded-[20px] border border-[#FF5A4F]/25 shadow-[0_6px_24px_rgba(255,90,79,0.06)] animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="flex items-center gap-2 mb-3">
+            <Layers className="w-4 h-4 text-[#FF5A4F]" />
+            <span className="font-sans uppercase tracking-[0.14em] text-[#0B2A4A] text-[11px] font-bold">
+              Select Relationship Coaching Application (Optional):
+            </span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {RELATIONSHIP_SUB_AREAS.map((sub) => {
+              const isSubSelected = state.coachingSubArea === sub.id;
+              return (
+                <button
+                  key={sub.id}
+                  type="button"
+                  onClick={() => handleSelectSub(sub.id)}
+                  className={`flex flex-col text-left p-3.5 rounded-[14px] transition-all cursor-pointer ${
+                    isSubSelected
+                      ? "bg-white border-2 border-[#FF5A4F] shadow-sm"
+                      : "bg-white/80 border border-[#0B2A4A]/10 hover:border-[#FF5A4F]/40 hover:bg-white"
+                  }`}
+                >
+                  <div className="flex items-center justify-between w-full mb-1">
+                    <span className="font-serif text-[15px] font-semibold text-[#0B2A4A]">
+                      {sub.title}
+                    </span>
+                    {isSubSelected && <Check className="w-3.5 h-3.5 text-[#FF5A4F]" />}
+                  </div>
+                  <span className="text-[12px] text-[#26313A]/70 leading-snug">
+                    {sub.description}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Step Navigation Controls */}
       <div className="flex items-center justify-end pt-2 border-t border-[#0B2A4A]/[0.06] max-w-[1140px] mx-auto w-full">

@@ -7,54 +7,73 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { DecorativeAccent } from "@/components/ui/DecorativeAccent";
 
-const areas = [
+interface CoachingAreaItem {
+  id: string;
+  href: string;
+  eyebrow: string;
+  headline: React.ReactNode;
+  description: string;
+  focusTerms: string[];
+  cta: string;
+  image: string;
+}
+
+const areas: CoachingAreaItem[] = [
+  {
+    id: "intimacy",
+    href: "/coaching#intimacy",
+    eyebrow: "01 — INTIMACY COACHING",
+    headline: (
+      <>
+        Restore Closeness. <br className="hidden sm:inline" />
+        <span className="text-[#FF5A4F] italic">Deepen What You Share.</span>
+      </>
+    ),
+    description:
+      "Build greater emotional trust, physical intimacy, and mutual awareness through practical work designed to move beyond recurring distance and into a more deliberate, responsive bond.",
+    focusTerms: ["Emotional Bond", "Physical Intimacy", "Relational Trust"],
+    cta: "Explore Intimacy Coaching",
+    image: "/coaching_romantic.jpg",
+  },
   {
     id: "relationships",
-    href: "/coaching#romantic",
-    eyebrow: "RELATIONSHIPS",
-    headline: <>Deepen Romantic <span className="text-[#FF5A4F] italic">Connection.</span></>,
-    description: "Strengthen communication, rebuild trust, and underscore a relation that is safer, closer, and better understood.",
-    descriptionMobile: "Strengthen communication, rebuild trust, and underscore a relation that is safer, closer, and better understood.",
-    cta: "Explore relationship coaching",
+    href: "/coaching#relationships",
+    eyebrow: "02 — RELATIONSHIP COACHING",
+    headline: (
+      <>
+        Build Stronger Dynamics <br className="hidden sm:inline" />
+        <span className="text-[#FF5A4F] italic">Where They Matter Most.</span>
+      </>
+    ),
+    description:
+      "Bring greater intention to the relationships that carry real consequence — from business and family dynamics to long-term partnerships — with sharper communication, firmer expectations, and more constructive ways of working through friction.",
+    focusTerms: ["Business", "Family", "Partnerships"],
+    cta: "Explore Relationship Coaching",
     image: "/coaching_relationship_1791377157722.jpg",
   },
   {
-    id: "business",
-    href: "/coaching#business",
-    eyebrow: "BUSINESS",
-    headline: <>Foster Solid Foundations <span className="text-[#FF5A4F] italic">Among Those with Whom You Work.</span></>,
-    description: "Navigate challenging scenarios with the following fixes; for example, altitude, attitude, behavior, clarity, and conduct.",
-    descriptionMobile: "Navigate challenging scenarios with the following fixes; for example, altitude, attitude, behavior, clarity, and conduct.",
-    cta: "Explore business coaching",
-    image: "/coaching_business.jpg",
-  },
-  {
-    id: "friendship",
-    href: "/coaching#friendship",
-    eyebrow: "FRIENDSHIP",
-    headline: <>Build Healthier, More Honest <span className="text-[#FF5A4F] italic">Bonds.</span></>,
-    description: "Work through distance, miscommunication, and emotional strain in friendships and other meaningful personal relationships.",
-    descriptionMobile: "Work through distance, conflict, and changing friendships with more honesty and understanding.",
-    cta: "Explore friendship coaching",
+    id: "health",
+    href: "/coaching#health",
+    eyebrow: "03 — HEALTH COACHING",
+    headline: (
+      <>
+        Make Wellbeing <br className="hidden sm:inline" />
+        <span className="text-[#FF5A4F] italic">a Shared Priority.</span>
+      </>
+    ),
+    description:
+      "Create greater coordination around wellness priorities, changing routines, and the practical demands that health-related decisions can place on everyday life — particularly when those changes affect more than one person.",
+    focusTerms: ["Lifestyle Alignment", "Shared Routines", "Wellness Priorities"],
+    cta: "Explore Health Coaching",
     image: "/coaching_friendship_1791377181453.jpg",
   },
-  {
-    id: "faith",
-    href: "/coaching#faith",
-    eyebrow: "FAITH & PERSONAL GROWTH",
-    headline: <>Reconnect With What <span className="text-[#FF5A4F] italic">Grounds You.</span></>,
-    description: "Explore questions of purpose, belief, inner conflict, and your relationship with God, faith, and personal direction.",
-    descriptionMobile: "Explore faith, purpose, inner conflict, and your relationship with God and personal direction.",
-    cta: "Explore faith-centered coaching",
-    image: "/personal_faith.png",
-  }
 ];
 
 export function CoachingAreas() {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <section className="pt-24 md:pt-32 pb-20 md:pb-24 bg-background relative overflow-hidden">
+    <section className="pt-20 md:pt-28 pb-16 md:pb-24 bg-background relative overflow-hidden">
       <style>{`
         @media (prefers-reduced-motion: no-preference) {
           .premium-float {
@@ -86,9 +105,9 @@ export function CoachingAreas() {
       <div className="container mx-auto px-6 max-w-[1000px] relative z-10">
         
         {/* Section Intro */}
-        <div className="flex flex-col items-center text-center mb-20 md:mb-28 relative">
+        <div className="flex flex-col items-center text-center mb-16 md:mb-24 relative">
           
-          {/* ART DIRECTION GRAPHIC (5.png) */}
+          {/* Art Direction Graphic (5.png) */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 0.85 }}
@@ -113,20 +132,20 @@ export function CoachingAreas() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="relative z-10"
           >
-            <span className="font-sans uppercase tracking-[0.16em] text-[#FF5A4F] text-[11px] md:text-[12px] font-semibold mb-5 block">
-              COACHING AREAS
+            <span className="font-sans uppercase tracking-[0.16em] text-[#FF5A4F] text-[11px] md:text-[12px] font-semibold mb-4 block">
+              PRIVATE COACHING
             </span>
-            <h2 className="font-serif text-[36px] md:text-[46px] lg:text-[54px] leading-[1.1] text-foreground mb-6 max-w-[800px] mx-auto">
-              Support for the Relationships <span className="text-[#FF5A4F] italic">That Shape Your Life.</span>
+            <h2 className="font-serif text-[34px] md:text-[44px] lg:text-[50px] leading-[1.1] text-[#0B2A4A] mb-4 max-w-[800px] mx-auto tracking-tight">
+              Focused Guidance for <span className="text-[#FF5A4F] italic">What Matters Most.</span>
             </h2>
-            <p className="text-[#26313A] text-[16px] md:text-[18px] leading-[1.6] max-w-[600px] mx-auto">
-              Confidential coaching for business, friendships, and personal development.
+            <p className="text-[#26313A] text-[15.5px] md:text-[17px] leading-[1.65] max-w-[620px] mx-auto font-normal">
+              Practical, private coaching for intimacy, relationships, and the personal realities that shape everyday life.
             </p>
           </motion.div>
         </div>
 
         {/* Alternating Editorial Rows */}
-        <div className="flex flex-col gap-[80px] md:gap-32">
+        <div className="flex flex-col gap-[72px] md:gap-28">
           {areas.map((area, index) => {
             const isEven = index % 2 !== 0;
             return (
@@ -144,7 +163,7 @@ export function CoachingAreas() {
                   className={`w-full md:w-1/2 flex justify-center ${isEven ? 'translate-x-[18px] md:translate-x-0' : '-translate-x-[18px] md:translate-x-0'}`}
                 >
                   <div className="relative">
-                    <div className="relative w-[clamp(190px,58vw,220px)] h-[clamp(190px,58vw,220px)] md:w-[380px] md:h-[380px] rounded-full overflow-hidden shadow-[0_15px_40px_rgba(255,90,79,0.12)] md:shadow-[0_25px_60px_rgba(255,90,79,0.15)] border-[2px] md:border-[3px] border-[#FF5A4F] z-10">
+                    <div className="relative w-[clamp(190px,58vw,220px)] h-[clamp(190px,58vw,220px)] md:w-[380px] md:h-[380px] rounded-full overflow-hidden shadow-[0_15px_40px_rgba(255,90,79,0.12)] md:shadow-[0_25px_60px_rgba(255,90,79,0.15)] border-[2px] md:border-[3px] border-[#FF5A4F] z-10 bg-white">
                       <Image
                         src={area.image}
                         alt={area.eyebrow}
@@ -154,7 +173,7 @@ export function CoachingAreas() {
                       />
                     </div>
                     
-                    {/* ART DIRECTION GRAPHICS */}
+                    {/* Art Direction Graphics */}
                     <DecorativeAccent
                       src="/5.png"
                       opacity={0.80}
@@ -176,18 +195,32 @@ export function CoachingAreas() {
                   <span className="font-sans uppercase tracking-[0.14em] text-[#FF5A4F] text-[11px] md:text-[12px] font-bold mb-3 md:mb-4 block">
                     {area.eyebrow}
                   </span>
-                  <h3 className="font-serif text-[28px] md:text-[34px] lg:text-[40px] leading-[1.1] text-foreground mb-4 md:mb-5">
+                  
+                  <h3 className="font-serif text-[28px] md:text-[34px] lg:text-[38px] leading-[1.15] text-[#0B2A4A] mb-3 md:mb-4">
                     {area.headline}
                   </h3>
-                  <p className="text-[#26313A] text-[15px] md:text-[16px] leading-[1.65] mb-5 md:mb-8 max-w-[420px] mx-auto md:mx-0">
-                    <span className="md:hidden">{area.descriptionMobile}</span>
-                    <span className="hidden md:inline">{area.description}</span>
+                  
+                  <p className="text-[#26313A] text-[15px] md:text-[16px] leading-[1.65] mb-5 md:mb-6 max-w-[430px] mx-auto md:mx-0 font-normal">
+                    {area.description}
                   </p>
+
+                  {/* Focus Terms Chips (Strictly Alphabetical) */}
+                  <div className="flex flex-wrap gap-2 justify-center md:justify-start mb-6 md:mb-8">
+                    {area.focusTerms.map((term, i) => (
+                      <span
+                        key={i}
+                        className="inline-flex items-center px-3 py-1 rounded-full border border-[#E8E4DF] bg-white text-[#26313A] text-[11.5px] md:text-[12px] font-medium tracking-wide shadow-sm"
+                      >
+                        {term}
+                      </span>
+                    ))}
+                  </div>
+
                   <Link 
                     href={area.href} 
-                    className="inline-flex items-center justify-center md:justify-start text-[#151312] hover:text-[#FF5A4F] text-[13px] font-medium tracking-wide transition-colors group"
+                    className="inline-flex items-center justify-center md:justify-start text-[#151312] hover:text-[#FF5A4F] text-[13.5px] font-bold tracking-wide transition-colors group self-center md:self-start"
                   >
-                    {area.cta}
+                    <span>{area.cta}</span>
                     <ArrowRight className="ml-2 w-4 h-4 transition-transform duration-300 ease-out group-hover:translate-x-1" />
                   </Link>
                 </motion.div>
@@ -203,16 +236,16 @@ export function CoachingAreas() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-          className="mt-12 md:mt-16 flex flex-col items-center text-center"
+          className="mt-14 md:mt-20 flex flex-col items-center text-center"
         >
           <div className="premium-float">
             <Link
               href="/coaching"
-              className="inline-flex items-center justify-center h-[52px] px-8 bg-[#FF5A4F] text-[#FDFBF7] text-[13px] md:text-[14px] font-medium tracking-wide rounded-[26px] shadow-[0_8px_20px_rgba(233,130,103,0.18)] hover:bg-[#D57158] hover:shadow-[0_12px_25px_rgba(233,130,103,0.3)] transition-all duration-[450ms] ease-out hover:-translate-y-[1.5px] group"
+              className="inline-flex items-center justify-center h-[52px] px-8 bg-[#FF5A4F] text-[#FDFBF7] text-[13px] md:text-[14px] font-bold tracking-wide rounded-full shadow-[0_8px_20px_rgba(255,90,79,0.25)] hover:bg-[#E84E44] hover:shadow-[0_12px_25px_rgba(255,90,79,0.35)] transition-all duration-300 ease-out hover:-translate-y-[1.5px] group"
             >
-              Explore All Coaching Areas
+              <span>Explore All Coaching Areas</span>
               <div className="premium-shift ml-2 flex items-center justify-center">
-                <ArrowRight className="w-[18px] h-[18px] transition-transform duration-[450ms] ease-out group-hover:translate-x-[2px]" />
+                <ArrowRight className="w-[18px] h-[18px] transition-transform duration-300 ease-out group-hover:translate-x-1" />
               </div>
             </Link>
           </div>

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { BookingState } from "./BookPage";
 import { getSessionOption } from "@/lib/pricingConfig";
-import { COACHING_AREAS } from "./StepCoaching";
+import { COACHING_AREAS, RELATIONSHIP_SUB_AREAS } from "./StepCoaching";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Clock, User, ChevronDown, ChevronUp, Sparkles, Compass } from "lucide-react";
 
@@ -30,6 +30,8 @@ function AnimatedValue({ children, id }: { children: React.ReactNode; id: string
 export function MobileBookingSummary({ state }: BookingSummaryProps) {
   const session = state.duration ? getSessionOption(state.duration) : null;
   const coachingItem = COACHING_AREAS.find((a) => a.id === state.coachingArea);
+  const subItem = RELATIONSHIP_SUB_AREAS.find((s) => s.id === state.coachingSubArea);
+  const coachingTitle = subItem ? `${coachingItem?.title} (${subItem.title})` : coachingItem?.title;
   const [mobileExpanded, setMobileExpanded] = useState(false);
 
   const formattedDate = state.date
@@ -91,10 +93,10 @@ export function MobileBookingSummary({ state }: BookingSummaryProps) {
               transition={{ duration: 0.2, ease: "easeInOut" }}
               className="overflow-hidden border-t border-[#0B2A4A]/[0.08] px-4 py-3 bg-white flex flex-col gap-2.5 text-[13px]"
             >
-              {coachingItem && (
+              {coachingTitle && (
                 <div className="flex items-center justify-between">
                   <span className="text-[#0B2A4A]/60">Coaching:</span>
-                  <span className="font-semibold text-[#0B2A4A]">{coachingItem.title}</span>
+                  <span className="font-semibold text-[#0B2A4A]">{coachingTitle}</span>
                 </div>
               )}
               {session && (
@@ -145,6 +147,8 @@ export function MobileBookingSummary({ state }: BookingSummaryProps) {
 export function DesktopBookingSummary({ state }: BookingSummaryProps) {
   const session = state.duration ? getSessionOption(state.duration) : null;
   const coachingItem = COACHING_AREAS.find((a) => a.id === state.coachingArea);
+  const subItem = RELATIONSHIP_SUB_AREAS.find((s) => s.id === state.coachingSubArea);
+  const coachingTitle = subItem ? `${coachingItem?.title} (${subItem.title})` : coachingItem?.title;
 
   const formattedDate = state.date
     ? state.date.toLocaleDateString("en-US", {
@@ -209,7 +213,7 @@ export function DesktopBookingSummary({ state }: BookingSummaryProps) {
                         Coaching
                       </span>
                       <span className="text-[13.5px] font-semibold text-[#0B2A4A]">
-                        {coachingItem.title}
+                        {coachingTitle}
                       </span>
                     </div>
                   </div>
@@ -252,11 +256,7 @@ export function DesktopBookingSummary({ state }: BookingSummaryProps) {
                         Date
                       </span>
                       <span className="text-[13px] font-medium text-[#0B2A4A]">
-                        {state.date.toLocaleDateString("en-US", {
-                          weekday: "short",
-                          month: "short",
-                          day: "numeric",
-                        })}
+                        {formattedDate}
                       </span>
                     </div>
                   </div>

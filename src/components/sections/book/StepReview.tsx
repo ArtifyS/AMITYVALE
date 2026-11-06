@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { BookingState } from "./BookPage";
 import { getSessionOption } from "@/lib/pricingConfig";
-import { COACHING_AREAS } from "./StepCoaching";
+import { COACHING_AREAS, RELATIONSHIP_SUB_AREAS } from "./StepCoaching";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, CheckCircle2, Calendar, Clock, User, ShieldCheck, Sparkles, Compass } from "lucide-react";
 
@@ -18,6 +18,9 @@ export function StepReview({ state, gotoStep, back }: StepReviewProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const session = state.duration ? getSessionOption(state.duration) : null;
   const coachingItem = COACHING_AREAS.find((a) => a.id === state.coachingArea);
+  const subItem = RELATIONSHIP_SUB_AREAS.find((s) => s.id === state.coachingSubArea);
+  const coachingTitle = subItem ? `${coachingItem?.title} • ${subItem.title}` : (coachingItem?.title || "Not selected");
+  const coachingDesc = subItem ? subItem.description : coachingItem?.description;
 
   const handleConfirm = () => {
     setIsSubmitting(true);
@@ -61,10 +64,10 @@ export function StepReview({ state, gotoStep, back }: StepReviewProps) {
                 Coaching Area
               </span>
               <h3 className="font-serif text-[18px] sm:text-[19px] font-semibold text-[#0B2A4A] mt-0.5">
-                {coachingItem?.title || "Not selected"}
+                {coachingTitle}
               </h3>
               <p className="text-[13px] text-[#0B2A4A]/65 mt-0.5">
-                {coachingItem?.description}
+                {coachingDesc}
               </p>
             </div>
           </div>

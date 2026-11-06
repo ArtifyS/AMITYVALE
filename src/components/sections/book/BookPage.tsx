@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, Suspense, useEffect } from "react";
+import React, { useState, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { SessionDuration, getSessionOption } from "@/lib/pricingConfig";
@@ -16,6 +16,7 @@ import { StepReview } from "./StepReview";
 export type BookingState = {
   step: number;
   coachingArea: string | null;
+  coachingSubArea?: string | null;
   duration: SessionDuration | null;
   date: Date | null;
   timeSlot: string | null;
@@ -49,32 +50,34 @@ function BookPageContent() {
     return null;
   })();
 
-  const [state, setState] = useState<BookingState>({
-    step: 1,
-    coachingArea: null,
-    duration: initialDuration,
-    date: null,
-    timeSlot: null,
-    timezone: "America/New_York",
-    sessionFor: "individual",
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    otherParticipantName: "",
-    contextNote: "",
-  });
+  const initialArea = searchParams.get("area");
+  const initialSub = searchParams.get("sub");
 
-  useEffect(() => {
+  const [state, setState] = useState<BookingState>(() => {
+    let initialTz = "America/New_York";
     try {
       const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      if (tz) {
-        setState((prev) => ({ ...prev, timezone: tz }));
-      }
+      if (tz) initialTz = tz;
     } catch {
       // fallback
     }
-  }, []);
+    return {
+      step: 1,
+      coachingArea: initialArea || null,
+      coachingSubArea: initialSub || null,
+      duration: initialDuration,
+      date: null,
+      timeSlot: null,
+      timezone: initialTz,
+      sessionFor: "individual",
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      otherParticipantName: "",
+      contextNote: "",
+    };
+  });
 
   const setBookingState = (updates: Partial<BookingState>) => {
     setState((prev) => ({ ...prev, ...updates }));
