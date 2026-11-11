@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { AdminBooking } from "@/lib/admin/types";
 import { useAdminData } from "@/components/admin/AdminDataContext";
@@ -19,7 +19,7 @@ import {
   UserX,
 } from "lucide-react";
 
-export default function AdminBookingsPage() {
+function AdminBookingsContent() {
   const searchParams = useSearchParams();
   const {
     bookings: allBookings,
@@ -537,5 +537,46 @@ export default function AdminBookingsPage() {
         onCancelled={handleBookingMutated}
       />
     </div>
+  );
+}
+
+function BookingsFallback() {
+  return (
+    <div className="space-y-6 animate-pulse">
+      {/* PAGE HEADER */}
+      <div className="pb-2 border-b border-stone-200/70">
+        <h1 className="text-xl sm:text-2xl font-bold text-stone-900 tracking-tight font-sans">
+          Bookings
+        </h1>
+        <p className="text-xs sm:text-sm text-stone-500 mt-0.5">
+          Manage upcoming, completed, rescheduled, and cancelled sessions.
+        </p>
+      </div>
+
+      {/* TOP CONTROLS SKELETON */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="h-9 w-80 bg-stone-100 rounded-xl border border-stone-200/70" />
+        <div className="flex items-center gap-2.5">
+          <div className="h-8 w-48 sm:w-64 bg-stone-100 rounded-lg border border-stone-200" />
+          <div className="h-8 w-20 bg-stone-100 rounded-lg border border-stone-200" />
+        </div>
+      </div>
+
+      {/* TABLE SKELETON */}
+      <div className="hidden md:block bg-white rounded-xl border border-stone-200/80 p-8 text-center text-xs text-stone-400">
+        Loading bookings...
+      </div>
+      <div className="block md:hidden bg-white rounded-xl border border-stone-200 p-8 text-center text-xs text-stone-400">
+        Loading bookings...
+      </div>
+    </div>
+  );
+}
+
+export default function AdminBookingsPage() {
+  return (
+    <Suspense fallback={<BookingsFallback />}>
+      <AdminBookingsContent />
+    </Suspense>
   );
 }
