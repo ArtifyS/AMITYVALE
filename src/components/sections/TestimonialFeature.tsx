@@ -24,7 +24,7 @@ const testimonials: Testimonial[] = [
     ),
     name: "Todd",
     location: "North Dakota",
-    category: "Naturopathic Pharmacology",
+    category: "Health Coaching",
     isLong: true,
   },
   {
@@ -36,7 +36,7 @@ const testimonials: Testimonial[] = [
     ),
     name: "Kay",
     location: "North Dakota",
-    category: "Naturopathic Pharmacology",
+    category: "Health Coaching",
     isLong: true,
   },
   {
@@ -48,7 +48,7 @@ const testimonials: Testimonial[] = [
     ),
     name: "Martin",
     location: "South Dakota",
-    category: "Naturopathic Pharmacology",
+    category: "Health Coaching",
     isLong: false,
   },
   {

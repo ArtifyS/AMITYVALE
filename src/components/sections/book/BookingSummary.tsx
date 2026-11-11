@@ -2,10 +2,10 @@
 
 import React, { useState } from "react";
 import { BookingState } from "./BookPage";
-import { getSessionOption } from "@/lib/pricingConfig";
+import { getSessionOption, calculateSessionPrice, ADDITIONAL_PARTICIPANT_FEE } from "@/lib/pricingConfig";
 import { COACHING_AREAS, RELATIONSHIP_SUB_AREAS } from "./StepCoaching";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calendar, Clock, User, ChevronDown, ChevronUp, Sparkles, Compass } from "lucide-react";
+import { Calendar, Clock, User, ChevronDown, ChevronUp, Sparkles, Compass, Users } from "lucide-react";
 
 interface BookingSummaryProps {
   state: BookingState;
@@ -29,6 +29,7 @@ function AnimatedValue({ children, id }: { children: React.ReactNode; id: string
  */
 export function MobileBookingSummary({ state }: BookingSummaryProps) {
   const session = state.duration ? getSessionOption(state.duration) : null;
+  const pricing = calculateSessionPrice(state.duration, state.participantCount);
   const coachingItem = COACHING_AREAS.find((a) => a.id === state.coachingArea);
   const subItem = RELATIONSHIP_SUB_AREAS.find((s) => s.id === state.coachingSubArea);
   const coachingTitle = subItem ? `${coachingItem?.title} (${subItem.title})` : coachingItem?.title;
@@ -42,7 +43,7 @@ export function MobileBookingSummary({ state }: BookingSummaryProps) {
       })
     : null;
 
-  const totalFormatted = session ? `$${session.price}` : "—";
+  const totalFormatted = state.duration ? `$${pricing.total}` : "—";
 
   return (
     <div className="block lg:hidden w-full mb-6">
@@ -57,9 +58,9 @@ export function MobileBookingSummary({ state }: BookingSummaryProps) {
               Your Session
             </span>
             <div className="flex items-center gap-2 mt-0.5">
-              {session ? (
+              {state.duration ? (
                 <span className="text-[14px] font-semibold text-[#0B2A4A]">
-                  {session.duration} min • <span className="text-[#FF5A4F]">${session.price}</span>
+                  {pricing.duration} min • <span className="text-[#FF5A4F]">${pricing.total}</span>
                 </span>
               ) : (
                 <span className="text-[13px] text-[#0B2A4A]/50 italic">
@@ -99,10 +100,26 @@ export function MobileBookingSummary({ state }: BookingSummaryProps) {
                   <span className="font-semibold text-[#0B2A4A]">{coachingTitle}</span>
                 </div>
               )}
-              {session && (
+              {state.duration && (
                 <div className="flex items-center justify-between">
                   <span className="text-[#0B2A4A]/60">Session:</span>
-                  <span className="font-semibold text-[#0B2A4A]">{session.duration} Min (${session.price})</span>
+                  <span className="font-semibold text-[#0B2A4A]">
+                    {pricing.duration} Min (${pricing.basePrice} base)
+                  </span>
+                </div>
+              )}
+              {state.duration && (
+                <div className="flex items-center justify-between">
+                  <span className="text-[#0B2A4A]/60">Format:</span>
+                  <span className="font-medium text-[#0B2A4A]">
+                    {pricing.sessionFormat} ({state.participantCount})
+                  </span>
+                </div>
+              )}
+              {pricing.additionalParticipants > 0 && (
+                <div className="flex items-center justify-between text-[#0E5A63]">
+                  <span>Extra Participants ({pricing.additionalParticipants} × ${ADDITIONAL_PARTICIPANT_FEE}):</span>
+                  <span className="font-semibold">+${pricing.additionalParticipantFee}</span>
                 </div>
               )}
               {state.date && (
@@ -115,14 +132,6 @@ export function MobileBookingSummary({ state }: BookingSummaryProps) {
                 <div className="flex items-center justify-between">
                   <span className="text-[#0B2A4A]/60">Time:</span>
                   <span className="font-medium text-[#0E5A63]">{state.timeSlot}</span>
-                </div>
-              )}
-              {state.duration && (
-                <div className="flex items-center justify-between">
-                  <span className="text-[#0B2A4A]/60">Format:</span>
-                  <span className="font-medium text-[#0B2A4A]">
-                    {state.sessionFor === "joint" ? "Joint Session" : "Individual Session"}
-                  </span>
                 </div>
               )}
               <div className="pt-2 border-t border-[#0B2A4A]/[0.08] flex items-center justify-between">
@@ -146,6 +155,7 @@ export function MobileBookingSummary({ state }: BookingSummaryProps) {
  */
 export function DesktopBookingSummary({ state }: BookingSummaryProps) {
   const session = state.duration ? getSessionOption(state.duration) : null;
+  const pricing = calculateSessionPrice(state.duration, state.participantCount);
   const coachingItem = COACHING_AREAS.find((a) => a.id === state.coachingArea);
   const subItem = RELATIONSHIP_SUB_AREAS.find((s) => s.id === state.coachingSubArea);
   const coachingTitle = subItem ? `${coachingItem?.title} (${subItem.title})` : coachingItem?.title;
@@ -158,7 +168,7 @@ export function DesktopBookingSummary({ state }: BookingSummaryProps) {
       })
     : null;
 
-  const totalFormatted = session ? `$${session.price}` : "—";
+  const totalFormatted = state.duration ? `$${pricing.total}` : "—";
 
   return (
     <aside className="w-full sticky top-[96px]">
@@ -187,7 +197,7 @@ export function DesktopBookingSummary({ state }: BookingSummaryProps) {
           </div>
 
           {/* Empty State when nothing chosen */}
-          {!coachingItem && !session ? (
+          {!coachingItem && !state.duration ? (
             <div className="py-5 flex flex-col items-center justify-center text-center">
               <div className="w-10 h-10 rounded-full bg-[#FCFAF8] border border-dashed border-[#0B2A4A]/15 flex items-center justify-center text-[#0B2A4A]/30 mb-2.5">
                 <Sparkles className="w-4 h-4" />
@@ -220,31 +230,65 @@ export function DesktopBookingSummary({ state }: BookingSummaryProps) {
                 </AnimatedValue>
               )}
 
-              {/* 2. Session Duration & Price */}
-              {session && (
-                <AnimatedValue id={`session-${session.duration}`}>
+              {/* 2. Session Duration & Base Price */}
+              {state.duration && (
+                <AnimatedValue id={`session-${pricing.duration}`}>
                   <div className="flex items-start justify-between pb-3 border-b border-[#0B2A4A]/[0.07]">
                     <div>
                       <span className="text-[10px] font-bold tracking-[0.14em] uppercase text-[#0B2A4A]/45 block">
                         Session
                       </span>
                       <span className="font-serif text-[18px] font-semibold text-[#0B2A4A] leading-tight">
-                        {session.duration} Minutes
+                        {pricing.duration} Minutes
                       </span>
                     </div>
                     <div className="text-right">
-                      <span className="text-[10px] font-bold tracking-[0.14em] uppercase text-[#FF5A4F] block">
-                        Price
+                      <span className="text-[10px] font-bold tracking-[0.14em] uppercase text-[#0B2A4A]/45 block">
+                        Base Rate
                       </span>
                       <span className="font-serif text-[18px] font-semibold text-[#0B2A4A]">
-                        ${session.price}
+                        ${pricing.basePrice}
                       </span>
                     </div>
                   </div>
                 </AnimatedValue>
               )}
 
-              {/* 3. Date */}
+              {/* 3. Format & Participants */}
+              {state.duration && (
+                <AnimatedValue id={`format-${state.participantCount}`}>
+                  <div className="flex items-start justify-between pb-3 border-b border-[#0B2A4A]/[0.07]">
+                    <div className="flex items-start gap-2.5">
+                      <div className="w-6 h-6 rounded-full bg-[#0B2A4A]/5 flex items-center justify-center text-[#0B2A4A]/60 shrink-0 mt-0.5">
+                        {pricing.isShared ? <Users className="w-3.5 h-3.5 text-[#0E5A63]" /> : <User className="w-3.5 h-3.5" />}
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-[10px] font-bold tracking-[0.14em] uppercase text-[#0B2A4A]/45">
+                          Format
+                        </span>
+                        <span className="text-[13px] font-medium text-[#0B2A4A]">
+                          {pricing.sessionFormat}
+                        </span>
+                        <span className="text-[11.5px] text-[#0B2A4A]/55">
+                          {state.participantCount} {state.participantCount === 1 ? "participant" : "participants"}
+                        </span>
+                      </div>
+                    </div>
+                    {pricing.additionalParticipants > 0 && (
+                      <div className="text-right">
+                        <span className="text-[10px] font-bold tracking-[0.14em] uppercase text-[#0E5A63] block">
+                          Add'l Fee
+                        </span>
+                        <span className="text-[13px] font-semibold text-[#0E5A63]">
+                          +${pricing.additionalParticipantFee}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </AnimatedValue>
+              )}
+
+              {/* 4. Date */}
               {state.date && (
                 <AnimatedValue id={`date-${state.date.toISOString()}`}>
                   <div className="flex items-start gap-2.5">
@@ -263,7 +307,7 @@ export function DesktopBookingSummary({ state }: BookingSummaryProps) {
                 </AnimatedValue>
               )}
 
-              {/* 4. Time */}
+              {/* 5. Time */}
               {state.timeSlot && (
                 <AnimatedValue id={`time-${state.timeSlot}`}>
                   <div className="flex items-start gap-2.5">
@@ -281,25 +325,6 @@ export function DesktopBookingSummary({ state }: BookingSummaryProps) {
                   </div>
                 </AnimatedValue>
               )}
-
-              {/* 5. Format (Individual or Joint) */}
-              {state.duration && (
-                <AnimatedValue id={`format-${state.sessionFor}`}>
-                  <div className="flex items-start gap-2.5">
-                    <div className="w-6 h-6 rounded-full bg-[#0B2A4A]/5 flex items-center justify-center text-[#0B2A4A]/60 shrink-0 mt-0.5">
-                      <User className="w-3 h-3" />
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-[10px] font-bold tracking-[0.14em] uppercase text-[#0B2A4A]/45">
-                        Format
-                      </span>
-                      <span className="text-[13px] font-medium text-[#0B2A4A]">
-                        {state.sessionFor === "joint" ? "Joint Session" : "Individual Session"}
-                      </span>
-                    </div>
-                  </div>
-                </AnimatedValue>
-              )}
             </div>
           )}
         </div>
@@ -311,14 +336,18 @@ export function DesktopBookingSummary({ state }: BookingSummaryProps) {
               Total
             </span>
             <span className="text-[11px] text-[#0B2A4A]/45">
-              {session ? "All fees included" : "Awaiting selection"}
+              {state.duration
+                ? pricing.isShared
+                  ? `Includes +$${pricing.additionalParticipantFee} add'l fee`
+                  : "All fees included"
+                : "Awaiting selection"}
             </span>
           </div>
           <div className="text-right">
             <span className="font-serif text-[26px] font-bold text-[#0B2A4A] leading-none">
               {totalFormatted}
             </span>
-            {session && (
+            {state.duration && (
               <span className="block text-[9.5px] font-semibold uppercase tracking-wider text-[#0B2A4A]/45 mt-0.5">
                 USD
               </span>

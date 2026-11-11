@@ -3,9 +3,13 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export function Footer() {
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
+
+  if (pathname?.startsWith("/admin")) return null;
 
   return (
     <footer className="bg-[#F7F3EF] py-16 md:py-24 text-[#151312]">

@@ -1,12 +1,14 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { sessionOptions } from "@/lib/pricingConfig";
+import { sessionOptions, calculateSessionPrice } from "@/lib/pricingConfig";
+import { ParticipantSelector } from "@/components/ui/ParticipantSelector";
 
 export function PricingIntroAndGrid() {
+  const [participants, setParticipants] = useState(1);
   const options = Object.values(sessionOptions);
 
   return (
@@ -27,7 +29,7 @@ export function PricingIntroAndGrid() {
       <div className="max-w-[1280px] mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
         
         {/* COMPACT FIRST-SCREEN INTRO */}
-        <div className="text-center max-w-[760px] mx-auto mb-8 sm:mb-10">
+        <div className="text-center max-w-[760px] mx-auto mb-7 sm:mb-8">
           <motion.span
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -50,26 +52,30 @@ export function PricingIntroAndGrid() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.15, ease: "easeOut" }}
-            className="font-sans text-[15px] sm:text-[16px] md:text-[17px] text-[#5C5550] max-w-[540px] mx-auto leading-[1.6] mb-5"
+            className="font-sans text-[15px] sm:text-[16px] md:text-[17px] text-[#5C5550] max-w-[540px] mx-auto leading-[1.6]"
           >
             Choose the format and time that feel right for your conversation.
           </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.22, ease: "easeOut" }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F5EFE9]/80 border border-[#0B2A4A]/8 text-[11.5px] sm:text-[12px] font-medium text-[#0B2A4A]/80 tracking-wide"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A4F] shrink-0" />
-            <span>Open to Individuals & Couples • 100% Online & Confidential</span>
-          </motion.div>
         </div>
+
+        {/* ELEGANT PARTICIPANT SELECTOR */}
+        <motion.div 
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+          className="mb-9 sm:mb-11 flex justify-center"
+        >
+          <ParticipantSelector
+            value={participants}
+            onChange={setParticipants}
+          />
+        </motion.div>
 
         {/* PRICING CARDS GRID */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6 items-stretch">
           {options.map((session, idx) => {
             const isFeatured = session.emphasize;
+            const pricing = calculateSessionPrice(session.duration, participants);
 
             return (
               <motion.div
@@ -83,7 +89,7 @@ export function PricingIntroAndGrid() {
                     : "bg-white border border-[#0B2A4A]/10 shadow-[0_4px_20px_rgba(11,42,74,0.04)] hover:border-[#FF5A4F]/30 hover:shadow-[0_8px_28px_rgba(11,42,74,0.08)] hover:-translate-y-1"
                 }`}
               >
-                {/* FEATURED BADGE */}
+                {/* FEATURED BADGE (Remains on 30-min session regardless of participant count) */}
                 {isFeatured && (
                   <div className="absolute -top-[13px] left-1/2 -translate-x-1/2 z-20">
                     <span className="inline-flex items-center gap-1.5 bg-[#FF5A4F] text-white text-[11px] font-bold tracking-[0.12em] uppercase px-3.5 py-1 rounded-full shadow-[0_4px_12px_rgba(255,90,79,0.35)]">
@@ -109,14 +115,38 @@ export function PricingIntroAndGrid() {
                     </div>
                   </div>
 
-                  {/* PRICE DISPLAY */}
-                  <div className="flex items-baseline gap-1.5 mb-5 pb-5 border-b border-[#0B2A4A]/8">
-                    <span className="font-sans text-[34px] sm:text-[38px] font-extrabold text-[#0B2A4A] leading-none tracking-tight">
-                      ${session.price}
-                    </span>
-                    <span className="text-[13px] font-normal text-[#5C5550]/75">
-                      / session
-                    </span>
+                  {/* PRICE DISPLAY WITH LIVE UPDATES */}
+                  <div className="mb-5 pb-5 border-b border-[#0B2A4A]/8 min-h-[78px] flex flex-col justify-start">
+                    <div className="flex items-baseline gap-1.5">
+                      <motion.span 
+                        key={pricing.total}
+                        initial={{ opacity: 0.6, y: -2 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.18, ease: "easeOut" }}
+                        className="font-sans text-[34px] sm:text-[38px] font-extrabold text-[#0B2A4A] leading-none tracking-tight"
+                      >
+                        ${pricing.total}
+                      </motion.span>
+                      <span className="text-[13px] font-normal text-[#5C5550]/75">
+                        / session
+                      </span>
+                    </div>
+
+                    {/* Breakdown line when participantCount > 1 */}
+                    <AnimatePresence mode="wait">
+                      {participants > 1 && (
+                        <motion.p
+                          key={`breakdown-${participants}`}
+                          initial={{ opacity: 0, y: -2 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -2 }}
+                          transition={{ duration: 0.18, ease: "easeOut" }}
+                          className="text-[11px] sm:text-[11.5px] text-[#5C5550] mt-1.5 leading-snug"
+                        >
+                          ${pricing.basePrice} session + ${pricing.additionalParticipantFee} for {pricing.additionalParticipants} {pricing.additionalParticipants === 1 ? "additional participant" : "additional participants"}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
                   </div>
 
                   {/* DESCRIPTION */}
@@ -134,9 +164,9 @@ export function PricingIntroAndGrid() {
                     </div>
                   </div>
 
-                  {/* CTA BUTTON */}
+                  {/* CTA BUTTON CARRYING DURATION AND PARTICIPANTS */}
                   <Link
-                    href={`/book?duration=${session.duration}`}
+                    href={`/book?duration=${session.duration}&participants=${participants}`}
                     className={`group relative flex items-center justify-center w-full h-[46px] rounded-full text-[13px] font-semibold tracking-wide transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#FF5A4F] focus:ring-offset-2 ${
                       isFeatured
                         ? "bg-[#FF5A4F] hover:bg-[#F0443A] text-white shadow-[0_6px_20px_rgba(255,90,79,0.28)] hover:shadow-[0_8px_24px_rgba(255,90,79,0.36)]"
@@ -150,13 +180,6 @@ export function PricingIntroAndGrid() {
               </motion.div>
             );
           })}
-        </div>
-
-        {/* BOTTOM REASSURANCE MICRO-NOTE */}
-        <div className="mt-8 text-center">
-          <p className="font-serif text-[14px] sm:text-[15px] italic text-[#5C5550]/75 max-w-[620px] mx-auto">
-            Not sure how much time you need? Start with a check-in — you can always adjust or book follow-ups at your own pace.
-          </p>
         </div>
 
       </div>

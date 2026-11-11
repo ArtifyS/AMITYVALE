@@ -88,31 +88,61 @@ export const RELATIONSHIP_SUB_AREAS: RelationshipSubOption[] = [
 
 export function StepCoaching({ state, setState, next }: StepCoachingProps) {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const relationshipFocusRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
+      if (timerRef.current) clearTimeout(timerRef.current);
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
     };
   }, []);
 
+  const scrollToRelationshipFocus = () => {
+    if (typeof window === "undefined" || !relationshipFocusRef.current) return;
+
+    const isReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const navbarHeight = window.innerWidth >= 1024 ? 76 : 72;
+    const buffer = 24; // 20-30px below navbar as requested
+    const offset = navbarHeight + buffer;
+
+    const elementRect = relationshipFocusRef.current.getBoundingClientRect();
+    const absoluteTop = elementRect.top + window.pageYOffset;
+    const targetY = Math.max(0, absoluteTop - offset);
+
+    window.scrollTo({
+      top: targetY,
+      left: 0,
+      behavior: isReducedMotion ? "instant" : "smooth",
+    });
+  };
+
   const handleSelect = (id: string) => {
     if (id === "relationships") {
-      // For relationships, let the user pick a sub-discipline or continue
       setState({ coachingArea: id });
       if (timerRef.current) {
         clearTimeout(timerRef.current);
         timerRef.current = null;
       }
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+      // Reveal state animation first (250ms), then smoothly scroll the sub-area into view
+      scrollTimeoutRef.current = setTimeout(() => {
+        scrollToRelationshipFocus();
+      }, 250);
       return;
     }
 
+    // Changing main category clears any relationship focus
     setState({ coachingArea: id, coachingSubArea: null });
 
-    // Cancel existing timer if any
     if (timerRef.current) {
       clearTimeout(timerRef.current);
+    }
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+      scrollTimeoutRef.current = null;
     }
 
     // Auto-advance after 300ms visual confirmation for non-sub disciplines
@@ -123,18 +153,18 @@ export function StepCoaching({ state, setState, next }: StepCoachingProps) {
   };
 
   const handleSelectSub = (subId: string) => {
+    // Select sub-discipline without auto-advancing (user clicks Continue to Session)
     setState({ coachingSubArea: subId });
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-    timerRef.current = setTimeout(() => {
-      timerRef.current = null;
-      next();
-    }, 300);
   };
 
+  // Relationship coaching requires one of the 3 applications before Continue is enabled
+  const isContinueEnabled = Boolean(
+    state.coachingArea &&
+      (state.coachingArea !== "relationships" || Boolean(state.coachingSubArea))
+  );
+
   const handleManualContinue = () => {
-    if (!state.coachingArea) return;
+    if (!isContinueEnabled) return;
     if (timerRef.current) {
       clearTimeout(timerRef.current);
       timerRef.current = null;
@@ -243,12 +273,15 @@ export function StepCoaching({ state, setState, next }: StepCoachingProps) {
 
       {/* Secondary Sub-Area Selector for Relationship Coaching */}
       {state.coachingArea === "relationships" && (
-        <div className="mb-8 p-5 sm:p-6 bg-[#FDFBF7] rounded-[20px] border border-[#FF5A4F]/25 shadow-[0_6px_24px_rgba(255,90,79,0.06)] animate-in fade-in slide-in-from-top-2 duration-300">
-          <div className="flex items-center gap-2 mb-3">
+        <div
+          ref={relationshipFocusRef}
+          className="mb-8 p-5 sm:p-6 bg-[#FDFBF7] rounded-[20px] border border-[#FF5A4F]/25 shadow-[0_6px_24px_rgba(255,90,79,0.06)] scroll-mt-[96px] lg:scroll-mt-[100px] animate-in fade-in slide-in-from-top-2 duration-300"
+        >
+          <div className="flex items-center gap-2 mb-3.5">
             <Layers className="w-4 h-4 text-[#FF5A4F]" />
-            <span className="font-sans uppercase tracking-[0.14em] text-[#0B2A4A] text-[11px] font-bold">
-              Select Relationship Coaching Application (Optional):
-            </span>
+            <h3 className="font-sans uppercase tracking-[0.14em] text-[#0B2A4A] text-[11px] font-bold">
+              SELECT YOUR RELATIONSHIP COACHING FOCUS
+            </h3>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {RELATIONSHIP_SUB_AREAS.map((sub) => {
@@ -258,19 +291,32 @@ export function StepCoaching({ state, setState, next }: StepCoachingProps) {
                   key={sub.id}
                   type="button"
                   onClick={() => handleSelectSub(sub.id)}
-                  className={`flex flex-col text-left p-3.5 rounded-[14px] transition-all cursor-pointer ${
+                  role="radio"
+                  aria-checked={isSubSelected}
+                  className={`flex flex-col text-left p-4 rounded-[14px] transition-all duration-200 cursor-pointer select-none outline-none ${
                     isSubSelected
-                      ? "bg-white border-2 border-[#FF5A4F] shadow-sm"
-                      : "bg-white/80 border border-[#0B2A4A]/10 hover:border-[#FF5A4F]/40 hover:bg-white"
+                      ? "bg-white border-2 border-[#FF5A4F] shadow-[0_4px_16px_rgba(255,90,79,0.12)] -translate-y-0.5"
+                      : "bg-white/80 border border-[#0B2A4A]/10 hover:border-[#FF5A4F]/40 hover:bg-white hover:-translate-y-0.5"
                   }`}
+                  style={{
+                    backgroundColor: isSubSelected ? "#FFFFFF" : undefined,
+                  }}
                 >
-                  <div className="flex items-center justify-between w-full mb-1">
-                    <span className="font-serif text-[15px] font-semibold text-[#0B2A4A]">
+                  <div className="flex items-center justify-between w-full mb-1.5">
+                    <span className="font-serif text-[15.5px] font-semibold text-[#0B2A4A]">
                       {sub.title}
                     </span>
-                    {isSubSelected && <Check className="w-3.5 h-3.5 text-[#FF5A4F]" />}
+                    <div
+                      className={`w-4 h-4 rounded-full flex items-center justify-center transition-all ${
+                        isSubSelected
+                          ? "bg-[#FF5A4F] text-white"
+                          : "border border-[#0B2A4A]/20 bg-white"
+                      }`}
+                    >
+                      {isSubSelected && <Check className="w-2.5 h-2.5 stroke-[3]" />}
+                    </div>
                   </div>
-                  <span className="text-[12px] text-[#26313A]/70 leading-snug">
+                  <span className="text-[12.5px] text-[#26313A]/70 leading-snug">
                     {sub.description}
                   </span>
                 </button>
@@ -285,9 +331,9 @@ export function StepCoaching({ state, setState, next }: StepCoachingProps) {
         <button
           type="button"
           onClick={handleManualContinue}
-          disabled={!state.coachingArea}
+          disabled={!isContinueEnabled}
           className={`group flex items-center justify-center gap-2 h-[48px] px-8 rounded-full text-[13.5px] font-semibold tracking-wide transition-all duration-200 ${
-            state.coachingArea
+            isContinueEnabled
               ? "bg-[#FF5A4F] text-white hover:bg-[#F0443A] shadow-[0_6px_20px_rgba(255,90,79,0.3)] hover:shadow-[0_8px_25px_rgba(255,90,79,0.4)] hover:-translate-y-0.5 cursor-pointer"
               : "bg-[#0B2A4A]/10 text-[#0B2A4A]/40 cursor-not-allowed"
           }`}

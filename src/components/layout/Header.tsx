@@ -86,7 +86,7 @@ function NavbarDottedBackground({ prefersReducedMotion }: { prefersReducedMotion
           }}
         />
 
-        {/* CLUSTER 4 — RIGHT-CENTER: Vibrant Coral around Pricing / Login region */}
+        {/* CLUSTER 4 — RIGHT-CENTER: Vibrant Coral around Pricing / CTA region */}
         <div
           className="absolute left-[66%] top-0 w-[240px] h-full"
           style={{
@@ -198,6 +198,7 @@ export function Header() {
   }, []);
 
   if (!mounted) return null;
+  if (pathname?.startsWith("/admin")) return null;
 
   const isHome = pathname === "/";
   const showHeader = !isHome || isScrolled;
@@ -225,6 +226,11 @@ export function Header() {
               <Link 
                 href="/" 
                 aria-label="AmityHale"
+                onClick={() => {
+                  if (pathname === "/") {
+                    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+                  }
+                }}
                 className="relative flex items-center justify-start shrink-0 w-[160px] sm:w-[200px] lg:w-[235px] h-[36px] sm:h-[40px] lg:h-[44px] group"
               >
                 <Image
@@ -251,6 +257,11 @@ export function Header() {
                       <Link
                         key={link.name}
                         href={link.href}
+                        onClick={() => {
+                          if (pathname === link.href) {
+                            window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+                          }
+                        }}
                         className={`text-[13px] font-medium relative group py-2 transition-colors duration-300 ${
                           isActive ? "text-[#FF5A4F]" : "text-[#4D5358] hover:text-[#FF5A4F]"
                         }`}
@@ -266,28 +277,20 @@ export function Header() {
                   })}
                 </div>
 
-                {/* Visible elegant divider immediately BEFORE Login */}
+                {/* Visible elegant divider immediately before Book a Session */}
                 <div 
-                  className="w-[1px] h-[28px] mx-6 xl:mx-7 shrink-0"
+                  className="w-[1px] h-[28px] ml-6 xl:ml-8 mr-6 xl:mr-8 shrink-0"
                   style={{ backgroundColor: "rgba(11, 42, 74, 0.32)" }}
                 />
-
-                <Link
-                  href="/login"
-                  className={`text-[13px] font-medium relative group py-2 transition-colors duration-300 ${
-                    pathname === "/login" ? "text-[#FF5A4F]" : "text-[#4D5358] hover:text-[#FF5A4F]"
-                  }`}
-                  style={{ textShadow: "0 1px 6px rgba(255,255,255,0.9), 0 0 3px rgba(255,255,255,0.8)" }}
-                >
-                  Login
-                  <span className={`absolute bottom-0 left-0 h-[1.5px] bg-[#FF5A4F] transition-all duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                    pathname === "/login" ? "w-full" : "w-0 group-hover:w-full"
-                  }`} />
-                </Link>
                 
                 <Link 
                   href="/book" 
-                  className="relative flex items-center justify-center h-[42px] px-[24px] pr-[28px] text-[13.5px] rounded-full ml-6 xl:ml-8 font-[600] tracking-[0.01em] bg-[#FF5A4F] text-white shadow-[0_4px_16px_rgba(255,90,79,0.3)] hover:bg-[#F0443A] hover:-translate-y-[1px] hover:shadow-[0_8px_24px_rgba(255,90,79,0.4)] transition-all duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] group overflow-hidden"
+                  onClick={() => {
+                    if (pathname === "/book" || pathname === "/booking") {
+                      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+                    }
+                  }}
+                  className="relative flex items-center justify-center h-[42px] px-[24px] pr-[28px] text-[13.5px] rounded-full font-[600] tracking-[0.01em] bg-[#FF5A4F] text-white shadow-[0_4px_16px_rgba(255,90,79,0.3)] hover:bg-[#F0443A] hover:-translate-y-[1px] hover:shadow-[0_8px_24px_rgba(255,90,79,0.4)] transition-all duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] group overflow-hidden"
                 >
                   Book a Session
                   <ArrowRight className="ml-1.5 w-[14px] h-[14px] transition-transform duration-[320ms] group-hover:translate-x-[2px]" />
@@ -333,7 +336,12 @@ export function Header() {
                   <Link
                     key={link.name}
                     href={link.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      if (pathname === link.href) {
+                        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+                      }
+                    }}
                     className={`font-serif text-[32px] transition-colors ${
                       isActive ? "text-[#FF5A4F]" : "text-[#0B2A4A] hover:text-[#FF5A4F]"
                     }`}
@@ -342,19 +350,15 @@ export function Header() {
                   </Link>
                 );
               })}
-              <div className="pt-8 flex flex-col items-center space-y-6 w-full max-w-[280px] mx-auto border-t border-[#0B2A4A]/10 mt-8">
-                <Link
-                  href="/login"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`text-[16px] font-sans font-medium transition-colors ${
-                    pathname === "/login" ? "text-[#FF5A4F]" : "text-[#6E747A] hover:text-[#0B2A4A]"
-                  }`}
-                >
-                  Login
-                </Link>
+              <div className="pt-8 flex flex-col items-center w-full max-w-[280px] mx-auto border-t border-[#0B2A4A]/10 mt-8">
                 <Link 
                   href="/book" 
-                  onClick={() => setIsMobileMenuOpen(false)} 
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    if (pathname === "/book" || pathname === "/booking") {
+                      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+                    }
+                  }} 
                   className="flex items-center justify-center w-full h-[54px] bg-[#FF5A4F] hover:bg-[#F0443A] text-white rounded-full text-[15px] font-[600] tracking-[0.01em] shadow-[0_8px_22px_rgba(255,90,79,0.22)] transition-colors"
                 >
                   Book a Session

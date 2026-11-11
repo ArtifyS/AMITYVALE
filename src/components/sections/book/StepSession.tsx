@@ -2,8 +2,9 @@
 
 import React, { useRef, useEffect } from "react";
 import { BookingState } from "./BookPage";
-import { SessionDuration } from "@/lib/pricingConfig";
+import { SessionDuration, calculateSessionPrice } from "@/lib/pricingConfig";
 import { Check, ArrowRight, ArrowLeft } from "lucide-react";
+import { ParticipantSelector } from "@/components/ui/ParticipantSelector";
 
 interface StepSessionProps {
   state: BookingState;
@@ -15,7 +16,6 @@ interface StepSessionProps {
 interface SessionCardConfig {
   duration: SessionDuration;
   label: string;
-  price: number;
   description: string;
   accentColor: string;
   accentBg: string;
@@ -26,7 +26,6 @@ const SESSION_CARDS: SessionCardConfig[] = [
   {
     duration: 15,
     label: "15 MIN",
-    price: 100,
     description: "A focused conversation or check-in.",
     accentColor: "#FF5A4F",
     accentBg: "rgba(255, 90, 79, 0.08)",
@@ -35,7 +34,6 @@ const SESSION_CARDS: SessionCardConfig[] = [
   {
     duration: 30,
     label: "30 MIN",
-    price: 190,
     description: "More room to explore one key concern.",
     accentColor: "#D8A23D",
     accentBg: "rgba(216, 162, 61, 0.12)",
@@ -44,7 +42,6 @@ const SESSION_CARDS: SessionCardConfig[] = [
   {
     duration: 45,
     label: "45 MIN",
-    price: 270,
     description: "Space for a deeper conversation.",
     accentColor: "#0E5A63",
     accentBg: "rgba(14, 90, 99, 0.1)",
@@ -53,7 +50,6 @@ const SESSION_CARDS: SessionCardConfig[] = [
   {
     duration: 60,
     label: "60 MIN",
-    price: 300,
     description: "The most room for layered concerns.",
     accentColor: "#0B2A4A",
     accentBg: "rgba(11, 42, 74, 0.08)",
@@ -97,7 +93,7 @@ export function StepSession({ state, setState, next, back }: StepSessionProps) {
   return (
     <div className="flex flex-col w-full">
       {/* Step Heading */}
-      <div className="text-center mb-8 max-w-[620px] mx-auto">
+      <div className="text-center mb-6 max-w-[620px] mx-auto">
         <h2 className="font-serif text-[28px] sm:text-[34px] md:text-[36px] text-[#0B2A4A] tracking-[-0.01em] leading-tight mb-2">
           Choose Your Session
         </h2>
@@ -106,10 +102,19 @@ export function StepSession({ state, setState, next, back }: StepSessionProps) {
         </p>
       </div>
 
+      {/* Participant Selector */}
+      <div className="mb-8 sm:mb-9 flex justify-center">
+        <ParticipantSelector
+          value={state.participantCount}
+          onChange={(count) => setState({ participantCount: count })}
+        />
+      </div>
+
       {/* 4 Cards Across on Large Desktop, 2x2 on Medium, 1 Col on Mobile */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-10 w-full max-w-[1140px] mx-auto">
         {SESSION_CARDS.map((card) => {
           const isSelected = state.duration === card.duration;
+          const pricing = calculateSessionPrice(card.duration, state.participantCount);
 
           return (
             <div
@@ -168,14 +173,21 @@ export function StepSession({ state, setState, next, back }: StepSessionProps) {
 
               {/* Price & Duration Details */}
               <div className="mb-4">
-                <div className="flex items-baseline gap-1.5 mb-1.5">
+                <div className="flex items-baseline gap-1.5 mb-1">
                   <span className="font-serif text-[34px] font-semibold leading-none text-[#0B2A4A]">
-                    ${card.price}
+                    ${pricing.total}
                   </span>
                   <span className="text-[11.5px] font-medium uppercase tracking-[0.12em] text-[#0B2A4A]/50">
                     USD
                   </span>
                 </div>
+
+                {pricing.additionalParticipants > 0 && (
+                  <p className="text-[11px] font-medium text-[#FF5A4F] mb-1.5 leading-tight">
+                    Includes ${pricing.additionalParticipantFee} additional participant fee
+                  </p>
+                )}
+
                 <p className="text-[13.5px] leading-[1.5] text-[#0B2A4A]/75">
                   {card.description}
                 </p>

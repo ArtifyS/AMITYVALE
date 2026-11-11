@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, Suspense } from "react";
+import React, { useState, useRef, useEffect, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSearchParams } from "next/navigation";
-import { SessionDuration, getSessionOption } from "@/lib/pricingConfig";
+import { SessionDuration, getSessionOption, MAX_PARTICIPANTS } from "@/lib/pricingConfig";
+import { ParticipantProfile, createEmptyParticipantProfile } from "@/lib/participantProfile";
 import { Check } from "lucide-react";
 
 // Step Components
@@ -13,11 +14,19 @@ import { StepTime } from "./StepTime";
 import { StepDetails } from "./StepDetails";
 import { StepReview } from "./StepReview";
 
+export type ParticipantInfo = {
+  name: string;
+  email?: string;
+};
+
 export type BookingState = {
   step: number;
   coachingArea: string | null;
   coachingSubArea?: string | null;
   duration: SessionDuration | null;
+  participantCount: number;
+  participants: ParticipantProfile[];
+  additionalParticipants: ParticipantInfo[];
   date: Date | null;
   timeSlot: string | null;
   timezone: string;
@@ -50,6 +59,15 @@ function BookPageContent() {
     return null;
   })();
 
+  const initialParticipants = (() => {
+    const participantsParam = searchParams.get("participants");
+    if (participantsParam) {
+      const p = parseInt(participantsParam, 10);
+      if (!isNaN(p) && p >= 1) return Math.min(p, MAX_PARTICIPANTS);
+    }
+    return 1;
+  })();
+
   const initialArea = searchParams.get("area");
   const initialSub = searchParams.get("sub");
 
@@ -66,10 +84,19 @@ function BookPageContent() {
       coachingArea: initialArea || null,
       coachingSubArea: initialSub || null,
       duration: initialDuration,
+      participantCount: initialParticipants,
+      participants: Array.from(
+        { length: initialParticipants },
+        () => createEmptyParticipantProfile()
+      ),
+      additionalParticipants: Array.from(
+        { length: Math.max(0, initialParticipants - 1) },
+        () => ({ name: "", email: "" })
+      ),
       date: null,
       timeSlot: null,
       timezone: initialTz,
-      sessionFor: "individual",
+      sessionFor: initialParticipants > 1 ? "joint" : "individual",
       firstName: "",
       lastName: "",
       email: "",
@@ -80,12 +107,108 @@ function BookPageContent() {
   });
 
   const setBookingState = (updates: Partial<BookingState>) => {
-    setState((prev) => ({ ...prev, ...updates }));
+    setState((prev) => {
+      const next = { ...prev, ...updates };
+
+      // Handle participantCount updates
+      if (updates.participantCount !== undefined && updates.participantCount !== prev.participantCount) {
+        const newCount = Math.max(1, Math.min(updates.participantCount, MAX_PARTICIPANTS));
+        const currentProfiles = prev.participants || [];
+        let adjustedProfiles: ParticipantProfile[];
+
+        if (currentProfiles.length < newCount) {
+          adjustedProfiles = [
+            ...currentProfiles,
+            ...Array.from(
+              { length: newCount - currentProfiles.length },
+              () => createEmptyParticipantProfile()
+            ),
+          ];
+        } else {
+          adjustedProfiles = currentProfiles.slice(0, newCount);
+        }
+
+        const targetAdditional = newCount - 1;
+        const currentAdditional = prev.additionalParticipants || [];
+        let adjustedAdditional: ParticipantInfo[];
+
+        if (currentAdditional.length < targetAdditional) {
+          adjustedAdditional = [
+            ...currentAdditional,
+            ...Array.from(
+              { length: targetAdditional - currentAdditional.length },
+              () => ({ name: "", email: "" })
+            ),
+          ];
+        } else {
+          adjustedAdditional = currentAdditional.slice(0, targetAdditional);
+        }
+
+        next.participantCount = newCount;
+        next.participants = adjustedProfiles;
+        next.additionalParticipants = adjustedAdditional;
+        next.sessionFor = newCount > 1 ? "joint" : "individual";
+      }
+
+      // If participants updated directly, synchronize primary contact convenience fields
+      if (updates.participants && updates.participants.length > 0) {
+        const primary = updates.participants[0];
+        if (primary) {
+          next.firstName = primary.firstName;
+          next.lastName = primary.lastName;
+          next.email = primary.email;
+          next.phone = primary.phone;
+          next.contextNote = primary.consultationPurpose;
+        }
+
+        // Sync additional participants convenience array
+        if (updates.participants.length > 1) {
+          next.additionalParticipants = updates.participants.slice(1).map((p) => ({
+            name: `${p.firstName} ${p.lastName}`.trim(),
+            email: p.email,
+          }));
+          next.otherParticipantName = `${updates.participants[1]?.firstName} ${updates.participants[1]?.lastName}`.trim();
+        } else {
+          next.additionalParticipants = [];
+          next.otherParticipantName = "";
+        }
+      }
+
+      return next;
+    });
   };
 
   const nextStep = () => setState((prev) => ({ ...prev, step: prev.step + 1 }));
   const prevStep = () => setState((prev) => ({ ...prev, step: Math.max(1, prev.step - 1) }));
   const gotoStep = (step: number) => setState((prev) => ({ ...prev, step }));
+
+  // Centralized Booking Step Scroll System
+  const bookingStepTopRef = useRef<HTMLDivElement>(null);
+
+  const scrollToStepTop = () => {
+    if (typeof window === "undefined") return;
+    if (bookingStepTopRef.current) {
+      const navbarOffset = window.innerWidth >= 1024 ? 90 : 84;
+      const elementRect = bookingStepTopRef.current.getBoundingClientRect();
+      const absoluteTop = elementRect.top + window.pageYOffset;
+      window.scrollTo({
+        top: Math.max(0, absoluteTop - navbarOffset),
+        left: 0,
+        behavior: "instant",
+      });
+    } else {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
+  };
+
+  const isFirstMount = useRef(true);
+  useEffect(() => {
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      return;
+    }
+    scrollToStepTop();
+  }, [state.step]);
 
   return (
     <div className="relative w-full bg-white min-h-[92dvh]">
@@ -118,64 +241,70 @@ function BookPageContent() {
         {/* ============================================================== */}
         <header className="text-center mb-6 md:mb-7 max-w-[660px] mx-auto">
           <span className="inline-block text-[11px] font-bold tracking-[0.18em] uppercase text-[#FF5A4F] mb-1.5">
-            PRIVATE BOOKING
+            RESERVATION
           </span>
-          <h1 className="font-serif text-[30px] sm:text-[36px] md:text-[40px] leading-[1.12] tracking-[-0.01em] text-[#0B2A4A] mb-2">
-            Book the Time <span className="italic font-normal text-[#FF5A4F]">That Is Right.</span>
+          <h1 className="font-serif text-[28px] sm:text-[34px] md:text-[38px] leading-[1.12] text-[#0B2A4A] tracking-[-0.015em] mb-2">
+            Schedule a Private Conversation.
           </h1>
-          <p className="text-[14px] sm:text-[15px] leading-[1.5] text-[#0B2A4A]/70">
+          <p className="text-[14px] sm:text-[15px] text-[#0B2A4A]/70 leading-relaxed">
             Choose what works for you: select your time, and complete your Booking.
           </p>
         </header>
 
-        {/* Compact Progress Navigation Rail */}
+        {/* Central Booking Step Top Anchor */}
+        <div
+          ref={bookingStepTopRef}
+          className="scroll-mt-[84px] lg:scroll-mt-[90px]"
+          aria-hidden="true"
+        />
+
+        {/* ============================================================== */}
+        {/* HORIZONTAL COMPACT PROGRESS BAR (~48px total height)           */}
+        {/* ============================================================== */}
         <nav
-          aria-label="Booking Progress"
-          className="flex items-center justify-between max-w-[840px] mx-auto mb-8 md:mb-10 pb-4 border-b border-[#0B2A4A]/[0.08]"
+          aria-label="Booking steps"
+          className="flex items-center justify-between max-w-[620px] mx-auto mb-8 sm:mb-10 px-2 select-none"
         >
-          {[1, 2, 3, 4, 5].map((num) => {
-            const isCurrent = state.step === num;
+          {STEP_LABELS.map((label, index) => {
+            const num = index + 1;
             const isCompleted = state.step > num;
+            const isCurrent = state.step === num;
 
             return (
-              <React.Fragment key={num}>
+              <React.Fragment key={label}>
                 <button
                   type="button"
+                  onClick={() => {
+                    // Only allow jumping back to completed steps
+                    if (isCompleted) gotoStep(num);
+                  }}
                   disabled={!isCompleted}
-                  onClick={() => isCompleted && gotoStep(num)}
-                  className={`flex items-center gap-1.5 sm:gap-2 select-none transition-colors outline-none ${
-                    isCompleted ? "cursor-pointer group" : "cursor-default"
+                  className={`flex items-center gap-2 group transition-all duration-200 outline-none ${
+                    isCompleted ? "cursor-pointer" : isCurrent ? "cursor-default" : "cursor-not-allowed opacity-50"
                   }`}
+                  aria-current={isCurrent ? "step" : undefined}
                 >
-                  {/* Step Number / Check Icon */}
-                  <span
-                    className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[10.5px] sm:text-[11px] font-bold transition-all ${
-                      isCurrent
-                        ? "bg-[#FF5A4F] text-white shadow-sm ring-3 ring-[#FF5A4F]/20"
-                        : isCompleted
-                        ? "bg-[#0E5A63]/15 text-[#0E5A63] group-hover:bg-[#0E5A63] group-hover:text-white"
-                        : "bg-[#0B2A4A]/5 text-[#0B2A4A]/30"
+                  <div
+                    className={`w-7 h-7 rounded-full flex items-center justify-center text-[12px] font-semibold transition-all duration-200 ${
+                      isCompleted
+                        ? "bg-[#0E5A63] text-white"
+                        : isCurrent
+                        ? "bg-[#FF5A4F] text-white shadow-[0_0_0_3px_rgba(255,90,79,0.2)]"
+                        : "bg-[#0B2A4A]/8 text-[#0B2A4A]/50 group-hover:bg-[#0B2A4A]/12"
                     }`}
                   >
-                    {isCompleted ? (
-                      <Check className="w-3 sm:w-3.5 h-3 sm:h-3.5 stroke-[2.5]" />
-                    ) : (
-                      `0${num}`
-                    )}
-                  </span>
-
-                  {/* Step Label */}
+                    {isCompleted ? <Check className="w-3.5 h-3.5 stroke-[2.5]" /> : num}
+                  </div>
                   <span
-                    className={`text-[11.5px] sm:text-[12.5px] font-semibold uppercase tracking-[0.06em] transition-colors ${
+                    className={`hidden sm:inline text-[13px] tracking-wide font-medium transition-colors ${
                       isCurrent
-                        ? "text-[#FF5A4F]"
+                        ? "text-[#0B2A4A] font-semibold"
                         : isCompleted
-                        ? "text-[#0B2A4A] group-hover:text-[#0E5A63]"
-                        : "text-[#0B2A4A]/30"
+                        ? "text-[#0E5A63]"
+                        : "text-[#0B2A4A]/40"
                     }`}
                   >
-                    <span className="hidden sm:inline">0{num} </span>
-                    {STEP_LABELS[num - 1]}
+                    {label}
                   </span>
                 </button>
 
@@ -193,7 +322,7 @@ function BookPageContent() {
         </nav>
 
         {/* ============================================================== */}
-        {/* FULL-WIDTH CENTERED WORKSPACE (No sidebar, No summary cards)   */}
+        {/* FULL-WIDTH CENTERED WORKSPACE                                  */}
         {/* ============================================================== */}
         <main className="w-full">
           <AnimatePresence mode="wait">

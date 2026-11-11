@@ -3,6 +3,7 @@ import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { ScrollManager } from "@/components/layout/ScrollManager";
 const playfair = Playfair_Display({
   variable: "--font-heading",
   subsets: ["latin"],
@@ -35,8 +36,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable} scroll-smooth`}>
+    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <body className="min-h-full flex flex-col font-sans bg-background text-foreground selection:bg-accent-soft selection:text-foreground">
+        <ScrollManager />
         <Header />
         {children}
         <Footer />
