@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { LucideIcon, TrendingUp, TrendingDown } from "lucide-react";
 
@@ -15,6 +16,7 @@ interface StatCardProps {
   iconColor?: string;
   iconBg?: string;
   badge?: string;
+  href?: string;
 }
 
 export function StatCard({
@@ -26,9 +28,17 @@ export function StatCard({
   iconColor = "text-[#0B2A4A]",
   iconBg = "bg-stone-100",
   badge,
+  href,
 }: StatCardProps) {
-  return (
-    <div className="bg-white rounded-xl border border-stone-200/80 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:border-stone-300 transition-all">
+  const card = (
+    <div
+      className={cn(
+        "bg-white rounded-xl border border-stone-200/80 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] transition-all",
+        href
+          ? "hover:border-stone-300 hover:shadow-xs cursor-pointer group"
+          : "hover:border-stone-300"
+      )}
+    >
       <div className="flex items-start justify-between">
         <div>
           <span className="text-[12px] font-medium uppercase tracking-wider text-stone-500">
@@ -47,7 +57,13 @@ export function StatCard({
         </div>
 
         {Icon && (
-          <div className={cn("p-2.5 rounded-lg flex items-center justify-center", iconBg)}>
+          <div
+            className={cn(
+              "p-2.5 rounded-lg flex items-center justify-center transition-transform",
+              iconBg,
+              href && "group-hover:scale-105"
+            )}
+          >
             <Icon className={cn("w-5 h-5", iconColor)} />
           </div>
         )}
@@ -79,5 +95,15 @@ export function StatCard({
       )}
     </div>
   );
+
+  if (href) {
+    return (
+      <Link href={href} className="block focus:outline-hidden">
+        {card}
+      </Link>
+    );
+  }
+
+  return card;
 }
 

@@ -1,51 +1,71 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { AdminPayment, PaymentMetrics } from "@/lib/admin/types";
-import { getPayments, getPaymentMetrics } from "@/lib/admin/repositories";
+import React, { useState, useMemo } from "react";
+import Link from "next/link";
+import { AdminPayment } from "@/lib/admin/types";
+import { useAdminData } from "@/components/admin/AdminDataContext";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { PaymentDetailsDrawer } from "@/components/admin/PaymentDetailsDrawer";
 import {
   CreditCard,
   DollarSign,
   Search,
-  Eye,
-  CheckCircle2,
-  Clock,
   RotateCcw,
+  CheckCircle2,
   ShieldCheck,
-  ChevronRight,
 } from "lucide-react";
 
 export default function AdminPaymentsPage() {
-  const [payments, setPayments] = useState<AdminPayment[]>([]);
-  const [metrics, setMetrics] = useState<PaymentMetrics>({
-    thisMonth: 3250,
-    paidSessions: 14,
-    pendingCount: 2,
-    refundedAmount: 190,
-  });
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedPayment, setSelectedPayment] = useState<AdminPayment | null>(null);
-  const [loading, setLoading] = useState(true);
+  const {
+    payments,
+    paymentMetrics,
+    refundPayment,
+    isLoaded,
+  } = useAdminData();
 
-  useEffect(() => {
-    async function load() {
-      setLoading(true);
-      const [metricsData, paymentsData] = await Promise.all([
-        getPaymentMetrics(),
-        getPayments({
-          status: statusFilter,
-          search: searchQuery,
-        }),
-      ]);
-      setMetrics(metricsData);
-      setPayments(paymentsData);
-      setLoading(false);
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedPaymentId, setSelectedPaymentId] = useState<string | null>(null);
+
+  // Filtered payments list
+  const filteredPayments = useMemo(() => {
+    let list = [...payments];
+
+    if (statusFilter !== "all") {
+      list = list.filter((p) => p.status === statusFilter);
     }
-    load();
-  }, [statusFilter, searchQuery]);
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim();
+      list = list.filter(
+        (p) =>
+          p.clientName.toLowerCase().includes(q) ||
+          p.clientEmail.toLowerCase().includes(q) ||
+          p.bookingNumber.toLowerCase().includes(q) ||
+          (p.helcimTransactionId && p.helcimTransactionId.toLowerCase().includes(q))
+      );
+    }
+
+    // Sort by payment date descending (most recent first)
+    list.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+    return list;
+  }, [payments, statusFilter, searchQuery]);
+
+  const selectedPayment = useMemo(() => {
+    if (!selectedPaymentId) return null;
+    return payments.find((p) => p.id === selectedPaymentId) || null;
+  }, [payments, selectedPaymentId]);
+
+  const handleRefund = async (id: string, amount: number, type: "full" | "partial") => {
+    await refundPayment(id, amount, type);
+  };
+
+  const tabs = [
+    { id: "all", label: "All Payments", count: payments.length },
+    { id: "paid", label: "Paid", count: payments.filter((p) => p.status === "paid").length },
+    { id: "refunded", label: "Refunded", count: payments.filter((p) => p.status === "refunded").length },
+  ];
 
   return (
     <div className="space-y-6">
@@ -56,85 +76,93 @@ export default function AdminPaymentsPage() {
             Payments
           </h1>
           <p className="text-xs sm:text-sm text-stone-500 mt-0.5">
-            Audit trail of client payments, Stripe transaction IDs, and settlement records.
+            Audit trail of client payments, Helcim transaction IDs, and settlement records.
           </p>
         </div>
 
-        <div className="flex items-center gap-2 text-xs text-stone-500 bg-white border border-stone-200 px-3 py-1.5 rounded-lg shadow-2xs self-start sm:self-auto">
-          <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-          <span>Stripe Connect Integration Ready</span>
+        <div className="flex items-center gap-2 text-xs text-stone-600 bg-white border border-stone-200 px-3 py-1.5 rounded-lg shadow-2xs self-start sm:self-auto">
+          <ShieldCheck className="w-3.5 h-3.5 text-stone-500" />
+          <span className="font-medium text-stone-700">Helcim Integration:</span>
+          <span className="text-stone-500 font-medium">Not Connected</span>
         </div>
       </div>
 
-      {/* TOP PAYMENT METRICS */}
+      {/* TOP FOUR KPI CARDS */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        {/* This Month */}
+        {/* KPI 1: THIS MONTH */}
         <div className="bg-white p-4 sm:p-5 rounded-xl border border-stone-200/80 shadow-2xs">
           <span className="text-[11px] font-bold uppercase tracking-wider text-stone-400 block mb-1">
             This Month
           </span>
           <div className="text-2xl font-bold text-stone-900 font-mono">
-            ${metrics.thisMonth.toLocaleString()}
+            ${paymentMetrics.thisMonth.toLocaleString()}
           </div>
-          <p className="text-[11px] text-emerald-700 font-medium mt-1">Net settled volume</p>
+          <p className="text-[11px] text-stone-500 font-medium mt-1">Successful payments</p>
         </div>
 
-        {/* Paid Sessions */}
+        {/* KPI 2: PAID SESSIONS */}
         <div className="bg-white p-4 sm:p-5 rounded-xl border border-stone-200/80 shadow-2xs">
           <span className="text-[11px] font-bold uppercase tracking-wider text-stone-400 block mb-1">
             Paid Sessions
           </span>
           <div className="text-2xl font-bold text-stone-900 font-mono">
-            {metrics.paidSessions}
+            {paymentMetrics.paidSessions}
           </div>
-          <p className="text-[11px] text-stone-400 mt-1">Confirmed client sessions</p>
+          <p className="text-[11px] text-stone-500 mt-1">Confirmed paid bookings</p>
         </div>
 
-        {/* Pending */}
+        {/* KPI 3: TOTAL REFUNDED */}
         <div className="bg-white p-4 sm:p-5 rounded-xl border border-stone-200/80 shadow-2xs">
           <span className="text-[11px] font-bold uppercase tracking-wider text-stone-400 block mb-1">
-            Pending
+            Total Refunded
           </span>
-          <div className="text-2xl font-bold text-amber-700 font-mono">
-            {metrics.pendingCount}
+          <div className="text-2xl font-bold text-rose-700 font-mono">
+            ${paymentMetrics.totalRefunded.toLocaleString()}
           </div>
-          <p className="text-[11px] text-stone-400 mt-1">Awaiting settlement</p>
+          <p className="text-[11px] text-rose-600 font-medium mt-1">Returned to clients</p>
         </div>
 
-        {/* Refunded */}
+        {/* KPI 4: NET REVENUE */}
         <div className="bg-white p-4 sm:p-5 rounded-xl border border-stone-200/80 shadow-2xs">
           <span className="text-[11px] font-bold uppercase tracking-wider text-stone-400 block mb-1">
-            Refunded
+            Net Revenue
           </span>
-          <div className="text-2xl font-bold text-stone-900 font-mono">
-            ${metrics.refundedAmount.toLocaleString()}
+          <div className="text-2xl font-bold text-emerald-800 font-mono">
+            ${paymentMetrics.netRevenue.toLocaleString()}
           </div>
-          <p className="text-[11px] text-stone-400 mt-1">Cancellation policies met</p>
+          <p className="text-[11px] text-emerald-700 font-medium mt-1">Payments less refunds</p>
         </div>
       </div>
 
       {/* FILTER & SEARCH BAR */}
       <div className="bg-white p-4 rounded-xl border border-stone-200/80 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs">
-        {/* Status Tabs */}
+        {/* Status Tabs: All Payments, Paid, Refunded */}
         <div className="flex items-center gap-1 bg-stone-100/80 p-1 rounded-xl border border-stone-200/70 overflow-x-auto">
-          {[
-            { id: "all", label: "All Payments" },
-            { id: "paid", label: "Paid" },
-            { id: "pending", label: "Pending" },
-            { id: "refunded", label: "Refunded" },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setStatusFilter(tab.id)}
-              className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all whitespace-nowrap ${
-                statusFilter === tab.id
-                  ? "bg-white text-stone-900 shadow-xs font-semibold"
-                  : "text-stone-600 hover:text-stone-900"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+          {tabs.map((tab) => {
+            const isActive = statusFilter === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setStatusFilter(tab.id)}
+                className={`px-3 py-1.5 text-xs rounded-lg transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer ${
+                  isActive
+                    ? "bg-white text-stone-900 shadow-xs font-semibold"
+                    : "text-stone-600 hover:text-stone-900 font-medium"
+                }`}
+              >
+                <span>{tab.label}</span>
+                <span
+                  className={`px-1.5 py-0.2 rounded-full text-[10.5px] font-mono font-bold ${
+                    isActive
+                      ? "bg-[#0B2A4A]/10 text-[#0B2A4A]"
+                      : "bg-stone-200/70 text-stone-600"
+                  }`}
+                >
+                  {tab.count}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Search */}
@@ -142,7 +170,7 @@ export default function AdminPaymentsPage() {
           <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Search by client or booking #..."
+            placeholder="Search by client, booking # or Helcim ID..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-8 pr-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg text-xs text-stone-900 placeholder-stone-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#0B2A4A]"
@@ -166,23 +194,23 @@ export default function AdminPaymentsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100">
-              {loading ? (
+              {!isLoaded ? (
                 <tr>
                   <td colSpan={7} className="py-12 text-center text-stone-400">
                     Loading payments...
                   </td>
                 </tr>
-              ) : payments.length === 0 ? (
+              ) : filteredPayments.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="py-12 text-center text-stone-400">
-                    No payment records found.
+                    No payment records found matching current filters.
                   </td>
                 </tr>
               ) : (
-                payments.map((p) => (
+                filteredPayments.map((p) => (
                   <tr
                     key={p.id}
-                    onClick={() => setSelectedPayment(p)}
+                    onClick={() => setSelectedPaymentId(p.id)}
                     className="hover:bg-stone-50/70 transition-colors cursor-pointer group"
                   >
                     {/* Client */}
@@ -190,7 +218,9 @@ export default function AdminPaymentsPage() {
                       <div className="font-semibold text-stone-900 group-hover:text-[#0B2A4A]">
                         {p.clientName}
                       </div>
-                      <div className="text-[11px] text-stone-400">{p.clientEmail}</div>
+                      <div className="text-[11px] text-stone-400 font-mono mt-0.5">
+                        {p.clientEmail}
+                      </div>
                     </td>
 
                     {/* Booking */}
@@ -199,8 +229,8 @@ export default function AdminPaymentsPage() {
                     </td>
 
                     {/* Date */}
-                    <td className="py-3.5 px-4 whitespace-nowrap text-stone-600">
-                      {new Date(p.date).toLocaleDateString(undefined, {
+                    <td className="py-3.5 px-4 whitespace-nowrap text-stone-600" suppressHydrationWarning>
+                      {new Date(p.date).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
                         year: "numeric",
@@ -209,7 +239,17 @@ export default function AdminPaymentsPage() {
 
                     {/* Amount */}
                     <td className="py-3.5 px-4 whitespace-nowrap font-mono font-bold text-stone-900">
-                      ${p.amount}.00
+                      <div>${p.amount}.00</div>
+                      {p.status === "partially_refunded" && (
+                        <div className="text-[10px] text-amber-700 font-normal">
+                          Net: ${p.netAmount}
+                        </div>
+                      )}
+                      {p.status === "refunded" && (
+                        <div className="text-[10px] text-rose-600 font-normal">
+                          Refunded
+                        </div>
+                      )}
                     </td>
 
                     {/* Status */}
@@ -232,9 +272,9 @@ export default function AdminPaymentsPage() {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          setSelectedPayment(p);
+                          setSelectedPaymentId(p.id);
                         }}
-                        className="px-2.5 py-1 text-[11px] font-medium text-stone-700 bg-stone-100 hover:bg-stone-200 rounded-md transition-colors"
+                        className="px-3 py-1 text-xs font-semibold text-stone-700 bg-stone-100 hover:bg-stone-200 rounded-lg transition-colors cursor-pointer"
                       >
                         Details
                       </button>
@@ -249,26 +289,26 @@ export default function AdminPaymentsPage() {
 
       {/* MOBILE LIST VIEW (HIDDEN ON DESKTOP) */}
       <div className="block md:hidden space-y-2.5">
-        {loading ? (
+        {!isLoaded ? (
           <div className="p-8 text-center text-xs text-stone-400 bg-white rounded-xl border border-stone-200">
             Loading payments...
           </div>
-        ) : payments.length === 0 ? (
+        ) : filteredPayments.length === 0 ? (
           <div className="p-8 text-center text-xs text-stone-400 bg-white rounded-xl border border-stone-200">
             No payments found.
           </div>
         ) : (
-          payments.map((p) => (
+          filteredPayments.map((p) => (
             <div
               key={p.id}
-              onClick={() => setSelectedPayment(p)}
-              className="bg-white p-4 rounded-xl border border-stone-200 shadow-2xs space-y-2 active:bg-stone-50 transition-colors"
+              onClick={() => setSelectedPaymentId(p.id)}
+              className="bg-white p-4 rounded-xl border border-stone-200 shadow-2xs space-y-2.5 active:bg-stone-50 transition-colors"
             >
-              <div className="flex items-start justify-between">
+              <div className="flex items-start justify-between gap-2">
                 <div>
                   <div className="font-bold text-stone-900 text-sm">{p.clientName}</div>
-                  <div className="text-[11px] text-stone-400 font-mono mt-0.5">
-                    {p.bookingNumber} · {new Date(p.date).toLocaleDateString()}
+                  <div className="text-[11px] text-stone-400 font-mono mt-0.5" suppressHydrationWarning>
+                    {p.bookingNumber} · {new Date(p.date).toLocaleDateString("en-US")}
                   </div>
                 </div>
                 <StatusBadge status={p.status} />
@@ -278,9 +318,16 @@ export default function AdminPaymentsPage() {
                 <span className="text-stone-500 font-mono">
                   {p.cardBrand || "Visa"} •••• {p.cardLast4 || "4242"}
                 </span>
-                <span className="font-mono font-bold text-stone-900 text-sm">
-                  ${p.amount}.00
-                </span>
+                <div className="text-right">
+                  <span className="font-mono font-bold text-stone-900 text-sm">
+                    ${p.amount}.00
+                  </span>
+                  {p.status === "partially_refunded" && (
+                    <span className="block text-[10.5px] text-amber-700 font-mono">
+                      Net: ${p.netAmount}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
           ))
@@ -291,7 +338,8 @@ export default function AdminPaymentsPage() {
       <PaymentDetailsDrawer
         payment={selectedPayment}
         isOpen={!!selectedPayment}
-        onClose={() => setSelectedPayment(null)}
+        onClose={() => setSelectedPaymentId(null)}
+        onRefund={handleRefund}
       />
     </div>
   );

@@ -33,23 +33,28 @@ import {
 } from "@/lib/admin/types";
 
 export default function AdminOverviewPage() {
-  const { bookings, counts, needsReviewCount, isLoaded } = useAdminData();
+  const {
+    bookings,
+    counts,
+    needsReviewCount,
+    isLoaded,
+    leads: liveLeads,
+    allActiveLeadsCount,
+    paymentMetrics,
+  } = useAdminData();
 
   const [baseStats, setBaseStats] = useState<DashboardStats | null>(null);
-  const [leads, setLeads] = useState<AdminLead[]>([]);
   const [articles, setArticles] = useState<AdminArticleItem[]>([]);
   const [user, setUser] = useState<AdminUser | null>(null);
 
   useEffect(() => {
     async function loadData() {
-      const [s, l, a, u] = await Promise.all([
+      const [s, a, u] = await Promise.all([
         getDashboardStats(),
-        getLeads({ status: "all" }),
         getArticlesAdmin(),
         getCurrentAdminUser(),
       ]);
       setBaseStats(s);
-      setLeads(l);
       setArticles(a);
       setUser(u);
     }
@@ -174,7 +179,7 @@ export default function AdminOverviewPage() {
 
         <StatCard
           title="Monthly Revenue"
-          value={`$${(baseStats?.totalRevenueMonth ?? 18450).toLocaleString()}`}
+          value={`$${paymentMetrics.netRevenue.toLocaleString()}`}
           change={{
             value: `+${baseStats?.revenueGrowthPercent ?? 12}%`,
             positive: true,
@@ -183,15 +188,17 @@ export default function AdminOverviewPage() {
           icon={DollarSign}
           iconColor="text-emerald-700"
           iconBg="bg-emerald-50"
+          href="/admin/payments"
         />
 
         <StatCard
-          title="New Inquiries"
-          value={baseStats?.newLeadsCount ?? 14}
-          subtitle="From assessment & site forms"
+          title="ACTIVE LEADS"
+          value={allActiveLeadsCount}
+          subtitle="Currently in follow-up pipeline"
           icon={Sparkles}
           iconColor="text-amber-700"
           iconBg="bg-amber-50"
+          href="/admin/leads"
         />
       </div>
 
@@ -210,7 +217,7 @@ export default function AdminOverviewPage() {
 
         {/* Side Column (4 cols): Recent Leads & Content */}
         <div className="lg:col-span-5 xl:col-span-4 space-y-6">
-          <RecentLeadsList leads={leads} />
+          <RecentLeadsList leads={liveLeads} />
           <RecentArticlesList articles={articles} />
         </div>
       </div>

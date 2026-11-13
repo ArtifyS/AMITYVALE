@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { AdminBooking } from "@/lib/admin/types";
+import { AdminBooking, AdminBookingParticipant } from "@/lib/admin/types";
 import { StatusBadge } from "./StatusBadge";
 import { RescheduleModal } from "./RescheduleModal";
 import { CancelModal } from "./CancelModal";
@@ -408,143 +408,194 @@ export function BookingDetailsDrawer({
                 </div>
 
                 <div className="pt-2 border-t border-stone-200/60 flex items-center justify-between text-[11px] text-stone-400">
-                  <span>Stripe Payment Intent ID:</span>
+                  <span>Helcim Transaction ID:</span>
                   <span className="font-mono text-stone-500">
-                    pi_3Nva82K892kdHsa01 (Mock ID)
+                    HX-84920194 (Mock ID)
                   </span>
                 </div>
               </div>
 
               {/* SECTION 3: PARTICIPANTS & FULL INTAKE DETAILS */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold uppercase tracking-wider text-[11px] text-stone-500">
-                    Participants & Intake ({activeBooking.participants.length})
-                  </h3>
-                  <span className="text-[11px] text-stone-400">
-                    Confidential Client Records
-                  </span>
-                </div>
+              {(() => {
+                const participantsList: AdminBookingParticipant[] =
+                  activeBooking.participants && activeBooking.participants.length > 0
+                    ? activeBooking.participants
+                    : [
+                        {
+                          participantNumber: 1,
+                          isPrimaryContact: true,
+                          firstName: activeBooking.primaryClientName.split(" ")[0] || "Client",
+                          lastName: activeBooking.primaryClientName.split(" ").slice(1).join(" ") || "",
+                          email: activeBooking.primaryClientEmail,
+                          phone: activeBooking.primaryClientPhone,
+                          consultationPurpose: activeBooking.clientNotes || "General consultation",
+                        } as AdminBookingParticipant,
+                      ];
 
-                <div className="space-y-3">
-                  {activeBooking.participants.map((p, idx) => {
-                    const isExpanded = !!expandedParticipants[idx];
+                return (
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-bold uppercase tracking-wider text-[11px] text-stone-500">
+                        Participants &amp; Intake ({participantsList.length})
+                      </h3>
+                      <span className="text-[11px] text-stone-400">
+                        Confidential Client Records
+                      </span>
+                    </div>
 
-                    return (
-                      <div
-                        key={idx}
-                        className="bg-white border border-stone-200 rounded-xl overflow-hidden shadow-2xs"
-                      >
-                        {/* Summary Bar */}
-                        <div className="p-4 flex items-center justify-between bg-stone-50/50">
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <span className="w-5 h-5 rounded-full bg-[#0B2A4A] text-white text-[10px] font-bold flex items-center justify-center">
-                                {p.participantNumber || idx + 1}
-                              </span>
-                              <span className="font-bold text-stone-900 text-xs">
-                                {p.firstName} {p.lastName}
-                              </span>
-                              {p.isPrimaryContact && (
-                                <span className="text-[10px] font-semibold tracking-wider uppercase bg-[#FF5A4F]/10 text-[#FF5A4F] px-2 py-0.5 rounded-full">
-                                  Primary Contact
-                                </span>
-                              )}
-                            </div>
-                            <div className="mt-1 flex items-center gap-3 text-[11px] text-stone-500">
-                              {p.email && <span>{p.email}</span>}
-                              {p.phone && (
-                                <>
-                                  <span className="text-stone-300">•</span>
-                                  <span>{p.phone}</span>
-                                </>
-                              )}
-                            </div>
-                          </div>
+                    <div className="space-y-3">
+                      {participantsList.map((p, idx) => {
+                        const isExpanded = !!expandedParticipants[idx];
 
-                          <button
-                            onClick={() => toggleParticipantIntake(idx)}
-                            className="px-2.5 py-1 text-[11px] font-medium text-stone-600 hover:text-stone-900 hover:bg-stone-200/60 rounded-md transition-colors flex items-center gap-1 border border-stone-200 bg-white"
+                        return (
+                          <div
+                            key={idx}
+                            className="bg-white border border-stone-200 rounded-xl overflow-hidden shadow-2xs"
                           >
-                            <span>{isExpanded ? "Hide Intake" : "View Full Intake"}</span>
-                            {isExpanded ? (
-                              <ChevronUp className="w-3.5 h-3.5 text-stone-400" />
-                            ) : (
-                              <ChevronDown className="w-3.5 h-3.5 text-stone-400" />
-                            )}
-                          </button>
-                        </div>
+                            {/* Summary Bar */}
+                            <div className="p-4 flex items-center justify-between bg-stone-50/50">
+                              <div>
+                                <div className="flex items-center gap-2">
+                                  <span className="w-5 h-5 rounded-full bg-[#0B2A4A] text-white text-[10px] font-bold flex items-center justify-center">
+                                    {p.participantNumber || idx + 1}
+                                  </span>
+                                  <span className="font-bold text-stone-900 text-xs">
+                                    {p.firstName} {p.lastName}
+                                  </span>
+                                  {p.isPrimaryContact ? (
+                                    <span className="text-[10px] font-semibold tracking-wider uppercase bg-[#FF5A4F]/10 text-[#FF5A4F] px-2 py-0.5 rounded-full">
+                                      Primary Contact
+                                    </span>
+                                  ) : (
+                                    <span className="text-[10px] font-semibold tracking-wider uppercase bg-stone-100 text-stone-600 px-2 py-0.5 rounded-full">
+                                      Participant
+                                    </span>
+                                  )}
+                                </div>
+                                {(p.email || p.phone) && (
+                                  <div className="mt-1 flex items-center gap-3 text-[11px] text-stone-500">
+                                    {p.email && <span>{p.email}</span>}
+                                    {p.phone && (
+                                      <>
+                                        {p.email && <span className="text-stone-300">•</span>}
+                                        <span>{p.phone}</span>
+                                      </>
+                                    )}
+                                  </div>
+                                )}
+                              </div>
 
-                        {/* Collapsible Full Intake Details */}
-                        {isExpanded && (
-                          <div className="p-4 bg-stone-50/30 border-t border-stone-100 space-y-3 animate-in fade-in duration-150">
-                            <div className="flex items-center gap-1.5 text-[11px] text-stone-400 mb-2">
-                              <ShieldCheck className="w-3.5 h-3.5 text-stone-500" />
-                              <span>Protected Client Intake Record</span>
+                              <button
+                                onClick={() => toggleParticipantIntake(idx)}
+                                className="px-2.5 py-1 text-[11px] font-medium text-stone-600 hover:text-stone-900 hover:bg-stone-200/60 rounded-md transition-colors flex items-center gap-1 border border-stone-200 bg-white"
+                              >
+                                <span>{isExpanded ? "Hide Intake" : "View Full Intake"}</span>
+                                {isExpanded ? (
+                                  <ChevronUp className="w-3.5 h-3.5 text-stone-400" />
+                                ) : (
+                                  <ChevronDown className="w-3.5 h-3.5 text-stone-400" />
+                                )}
+                              </button>
                             </div>
 
-                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs bg-white p-3 rounded-lg border border-stone-200/80">
-                              <div>
-                                <span className="text-stone-400 block mb-0.5 text-[11px]">Date of Birth</span>
-                                <span className="font-mono font-medium text-stone-800">
-                                  {p.dateOfBirth || "—"}
-                                </span>
-                              </div>
+                            {/* Collapsible Full Intake Details */}
+                            {isExpanded && (
+                              <div className="p-4 bg-stone-50/30 border-t border-stone-100 space-y-3 animate-in fade-in duration-150">
+                                <div className="flex items-center gap-1.5 text-[11px] text-stone-400 mb-2">
+                                  <ShieldCheck className="w-3.5 h-3.5 text-stone-500" />
+                                  <span>Protected Participant Intake Record</span>
+                                </div>
 
-                              <div>
-                                <span className="text-stone-400 block mb-0.5 text-[11px]">Age</span>
-                                <span className="font-mono font-medium text-stone-800">
-                                  {p.ageAtBooking || p.age || "—"}
-                                </span>
-                              </div>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs bg-white p-3 rounded-lg border border-stone-200/80">
+                                  <div>
+                                    <span className="text-stone-400 block mb-0.5 text-[11px]">First Name</span>
+                                    <span className="font-medium text-stone-900">{p.firstName || "—"}</span>
+                                  </div>
 
-                              <div>
-                                <span className="text-stone-400 block mb-0.5 text-[11px]">Place of Birth</span>
-                                <span className="font-medium text-stone-800">
-                                  {p.placeOfBirth || "—"}
-                                </span>
-                              </div>
+                                  <div>
+                                    <span className="text-stone-400 block mb-0.5 text-[11px]">Last Name</span>
+                                    <span className="font-medium text-stone-900">{p.lastName || "—"}</span>
+                                  </div>
 
-                              <div>
-                                <span className="text-stone-400 block mb-0.5 text-[11px]">Sex</span>
-                                <span className="font-medium text-stone-800">{p.sex || "—"}</span>
-                              </div>
+                                  <div>
+                                    <span className="text-stone-400 block mb-0.5 text-[11px]">Date of Birth</span>
+                                    <span className="font-mono font-medium text-stone-800">
+                                      {p.dateOfBirth || "—"}
+                                    </span>
+                                  </div>
 
-                              <div className="sm:col-span-2">
-                                <span className="text-stone-400 block mb-0.5 text-[11px]">Sexual Orientation</span>
-                                <span className="font-medium text-stone-800">
-                                  {p.sexualOrientation || "—"}
-                                  {p.sexualOrientationSelfDescribe
-                                    ? ` (${p.sexualOrientationSelfDescribe})`
-                                    : ""}
-                                </span>
-                              </div>
+                                  <div>
+                                    <span className="text-stone-400 block mb-0.5 text-[11px]">Age at Booking</span>
+                                    <span className="font-mono font-medium text-stone-800">
+                                      {p.ageAtBooking || p.age || "—"}
+                                    </span>
+                                  </div>
 
-                              <div className="col-span-2 sm:col-span-3">
-                                <span className="text-stone-400 block mb-0.5 text-[11px]">Profession</span>
-                                <span className="font-medium text-stone-800">
-                                  {p.profession || "—"}
-                                </span>
-                              </div>
-                            </div>
+                                  <div>
+                                    <span className="text-stone-400 block mb-0.5 text-[11px]">Place of Birth</span>
+                                    <span className="font-medium text-stone-800">
+                                      {p.placeOfBirth || "—"}
+                                    </span>
+                                  </div>
 
-                            {p.consultationPurpose && (
-                              <div className="p-3 bg-white rounded-lg border border-stone-200/80 space-y-1">
-                                <span className="text-stone-400 block text-[11px]">
-                                  Stated Purpose for Consultation:
-                                </span>
-                                <p className="text-stone-700 italic leading-relaxed">
-                                  &ldquo;{p.consultationPurpose}&rdquo;
-                                </p>
+                                  <div>
+                                    <span className="text-stone-400 block mb-0.5 text-[11px]">Sex</span>
+                                    <span className="font-medium text-stone-800">{p.sex || "—"}</span>
+                                  </div>
+
+                                  <div className="sm:col-span-2">
+                                    <span className="text-stone-400 block mb-0.5 text-[11px]">Sexual Orientation</span>
+                                    <span className="font-medium text-stone-800">
+                                      {p.sexualOrientation || "—"}
+                                      {p.sexualOrientationSelfDescribe
+                                        ? ` (${p.sexualOrientationSelfDescribe})`
+                                        : ""}
+                                    </span>
+                                  </div>
+
+                                  <div>
+                                    <span className="text-stone-400 block mb-0.5 text-[11px]">Profession</span>
+                                    <span className="font-medium text-stone-800">
+                                      {p.profession || "—"}
+                                    </span>
+                                  </div>
+
+                                  {p.email && (
+                                    <div>
+                                      <span className="text-stone-400 block mb-0.5 text-[11px]">Email</span>
+                                      <span className="font-mono font-medium text-stone-800 truncate block">
+                                        {p.email}
+                                      </span>
+                                    </div>
+                                  )}
+
+                                  {p.phone && (
+                                    <div>
+                                      <span className="text-stone-400 block mb-0.5 text-[11px]">Phone</span>
+                                      <span className="font-medium text-stone-800">{p.phone}</span>
+                                    </div>
+                                  )}
+                                </div>
+
+                                {p.consultationPurpose && (
+                                  <div className="p-3 bg-white rounded-lg border border-stone-200/80 space-y-1">
+                                    <span className="text-stone-400 block text-[11px]">
+                                      Stated Purpose for Consultation:
+                                    </span>
+                                    <p className="text-stone-700 italic leading-relaxed">
+                                      &ldquo;{p.consultationPurpose}&rdquo;
+                                    </p>
+                                  </div>
+                                )}
                               </div>
                             )}
                           </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })()}
 
               {/* SECTION 4: PRIVATE ADMIN NOTES */}
               <div className="bg-stone-50/70 border border-stone-200/80 rounded-xl p-4 space-y-3">

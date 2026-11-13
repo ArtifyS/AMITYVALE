@@ -9,8 +9,8 @@ export type BookingStatus =
   | "cancelled"
   | "in_progress"
   | "rescheduled";
-export type PaymentStatus = "paid" | "pending" | "refunded" | "failed";
-export type LeadStatus = "new" | "contacted" | "booked" | "archived";
+export type PaymentStatus = "paid" | "refunded" | "partially_refunded" | "pending" | "failed";
+export type LeadStatus = "active" | "contacted" | "converted" | "archived" | "new" | "booked";
 export type ArticleStatus = "draft" | "published";
 
 export interface AdminUser {
@@ -93,26 +93,37 @@ export interface AdminLead {
   leadSource: string;
   status: LeadStatus;
   createdAt: string;
+  contactedAt?: string;
+  convertedAt?: string;
+  clientId?: string;
+  convertedBookingId?: string;
+  firstBookingAmount?: number;
+  firstBookingDetails?: string;
   primaryChallenge?: string;
   assessmentSummary?: string;
   notes?: string;
 }
 
 export interface LeadMetrics {
-  newLeads: number;
-  booked: number;
-  conversionRate: number; // e.g. 35.7%
-  thisWeek: number;
+  allLeads: number; // current active non-converted, non-archived leads
+  contacted: number;
+  converted: number;
+  conversionRate: number; // e.g. 12.5%
   total: number;
+  newLeads?: number; // legacy compatibility
+  allActiveCount?: number;
 }
 
 export interface AdminPayment {
   id: string;
   bookingId: string;
   bookingNumber: string;
+  clientId?: string;
   clientName: string;
   clientEmail: string;
   amount: number;
+  amountRefunded?: number;
+  netAmount?: number;
   basePrice: number;
   additionalFee: number;
   participantCount: number;
@@ -122,15 +133,20 @@ export interface AdminPayment {
   paymentMethod: string;
   cardBrand?: string;
   cardLast4?: string;
-  stripePaymentIntentId: string;
+  helcimTransactionId: string;
+  stripePaymentIntentId?: string; // legacy deprecated
   receiptUrl?: string;
+  paidAt?: string;
+  refundedAt?: string;
 }
 
 export interface PaymentMetrics {
   thisMonth: number;
   paidSessions: number;
-  pendingCount: number;
-  refundedAmount: number;
+  totalRefunded: number;
+  netRevenue: number;
+  pendingCount?: number;
+  refundedAmount?: number;
 }
 
 export interface AdminArticleItem {

@@ -22,6 +22,7 @@ import {
   AdminLead,
   AdminPayment,
   PaymentMetrics,
+  PaymentStatus,
   AdminArticleItem,
   DashboardStats,
   AdminUser,
@@ -55,6 +56,22 @@ export function syncLiveBookings(bookings: AdminBooking[]): void {
 
 export function getLiveBookingsList(): AdminBooking[] {
   return [...liveBookings];
+}
+
+export function syncLiveLeads(leads: AdminLead[]): void {
+  liveLeads = [...leads];
+}
+
+export function getLiveLeadsList(): AdminLead[] {
+  return [...liveLeads];
+}
+
+export function syncLiveClients(clients: AdminClient[]): void {
+  liveClients = [...clients];
+}
+
+export function getLiveClientsList(): AdminClient[] {
+  return [...liveClients];
 }
 
 /**
@@ -122,12 +139,16 @@ export async function getDashboardStats(): Promise<DashboardStats> {
   const completedSessionsCount = liveBookings.filter(
     (b) => b.status === "completed"
   ).length;
+  const newLeadsCount = liveLeads.filter(
+    (l) => l.status === "new"
+  ).length;
 
   return {
     ...MOCK_DASHBOARD_STATS,
     activeBookingsCount,
     needsReviewCount,
     completedSessionsCount,
+    newLeadsCount,
   };
 }
 
@@ -422,22 +443,20 @@ export async function addClientPrivateNote(
 /* LEADS REPOSITORY */
 export async function getLeadMetrics(): Promise<LeadMetrics> {
   const total = liveLeads.length;
-  const newLeads = liveLeads.filter((l) => l.status === "new").length;
-  const booked = liveLeads.filter((l) => l.status === "booked").length;
-  const conversionRate = total > 0 ? Math.round((booked / total) * 1000) / 10 : 0;
-
-  const sevenDaysAgo = new Date();
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-  const thisWeek = liveLeads.filter(
-    (l) => new Date(l.createdAt).getTime() >= sevenDaysAgo.getTime()
-  ).length;
+  const contacted = liveLeads.filter((l) => l.status === "contacted").length;
+  const converted = liveLeads.filter((l) => l.status === "converted" || (l.status as string) === "booked").length;
+  // All active/non-converted, non-archived leads
+  const allLeads = liveLeads.filter((l) => l.status !== "converted" && (l.status as string) !== "booked" && l.status !== "archived").length;
+  const conversionRate = total > 0 ? Math.round((converted / total) * 1000) / 10 : 0;
 
   return {
-    newLeads,
-    booked,
+    allLeads,
+    contacted,
+    converted,
     conversionRate,
-    thisWeek,
     total,
+    allActiveCount: allLeads,
+    newLeads: allLeads,
   };
 }
 
@@ -450,7 +469,11 @@ export async function getLeads(options?: {
   let list = [...liveLeads];
 
   if (options?.status && options.status !== "all") {
-    list = list.filter((l) => l.status === options.status);
+    if (options.status === "all_leads" || options.status === "all_active") {
+      list = list.filter((l) => l.status !== "converted" && (l.status as string) !== "booked" && l.status !== "archived");
+    } else {
+      list = list.filter((l) => l.status === options.status);
+    }
   }
 
   if (options?.coachingArea && options.coachingArea !== "all") {
@@ -487,10 +510,42 @@ export async function updateMockLeadStatus(
   const idx = liveLeads.findIndex((l) => l.id === id);
   if (idx === -1) return null;
 
+  const current = liveLeads[idx];
+  const now = new Date().toISOString();
+
   const updated: AdminLead = {
-    ...liveLeads[idx],
+    ...current,
     status: newStatus,
+    contactedAt:
+      newStatus === "contacted" && !current.contactedAt ? now : current.contactedAt,
+    convertedAt:
+      newStatus === "converted" && !current.convertedAt ? now : current.convertedAt,
   };
+
+  // If converting, match with existing client or booking if possible
+  if (newStatus === "converted") {
+    const leadEmailNorm = current.email.trim().toLowerCase();
+    const matchedClient = liveClients.find(
+      (c) => (c.email || "").trim().toLowerCase() === leadEmailNorm
+    );
+    const matchedBooking = liveBookings.find(
+      (b) =>
+        ((b.primaryClientEmail || "").trim().toLowerCase() === leadEmailNorm ||
+          (matchedClient && b.clientId === matchedClient.id)) &&
+        b.paymentStatus === "paid"
+    );
+
+    if (matchedClient && !updated.clientId) {
+      updated.clientId = matchedClient.id;
+    }
+    if (matchedBooking) {
+      if (!updated.convertedBookingId) updated.convertedBookingId = matchedBooking.id;
+      if (!updated.firstBookingAmount) updated.firstBookingAmount = matchedBooking.amountTotal;
+      if (!updated.firstBookingDetails) {
+        updated.firstBookingDetails = `${matchedBooking.duration} min · $${matchedBooking.amountTotal}`;
+      }
+    }
+  }
 
   liveLeads[idx] = updated;
   return updated;
@@ -621,9 +676,44 @@ export async function togglePublishMockArticle(
   return updated;
 }
 
+export function syncLiveArticles(articles: AdminArticleItem[]): void {
+  liveArticles = [...articles];
+}
+
+export async function setMockArticleFeatured(
+  id: string
+): Promise<AdminArticleItem | null> {
+  liveArticles = liveArticles.map((a) => ({
+    ...a,
+    featured: a.id === id || a.slug === id,
+  }));
+  const found = liveArticles.find((a) => a.id === id || a.slug === id);
+  return found || null;
+}
+
 /* PAYMENTS REPOSITORY */
+export function syncLivePayments(payments: AdminPayment[]): void {
+  livePayments = [...payments];
+}
+
+export function getLivePaymentsList(): AdminPayment[] {
+  return [...livePayments];
+}
+
 export async function getPaymentMetrics(): Promise<PaymentMetrics> {
-  return MOCK_PAYMENT_METRICS;
+  const thisMonth = livePayments.reduce((sum, p) => sum + (p.amount || 0), 0);
+  const paidSessions = livePayments.filter((p) => p.status === "paid" || p.status === "partially_refunded").length;
+  const totalRefunded = livePayments.reduce((sum, p) => sum + (p.amountRefunded || 0), 0);
+  const netRevenue = thisMonth - totalRefunded;
+
+  return {
+    thisMonth,
+    paidSessions,
+    totalRefunded,
+    netRevenue,
+    refundedAmount: totalRefunded,
+    pendingCount: 0,
+  };
 }
 
 export async function getPayments(options?: {
@@ -643,7 +733,8 @@ export async function getPayments(options?: {
         p.clientName.toLowerCase().includes(q) ||
         p.clientEmail.toLowerCase().includes(q) ||
         p.bookingNumber.toLowerCase().includes(q) ||
-        p.stripePaymentIntentId.toLowerCase().includes(q)
+        (p.helcimTransactionId && p.helcimTransactionId.toLowerCase().includes(q)) ||
+        (p.stripePaymentIntentId && p.stripePaymentIntentId.toLowerCase().includes(q))
     );
   }
 
@@ -653,6 +744,29 @@ export async function getPayments(options?: {
 export async function getPaymentById(id: string): Promise<AdminPayment | null> {
   const found = livePayments.find((p) => p.id === id || p.bookingId === id);
   return found || null;
+}
+
+export async function refundMockPayment(
+  id: string,
+  refundAmount: number,
+  type: "full" | "partial"
+): Promise<AdminPayment | null> {
+  const idx = livePayments.findIndex((p) => p.id === id);
+  if (idx === -1) return null;
+  const current = livePayments[idx];
+  const newAmountRefunded =
+    type === "full" ? current.amount : (current.amountRefunded || 0) + refundAmount;
+  const newStatus: PaymentStatus =
+    newAmountRefunded >= current.amount ? "refunded" : "partially_refunded";
+  const updated: AdminPayment = {
+    ...current,
+    status: newStatus,
+    amountRefunded: newAmountRefunded,
+    netAmount: Math.max(0, current.amount - newAmountRefunded),
+    refundedAt: new Date().toISOString(),
+  };
+  livePayments[idx] = updated;
+  return updated;
 }
 
 /* SETTINGS REPOSITORY */
@@ -816,7 +930,7 @@ export async function globalSearch(query: string): Promise<{
       title: a.title,
       subtitle: `${a.category} · ${a.readTime}`,
       badge: a.status,
-      href: `/admin/articles/${a.id}/edit`,
+      href: `/admin/articles`,
     }));
 
   const totalCount =

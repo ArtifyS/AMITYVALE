@@ -11,8 +11,10 @@ export type BadgeVariant =
   | "paid"
   | "pending"
   | "refunded"
+  | "partially_refunded"
   | "new"
   | "contacted"
+  | "converted"
   | "scheduled"
   | "archived"
   | "active"
@@ -81,17 +83,59 @@ const BADGE_STYLES: Record<string, { bg: string; text: string; dot: string; defa
     dot: "bg-rose-500",
     defaultLabel: "Refunded",
   },
+  partially_refunded: {
+    bg: "bg-amber-50 border-amber-200/80",
+    text: "text-amber-800",
+    dot: "bg-amber-500",
+    defaultLabel: "Partially Refunded",
+  },
+  partial_refund: {
+    bg: "bg-amber-50 border-amber-200/80",
+    text: "text-amber-800",
+    dot: "bg-amber-500",
+    defaultLabel: "Partially Refunded",
+  },
   new: {
-    bg: "bg-teal-50 border-teal-200/80",
-    text: "text-teal-800",
-    dot: "bg-teal-500",
-    defaultLabel: "New Lead",
+    bg: "bg-stone-100 border-stone-200/90",
+    text: "text-stone-700",
+    dot: "bg-stone-400",
+    defaultLabel: "Not Contacted",
+  },
+  active: {
+    bg: "bg-stone-100 border-stone-200/90",
+    text: "text-stone-700",
+    dot: "bg-stone-400",
+    defaultLabel: "Not Contacted",
+  },
+  not_contacted: {
+    bg: "bg-stone-100 border-stone-200/90",
+    text: "text-stone-700",
+    dot: "bg-stone-400",
+    defaultLabel: "Not Contacted",
+  },
+  lead: {
+    bg: "bg-stone-100 border-stone-200/90",
+    text: "text-stone-700",
+    dot: "bg-stone-400",
+    defaultLabel: "Lead",
   },
   contacted: {
     bg: "bg-sky-50 border-sky-200/80",
     text: "text-sky-800",
     dot: "bg-sky-500",
     defaultLabel: "Contacted",
+  },
+  converted: {
+    bg: "bg-emerald-50 border-emerald-200/80",
+    text: "text-emerald-800",
+    dot: "bg-emerald-500",
+    defaultLabel: "Converted Lead",
+  },
+  booked: {
+    bg: "bg-emerald-50 border-emerald-200/80",
+    text: "text-emerald-800",
+    dot: "bg-emerald-500",
+    defaultLabel: "Converted",
   },
   scheduled: {
     bg: "bg-purple-50 border-purple-200/80",
@@ -104,12 +148,6 @@ const BADGE_STYLES: Record<string, { bg: string; text: string; dot: string; defa
     text: "text-stone-500",
     dot: "bg-stone-400",
     defaultLabel: "Archived",
-  },
-  active: {
-    bg: "bg-emerald-50 border-emerald-200/80",
-    text: "text-emerald-800",
-    dot: "bg-emerald-500",
-    defaultLabel: "Active",
   },
   published: {
     bg: "bg-teal-50 border-teal-200/80",

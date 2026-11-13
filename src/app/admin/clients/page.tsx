@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { AdminClient } from "@/lib/admin/types";
 import { getClients } from "@/lib/admin/repositories";
-import { StatusBadge } from "@/components/admin/StatusBadge";
+import { useAdminData, getClientMetrics } from "@/components/admin/AdminDataContext";
 import {
   Users,
   Search,
@@ -17,20 +17,59 @@ import {
 } from "lucide-react";
 
 export default function AdminClientsPage() {
-  const [clients, setClients] = useState<AdminClient[]>([]);
+  const { bookings: allLiveBookings, isLoaded } = useAdminData();
+  const [allClients, setAllClients] = useState<AdminClient[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeFilter, setActiveFilter] = useState<string>("all");
+  const [activeFilter, setActiveFilter] = useState<"all" | "upcoming" | "past">("all");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function load() {
       setLoading(true);
-      const data = await getClients(searchQuery, activeFilter);
-      setClients(data);
+      const data = await getClients();
+      setAllClients(data);
       setLoading(false);
     }
     load();
-  }, [searchQuery, activeFilter]);
+  }, []);
+
+  // Compute dynamic client records with live metrics derived from shared booking state
+  const clientRows = useMemo(() => {
+    return allClients.map((client) => {
+      const metrics = getClientMetrics(client, allLiveBookings);
+      return {
+        ...client,
+        metrics,
+      };
+    });
+  }, [allClients, allLiveBookings]);
+
+  // Apply filter & search
+  const filteredClients = useMemo(() => {
+    let list = clientRows;
+
+    // Tab filter
+    if (activeFilter === "upcoming") {
+      list = list.filter((c) => c.metrics.hasUpcoming);
+    } else if (activeFilter === "past") {
+      list = list.filter((c) => c.metrics.isPastClient);
+    }
+
+    // Search query
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim();
+      list = list.filter(
+        (c) =>
+          c.name.toLowerCase().includes(q) ||
+          c.email.toLowerCase().includes(q) ||
+          c.phone.toLowerCase().includes(q) ||
+          c.location.toLowerCase().includes(q) ||
+          c.primaryCoachingArea.toLowerCase().includes(q)
+      );
+    }
+
+    return list;
+  }, [clientRows, activeFilter, searchQuery]);
 
   return (
     <div className="space-y-6">
@@ -46,23 +85,22 @@ export default function AdminClientsPage() {
         </div>
 
         <div className="text-xs text-stone-500 font-medium bg-white px-3 py-1.5 rounded-lg border border-stone-200 shadow-2xs self-start sm:self-auto">
-          Client Records: <strong className="text-stone-900">{clients.length}</strong>
+          Client Records: <strong className="text-stone-900">{filteredClients.length}</strong>
         </div>
       </div>
 
       {/* FILTER & SEARCH BAR */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        {/* Quick Filter Tabs */}
+        {/* Quick Filter Tabs: exactly 3 simplified tabs */}
         <div className="flex items-center gap-1 bg-stone-100/80 p-1 rounded-xl border border-stone-200/70 overflow-x-auto">
           {[
             { id: "all", label: "All Clients" },
-            { id: "active", label: "Active" },
             { id: "upcoming", label: "Has Upcoming Session" },
             { id: "past", label: "Past Clients" },
           ].map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setActiveFilter(tab.id)}
+              onClick={() => setActiveFilter(tab.id as "all" | "upcoming" | "past")}
               className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all whitespace-nowrap ${
                 activeFilter === tab.id
                   ? "bg-white text-stone-900 shadow-xs font-semibold"
@@ -95,10 +133,10 @@ export default function AdminClientsPage() {
               <tr>
                 <th className="py-3 px-4 font-semibold">Client</th>
                 <th className="py-3 px-4 font-semibold">Email</th>
-                <th className="py-3 px-4 font-semibold">Sessions</th>
+                <th className="py-3 px-4 font-semibold">Completed Sessions</th>
                 <th className="py-3 px-4 font-semibold">Last Session</th>
                 <th className="py-3 px-4 font-semibold">Next Session</th>
-                <th className="py-3 px-4 font-semibold">Lifetime Value</th>
+                <th className="py-3 px-4 font-semibold">Total Paid (LTV)</th>
                 <th className="py-3 px-4 font-semibold text-right">Profile</th>
               </tr>
             </thead>
@@ -109,14 +147,14 @@ export default function AdminClientsPage() {
                     Loading clients...
                   </td>
                 </tr>
-              ) : clients.length === 0 ? (
+              ) : filteredClients.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="py-12 text-center text-stone-400">
-                    No client records found.
+                    No client records found matching the current criteria.
                   </td>
                 </tr>
               ) : (
-                clients.map((client) => (
+                filteredClients.map((client) => (
                   <tr
                     key={client.id}
                     className="hover:bg-stone-50/70 transition-colors group"
@@ -128,6 +166,9 @@ export default function AdminClientsPage() {
                       >
                         <span>{client.name}</span>
                       </Link>
+                      <div className="text-[11px] text-stone-400 font-normal">
+                        {client.primaryCoachingArea}
+                      </div>
                     </td>
 
                     <td className="py-3 px-4 text-stone-600 font-mono text-[11px]">
@@ -136,18 +177,18 @@ export default function AdminClientsPage() {
 
                     <td className="py-3 px-4 whitespace-nowrap">
                       <span className="px-2 py-0.5 rounded bg-stone-100 font-semibold text-stone-800 font-mono">
-                        {client.totalBookings}
+                        {client.metrics.completedCount}
                       </span>
                     </td>
 
                     <td className="py-3 px-4 whitespace-nowrap text-stone-600">
-                      {client.lastSessionDate || "—"}
+                      {client.metrics.lastSessionDate || "—"}
                     </td>
 
                     <td className="py-3 px-4 whitespace-nowrap">
-                      {client.nextSessionDate ? (
+                      {client.metrics.nextSessionDate ? (
                         <span className="font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded text-[11px] border border-emerald-200/70">
-                          {client.nextSessionDate}
+                          {client.metrics.nextSessionDate}
                         </span>
                       ) : (
                         <span className="text-stone-400 italic">None scheduled</span>
@@ -155,7 +196,7 @@ export default function AdminClientsPage() {
                     </td>
 
                     <td className="py-3 px-4 whitespace-nowrap font-mono font-bold text-stone-900">
-                      ${client.totalSpend.toLocaleString()}
+                      ${client.metrics.totalPaid.toLocaleString()}
                     </td>
 
                     <td className="py-3 px-4 text-right whitespace-nowrap">
@@ -181,12 +222,12 @@ export default function AdminClientsPage() {
           <div className="p-8 text-center text-xs text-stone-400 bg-white rounded-xl border border-stone-200">
             Loading clients...
           </div>
-        ) : clients.length === 0 ? (
+        ) : filteredClients.length === 0 ? (
           <div className="p-8 text-center text-xs text-stone-400 bg-white rounded-xl border border-stone-200">
             No clients found.
           </div>
         ) : (
-          clients.map((client) => (
+          filteredClients.map((client) => (
             <Link
               key={client.id}
               href={`/admin/clients/${client.id}`}
@@ -198,22 +239,26 @@ export default function AdminClientsPage() {
                     {client.name}
                   </span>
                   <span className="px-1.5 py-0.2 rounded bg-stone-100 text-[10px] font-mono text-stone-600 shrink-0">
-                    {client.totalBookings} sess.
+                    {client.metrics.completedCount} completed
                   </span>
                 </div>
                 <div className="text-xs text-stone-500 truncate mt-0.5 font-mono">
                   {client.email}
                 </div>
-                {client.nextSessionDate && (
+                {client.metrics.nextSessionDate ? (
                   <div className="text-[11px] text-emerald-700 font-medium mt-1 truncate">
-                    Next: {client.nextSessionDate}
+                    Next: {client.metrics.nextSessionDate}
+                  </div>
+                ) : (
+                  <div className="text-[11px] text-stone-400 italic mt-1">
+                    No upcoming sessions
                   </div>
                 )}
               </div>
 
               <div className="text-right shrink-0">
                 <div className="font-mono font-bold text-stone-900 text-xs">
-                  ${client.totalSpend.toLocaleString()}
+                  ${client.metrics.totalPaid.toLocaleString()}
                 </div>
                 <ChevronRight className="w-4 h-4 text-stone-400 ml-auto mt-1" />
               </div>

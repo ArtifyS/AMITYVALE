@@ -1,7 +1,5 @@
-import React from "react";
-import { ArticleEditor } from "@/components/admin/ArticleEditor";
+import { redirect } from "next/navigation";
 
 export default function NewArticlePage() {
-  return <ArticleEditor isNew={true} />;
+  redirect("/admin/articles");
 }
-

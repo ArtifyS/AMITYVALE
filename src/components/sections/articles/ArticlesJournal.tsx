@@ -37,10 +37,26 @@ export function ArticlesJournal() {
     };
   }, [isDropdownOpen]);
 
+  // Listen for admin featured article selection from localStorage
+  const [featuredId, setFeaturedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("amityhale_featured_article_id");
+      if (stored) {
+        setFeaturedId(stored);
+      }
+    } catch {}
+  }, []);
+
   // Featured article is pinned at top
   const featuredArticle = useMemo(() => {
+    if (featuredId) {
+      const match = ARTICLES_DATA.find((a) => a.id === featuredId || a.slug === featuredId);
+      if (match) return match;
+    }
     return ARTICLES_DATA.find((a) => a.featured) || ARTICLES_DATA[0];
-  }, []);
+  }, [featuredId]);
 
   // Filtered articles list for grid:
   // On default "All Articles", exclude the featured article to avoid duplicate repetition.
